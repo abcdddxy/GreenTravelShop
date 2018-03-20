@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <title>商家注册</title>
     <link href="css/style.css" rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -33,31 +34,6 @@
                 </div>
             </div>
 
-            <div class="lable">
-                <div class="input-group">
-                    <input type="text" id="selectTypeText" placeholder="店铺类型">
-                    <div class="input-group-btn" id="selectType">
-                        <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right">
-                            <li onclick="selcetCY()">
-                                <a href="#">餐饮</a>
-                            </li>
-                            <li onclick="selcetYL()">
-                                <a href="#">娱乐</a>
-                            </li>
-                            <li onclick="selcetGW()">
-                                <a href="#">购物</a>
-                            </li>
-                            <li onclick="selcetLY()">
-                                <a href="#">旅游</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
             <div class="submit">
                 <input type="submit" onclick="submit()" value="创建账户">
             </div>
@@ -66,31 +42,14 @@
     </div>
 
     <script type="text/javascript">
-        addEventListener("load", function () {
-            setTimeout(hideURLbar, 0);
-        }, false);
-
-        function hideURLbar() {
-            window.scrollTo(0, 1);
-        }
-
         function sendVer() {
             setTimeout(function () {
                 alert("发送验证码成功！");
             }, 500);
         }
 
-        function selcetCY() {
-            $("#selectTypeText").val("餐饮");
-        }
-        function selcetYL() {
-            $("#selectTypeText").val("娱乐");
-        }
-        function selcetGW() {
-            $("#selectTypeText").val("购物");
-        }
-        function selcetLY() {
-            $("#selectTypeText").val("旅游");
+        function submit(){
+            window.location.href="register2.html";
         }
     </script>
 

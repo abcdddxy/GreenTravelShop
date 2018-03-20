@@ -110,6 +110,7 @@ $("#createMap").click(function () {
 				map.clearOverlays();
 				map.addOverlay(marker);
 			});
+			map.enableScrollWheelZoom(true);
 		});
 	}, 300);
 });
@@ -121,9 +122,48 @@ function setMapValue() {
 		return false;
 	}
 	$("#map").val($("#map_txt").val());
-	$('#myModal').modal('hide')
+	$('#myModal').modal('hide');
 }
 
 $(".submit").click(function () {
 	return false;
 })
+
+function sendVer() {
+	setTimeout(function () {
+		alert("发送验证码成功！");
+	}, 500);
+}
+
+function createModal() {
+	// alert("111111");
+	// $("#cMap").trigger("click");
+	$('#myModal').modal('show');
+}
+
+function selcetCY() {
+	$("#selectTypeText").val("餐饮");
+}
+
+function selcetYL() {
+	$("#selectTypeText").val("娱乐");
+}
+
+function selcetGW() {
+	$("#selectTypeText").val("购物");
+}
+
+function selcetLY() {
+	$("#selectTypeText").val("旅游");
+}
+
+$('#datetimepicker').datetimepicker({
+	format: 'MM/dd/yyyy hh:mm',
+	language: 'en',
+	pickDate: true,
+	pickTime: true,
+	hourStep: 1,
+	minuteStep: 15,
+	secondStep: 30,
+	inputMask: true
+});

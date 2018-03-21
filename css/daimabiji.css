@@ -19,14 +19,14 @@ body {
 	background-size: 100% 100%;
 	background-attachment: fixed;
 	animation-name: myfirst;
-	animation-duration:12s;
-    /*变换时间*/
-    animation-delay:0s;
-    /*动画开始时间*/
-    animation-iteration-count:infinite;
-    /*下一周期循环播放*/
-    animation-play-state:running;
-    /*动画开始运行*/
+	animation-duration: 12s;
+	/*变换时间*/
+	animation-delay: 0s;
+	/*动画开始时间*/
+	animation-iteration-count: infinite;
+	/*下一周期循环播放*/
+	animation-play-state: running;
+	/*动画开始运行*/
 }
 
 @keyframes myfirst {
@@ -81,6 +81,7 @@ body {
 }
 
 /*inputs*/
+
 #msform input,
 #msform textarea {
 	padding: 15px;

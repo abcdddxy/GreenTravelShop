@@ -161,6 +161,9 @@ $("#datetimeStart").datetimepicker({
 	format: 'hh:ii',
 	autoclose: true,
 	startView: 1,
+	maxView: 0,
+	minView: 0,
+	forceParse: false,
 	minuteStep: 10
 });
 
@@ -168,5 +171,8 @@ $("#datetimeEnd").datetimepicker({
 	format: 'hh:ii',
 	autoclose: true,
 	startView: 1,
+	maxView: 0,
+	minView: 0,
+	forceParse: false,
 	minuteStep: 10
 });

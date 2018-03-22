@@ -82,7 +82,7 @@ body {
 
 /*inputs*/
 
-#msform input,
+#msform input:not(.file-caption-name),
 #msform textarea {
 	padding: 15px;
 	border: 1px solid #ccc;

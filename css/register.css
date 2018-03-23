@@ -82,7 +82,7 @@ body {
 
 /*inputs*/
 
-#msform input:not(.file-caption-name),
+#msform input:not(.file-caption-name):not(.action-button),
 #msform textarea {
 	padding: 15px;
 	border: 1px solid #ccc;
@@ -106,7 +106,7 @@ body {
 	border-radius: 1px;
 	cursor: pointer;
 	padding: 10px 5px;
-	margin: 10px 5px;
+	margin: 10px 80px;
 }
 
 #msform .action-button:hover,

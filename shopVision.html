@@ -2,10 +2,11 @@
 <html lang="zh">
 
 <head>
-    <title>Matrix Admin</title>
+    <title>查看店铺</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
     <link rel="stylesheet" href="css/fullcalendar.css" />
     <link rel="stylesheet" href="css/matrix-style.css" />
@@ -13,10 +14,29 @@
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/jquery.gritter.css" />
     <link href='http://fonts.useso.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+
+    <style type="text/css">
+        .iw_poi_title {
+            color: #CC5522;
+            font-size: 14px;
+            font-weight: bold;
+            overflow: hidden;
+            padding-right: 13px;
+            white-space: nowrap
+        }
+
+        .iw_poi_content {
+            font: 12px arial, sans-serif;
+            overflow: visible;
+            padding-top: 4px;
+            white-space: -moz-pre-wrap;
+            word-wrap: break-word
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=HAhdObZKPAYgitoZzbEtORnlkhIQ261I"></script>
 </head>
 
 <body>
-
     <!--Header-part-->
     <div id="header">
         <h1>
@@ -97,9 +117,9 @@
     <!--sidebar-menu-->
     <div id="sidebar">
         <a href="#" class="visible-phone">
-            <i class="icon icon-home"></i> Dashboard</a>
+            <i class="icon icon-home"></i>查看店铺</a>
         <ul>
-            <li class="active">
+            <li class="submenu">
                 <a href="#">
                     <i class="icon icon-home"></i>
                     <span>总览</span>
@@ -111,7 +131,7 @@
                     <span>相关报表</span>
                 </a>
             </li>
-            <li class="submenu">
+            <li class="submenu active">
                 <a href="#">
                     <i class="icon icon-flag"></i>
                     <span>我的店铺</span>
@@ -158,106 +178,14 @@
             <div id="breadcrumb">
                 <a href="index.html" title="回到首页" class="tip-bottom">
                     <i class="icon-home"></i> 首页</a>
+                <a href="#" class="current">查看店铺</a>
             </div>
         </div>
         <!--End-breadcrumbs-->
 
-        <!--Action boxes-->
-        <div class="container-fluid" style="padding-top:50px;">
-            <div class="quick-actions_homepage">
-                <ul class="quick-actions">
-                    <li class="bg_lb span4">
-                        <a href="index.html">
-                            <i class="icon-dashboard" style="padding-top:40px"></i>
-                            <span class="label label-important">20</span> 店铺总览 </a>
-                    </li>
-                    <li class="bg_lg span4">
-                        <a href="#">
-                            <i class="icon-signal" style="padding-top:40px"></i> 相关报表</a>
-                    </li>
-                    <li class="bg_ly">
-                        <a href="#">
-                            <i class="icon-flag"></i> 查看店铺 </a>
-                    </li>
-                    <li class="bg_lb">
-                        <a href="#">
-                            <i class="icon-plus"></i> 添加店铺</a>
-                    </li>
-                    <li class="bg_lo">
-                        <a href="#">
-                            <i class="icon-minus"></i>移除店铺</a>
-                    </li>
-                    <li class="bg_ly">
-                        <a href="#">
-                            <i class="icon-file"></i> 查看优惠券</a>
-                    </li>
-                    <li class="bg_lb">
-                        <a href="#">
-                            <i class="icon-upload-alt"></i> 上传优惠券</a>
-                    </li>
-                    <li class="bg_lo">
-                        <a href="#">
-                            <i class="icon-remove"></i>删除优惠券</a>
-                    </li>
-                </ul>
-            </div>
-            <!--End-Action boxes-->
+        <!--百度地图容器-->
+        <div style="width:1400px;height:800px;border:#ccc solid 1px;margin-top:3%;margin-left:8%" id="dituContent"></div>
 
-            <!--Chart-box-->
-            <div class="row-fluid" style="padding-top:300px;">
-                <div class="widget-box">
-                    <div class="widget-title bg_lg">
-                        <span class="icon">
-                            <i class="icon-signal"></i>
-                        </span>
-                        <h5>图表展示</h5>
-                    </div>
-                    <div class="widget-content">
-                        <div class="row-fluid">
-                            <div class="span9">
-                                <div class="chart"></div>
-                            </div>
-                            <div class="span3">
-                                <ul class="site-stats">
-                                    <li class="bg_lh">
-                                        <i class="icon-user"></i>
-                                        <strong>2484</strong>
-                                        <small>总用户</small>
-                                    </li>
-                                    <li class="bg_lh">
-                                        <i class="icon-plus"></i>
-                                        <strong>120</strong>
-                                        <small>新用户</small>
-                                    </li>
-                                    <li class="bg_lh">
-                                        <i class="icon-shopping-cart"></i>
-                                        <strong>656</strong>
-                                        <small>总商铺</small>
-                                    </li>
-                                    <li class="bg_lh">
-                                        <i class="icon-tag"></i>
-                                        <strong>3255</strong>
-                                        <small>总优惠券</small>
-                                    </li>
-                                    <li class="bg_lh">
-                                        <i class="icon-repeat"></i>
-                                        <strong>425</strong>
-                                        <small>当前订单</small>
-                                    </li>
-                                    <li class="bg_lh">
-                                        <i class="icon-globe"></i>
-                                        <strong>8540</strong>
-                                        <small>已完成订单</small>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--End-Chart-box-->
-
-        </div>
     </div>
     <!--end-main-container-part-->
 
@@ -284,27 +212,155 @@
     <script src="js/matrix.tables.js"></script>
 
     <script type="text/javascript">
-        // This function is called from the pop-up menus to transfer to
-        // a different page. Ignore if the value returned is a null string:
-        function goPage(newURL) {
-            // if url is empty, skip the menu dividers and reset the menu selection to default
-            if (newURL != "") {
-                // if url is "-", it is this page -- reset the menu:
-                if (newURL == "-") {
-                    resetMenu();
-                }
-                // else, send page to designated URL            
-                else {
-                    document.location.href = newURL;
-                }
-            }
+        //创建和初始化地图函数：
+        function initMap() {
+            createMap(); //创建地图
+            setMapEvent(); //设置地图事件
+            addMapControl(); //向地图添加控件
+            addMarker(); //向地图中添加marker
         }
 
-        // resets the menu selection upon entry to this page:
-        function resetMenu() {
-            document.gomenu.selector.selectedIndex = 2;
+        //创建地图函数：
+        function createMap() {
+            var map = new BMap.Map("dituContent"); //在百度地图容器中创建一个地图
+            var point = new BMap.Point(116.377966, 39.93574); //定义一个中心点坐标
+            map.centerAndZoom(point, 12); //设定地图的中心点和坐标并将地图显示在地图容器中
+            window.map = map; //将map变量存储在全局
         }
+
+        //地图事件设置函数：
+        function setMapEvent() {
+            map.enableDragging(); //启用地图拖拽事件，默认启用(可不写)
+            map.enableScrollWheelZoom(); //启用地图滚轮放大缩小
+            map.enableDoubleClickZoom(); //启用鼠标双击放大，默认启用(可不写)
+            map.enableKeyboard(); //启用键盘上下左右键移动地图
+        }
+
+        //地图控件添加函数：
+        function addMapControl() {
+            //向地图中添加缩放控件
+            var ctrl_nav = new BMap.NavigationControl({
+                anchor: BMAP_ANCHOR_TOP_LEFT,
+                type: BMAP_NAVIGATION_CONTROL_LARGE
+            });
+            map.addControl(ctrl_nav);
+            //向地图中添加缩略图控件
+            var ctrl_ove = new BMap.OverviewMapControl({
+                anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+                isOpen: 1
+            });
+            map.addControl(ctrl_ove);
+            //向地图中添加比例尺控件
+            var ctrl_sca = new BMap.ScaleControl({
+                anchor: BMAP_ANCHOR_BOTTOM_LEFT
+            });
+            map.addControl(ctrl_sca);
+        }
+
+        //标注点数组
+        var markerArr = [{
+            title: "店铺1",
+            content: "北京邮电大学店",
+            point: "116.361006|39.971138",
+            isOpen: 0,
+            icon: {
+                w: 23,
+                h: 25,
+                l: 46,
+                t: 21,
+                x: 9,
+                lb: 12
+            }
+        }, {
+            title: "店铺2",
+            content: "朝阳店",
+            point: "116.50876|39.958751",
+            isOpen: 0,
+            icon: {
+                w: 23,
+                h: 25,
+                l: 46,
+                t: 21,
+                x: 9,
+                lb: 12
+            }
+        }, {
+            title: "店铺3",
+            content: "北京南站店",
+            point: "116.358132|39.871534",
+            isOpen: 0,
+            icon: {
+                w: 23,
+                h: 25,
+                l: 46,
+                t: 21,
+                x: 9,
+                lb: 12
+            }
+        }];
+
+        //创建marker
+        function addMarker() {
+            for (var i = 0; i < markerArr.length; i++) {
+                var json = markerArr[i];
+                var p0 = json.point.split("|")[0];
+                var p1 = json.point.split("|")[1];
+                var point = new BMap.Point(p0, p1);
+                var iconImg = createIcon(json.icon);
+                var marker = new BMap.Marker(point, {
+                    icon: iconImg,
+                });
+                var iw = createInfoWindow(i);
+                var label = new BMap.Label(json.title, {
+                    "offset": new BMap.Size(json.icon.lb - json.icon.x + 10, -20)
+                });
+                marker.setLabel(label);
+                map.addOverlay(marker);
+                label.setStyle({
+                    borderColor: "#808080",
+                    color: "#333",
+                    cursor: "pointer"
+                });
+
+                (function () {
+                    var index = i;
+                    var _iw = createInfoWindow(i);
+                    var _marker = marker;
+                    _marker.addEventListener("click", function () {
+                        this.openInfoWindow(_iw);
+                    });
+                    _iw.addEventListener("open", function () {
+                        _marker.getLabel().hide();
+                    })
+                    _iw.addEventListener("close", function () {
+                        _marker.getLabel().show();
+                    })
+                    label.addEventListener("click", function () {
+                        _marker.openInfoWindow(_iw);
+                    })
+                    if (!!json.isOpen) {
+                        label.hide();
+                        _marker.openInfoWindow(_iw);
+                    }
+                })()
+            }
+        }
+        //创建InfoWindow
+        function createInfoWindow(i) {
+            var json = markerArr[i];
+            var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + json.title + "'>" + json.title +
+                "</b><div class='iw_poi_content'>" + json.content + "</div>");
+            return iw;
+        }
+        //创建一个Icon
+        function createIcon(json) {
+            var icon = new BMap.Icon("img/icon_gcoding.png", new BMap.Size(30, 33));
+                return icon;
+            }
+
+            initMap(); //创建和初始化地图
     </script>
+
 </body>
 
 </html>

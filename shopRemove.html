@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <title>移除店铺</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css" />
+    <link rel="stylesheet" href="css/matrix-style.css" />
+    <link rel="stylesheet" href="css/matrix-media.css" />
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/jquery.gritter.css" />
+    <link href='http://fonts.useso.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+
+    <style type="text/css">
+        .iw_poi_title {
+            color: #CC5522;
+            font-size: 14px;
+            font-weight: bold;
+            overflow: hidden;
+            padding-right: 13px;
+            white-space: nowrap
+        }
+
+        .iw_poi_content {
+            font: 12px arial, sans-serif;
+            overflow: visible;
+            padding-top: 4px;
+            white-space: -moz-pre-wrap;
+            word-wrap: break-word
+        }
+
+        .selectpicker {
+            margin-top: 15px;
+            margin-left: 10%;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            width: 80%;
+            height: 50px;
+            box-sizing: border-box;
+            font-family: montserrat;
+            color: #2C3E50;
+            font-size: 20px;
+        }
+
+        .action-button {
+            width: 80%;
+            height: 30px;
+            background: #27AE60;
+            font-weight: bold;
+            color: white;
+            border: 0 none;
+            border-radius: 1px;
+            cursor: pointer;
+            margin: 10px 80px;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=HAhdObZKPAYgitoZzbEtORnlkhIQ261I"></script>
+</head>
+
+<body>
+    <!--Header-part-->
+    <div id="header">
+        <h1>
+            <a href="#">ZERO</a>
+        </h1>
+    </div>
+    <!--close-Header-part-->
+
+    <!--top-Header-menu-->
+    <div id="user-nav" class="navbar navbar-inverse">
+        <ul class="nav">
+            <li class="dropdown" id="profile-messages">
+                <a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle">
+                    <i class="icon icon-user"></i>
+                    <span class="text">选项</span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#">
+                            <i class="icon-user"></i>个人设置</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">
+                            <i class="icon-check"></i>我的任务</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">
+                            <i class="icon-key"></i>登出</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown" id="menu-messages">
+                <a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">
+                    <i class="icon icon-envelope"></i>
+                    <span class="text">消息</span>
+                    <span class="label label-important">5</span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="sAdd" title="" href="#">
+                            <i class="icon-plus"></i>发送消息</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a class="sInbox" title="" href="#">
+                            <i class="icon-envelope"></i> 收件箱</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a class="sTrash" title="" href="#">
+                            <i class="icon-trash"></i> 清空通知</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="">
+                <a title="" href="login.html">
+                    <i class="icon icon-share-alt"></i>
+                    <span class="text">登出</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--close-top-Header-menu-->
+
+    <!--start-top-serch-->
+    <div id="search">
+        <input type="text" placeholder="查找" />
+        <button type="submit" class="tip-bottom" title="Search">
+            <i class="icon-search icon-white"></i>
+        </button>
+    </div>
+    <!--close-top-serch-->
+
+    <!--sidebar-menu-->
+    <div id="sidebar">
+        <a href="#" class="visible-phone">
+            <i class="icon icon-home"></i>移除店铺</a>
+        <ul>
+            <li class="submenu">
+                <a href="#">
+                    <i class="icon icon-home"></i>
+                    <span>总览</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="icon icon-signal"></i>
+                    <span>相关报表</span>
+                </a>
+            </li>
+            <li class="submenu active">
+                <a href="#">
+                    <i class="icon icon-flag"></i>
+                    <span>我的店铺</span>
+                    <span class="label label-important">3</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="shopVision.html">查看店铺</a>
+                    </li>
+                    <li>
+                        <a href="shopAdd.html">添加店铺</a>
+                    </li>
+                    <li>
+                        <a href="shopRemove.html">移除店铺</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="submenu">
+                <a href="#">
+                    <i class="icon icon-file"></i>
+                    <span>优惠券</span>
+                    <span class="label label-important">3</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="#">查看优惠券</a>
+                    </li>
+                    <li>
+                        <a href="#">上传优惠券</a>
+                    </li>
+                    <li>
+                        <a href="#">删除优惠券</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!--sidebar-menu-->
+
+    <!--main-container-part-->
+    <div id="content">
+        <!--breadcrumbs-->
+        <div id="content-header">
+            <div id="breadcrumb">
+                <a href="index.html" title="回到首页" class="tip-bottom">
+                    <i class="icon-home"></i> 首页</a>
+                <a href="#" class="current">移除店铺</a>
+            </div>
+        </div>
+        <!--End-breadcrumbs-->
+
+        <!--百度地图容器-->
+        <div style="width:800px;height:400px;border:#ccc solid 1px;margin-top:3%;margin-left:25%" id="dituContent"></div>
+
+        <h2 style="margin-left:50px">请选择要移除的店铺：</h2>
+
+        <div class="col-lg-10">
+            <select id="basic" class="selectpicker show-tick form-control" data-live-search="true">
+                <option>店铺1（北京邮电大学店）</option>
+                <option>店铺2（朝阳店）</option>
+                <option>店铺3（北京南站店）</option>
+            </select>
+        </div>
+
+        <input type="button" name="confirm" class="action-button" style="width:10%;height:50px;margin-left:45%;margin-top:50px" value="确认" />
+
+    </div>
+    <!--end-main-container-part-->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/excanvas.min.js"></script>
+    <script src="js/jquery.ui.custom.js"></script>
+    <script src="js/jquery.flot.min.js"></script>
+    <script src="js/jquery.flot.resize.min.js"></script>
+    <script src="js/jquery.peity.min.js"></script>
+    <script src="js/fullcalendar.min.js"></script>
+    <script src="js/matrix.js"></script>
+    <script src="js/matrix.dashboard.js"></script>
+    <script src="js/jquery.gritter.min.js"></script>
+    <script src="js/matrix.interface.js"></script>
+    <script src="js/matrix.chat.js"></script>
+    <script src="js/jquery.validate.js"></script>
+    <script src="js/matrix.form_validation.js"></script>
+    <script src="js/jquery.wizard.js"></script>
+    <script src="js/jquery.uniform.js"></script>
+    <script src="js/select2.min.js"></script>
+    <script src="js/matrix.popover.js"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/matrix.tables.js"></script>
+
+    <script type="text/javascript">
+        //创建和初始化地图函数：
+        function initMap() {
+            createMap(); //创建地图
+            setMapEvent(); //设置地图事件
+            addMapControl(); //向地图添加控件
+            addMarker(); //向地图中添加marker
+        }
+
+        //创建地图函数：
+        function createMap() {
+            var map = new BMap.Map("dituContent"); //在百度地图容器中创建一个地图
+            var point = new BMap.Point(116.377966, 39.93574); //定义一个中心点坐标
+            map.centerAndZoom(point, 12); //设定地图的中心点和坐标并将地图显示在地图容器中
+            window.map = map; //将map变量存储在全局
+        }
+
+        //地图事件设置函数：
+        function setMapEvent() {
+            map.enableDragging(); //启用地图拖拽事件，默认启用(可不写)
+            map.enableScrollWheelZoom(); //启用地图滚轮放大缩小
+            map.enableDoubleClickZoom(); //启用鼠标双击放大，默认启用(可不写)
+            map.enableKeyboard(); //启用键盘上下左右键移动地图
+        }
+
+        //地图控件添加函数：
+        function addMapControl() {
+            //向地图中添加缩放控件
+            var ctrl_nav = new BMap.NavigationControl({
+                anchor: BMAP_ANCHOR_TOP_LEFT,
+                type: BMAP_NAVIGATION_CONTROL_LARGE
+            });
+            map.addControl(ctrl_nav);
+            //向地图中添加缩略图控件
+            var ctrl_ove = new BMap.OverviewMapControl({
+                anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+                isOpen: 1
+            });
+            map.addControl(ctrl_ove);
+            //向地图中添加比例尺控件
+            var ctrl_sca = new BMap.ScaleControl({
+                anchor: BMAP_ANCHOR_BOTTOM_LEFT
+            });
+            map.addControl(ctrl_sca);
+        }
+
+        //标注点数组
+        var markerArr = [{
+            title: "店铺1",
+            content: "北京邮电大学店",
+            point: "116.361006|39.971138",
+            isOpen: 0,
+            icon: {
+                w: 23,
+                h: 25,
+                l: 46,
+                t: 21,
+                x: 9,
+                lb: 12
+            }
+        }, {
+            title: "店铺2",
+            content: "朝阳店",
+            point: "116.50876|39.958751",
+            isOpen: 0,
+            icon: {
+                w: 23,
+                h: 25,
+                l: 46,
+                t: 21,
+                x: 9,
+                lb: 12
+            }
+        }, {
+            title: "店铺3",
+            content: "北京南站店",
+            point: "116.358132|39.871534",
+            isOpen: 0,
+            icon: {
+                w: 23,
+                h: 25,
+                l: 46,
+                t: 21,
+                x: 9,
+                lb: 12
+            }
+        }];
+        //创建marker
+        function addMarker() {
+            for (var i = 0; i < markerArr.length; i++) {
+                var json = markerArr[i];
+                var p0 = json.point.split("|")[0];
+                var p1 = json.point.split("|")[1];
+                var point = new BMap.Point(p0, p1);
+                var iconImg = createIcon(json.icon);
+                var marker = new BMap.Marker(point, {
+                    icon: iconImg
+                });
+                var iw = createInfoWindow(i);
+                var label = new BMap.Label(json.title, {
+                    "offset": new BMap.Size(json.icon.lb - json.icon.x + 10, -20)
+                });
+                marker.setLabel(label);
+                map.addOverlay(marker);
+                label.setStyle({
+                    borderColor: "#808080",
+                    color: "#333",
+                    cursor: "pointer"
+                });
+
+                (function () {
+                    var index = i;
+                    var _iw = createInfoWindow(i);
+                    var _marker = marker;
+                    _marker.addEventListener("click", function () {
+                        this.openInfoWindow(_iw);
+                    });
+                    _iw.addEventListener("open", function () {
+                        _marker.getLabel().hide();
+                    })
+                    _iw.addEventListener("close", function () {
+                        _marker.getLabel().show();
+                    })
+                    label.addEventListener("click", function () {
+                        _marker.openInfoWindow(_iw);
+                    })
+                    if (!!json.isOpen) {
+                        label.hide();
+                        _marker.openInfoWindow(_iw);
+                    }
+                })()
+            }
+        }
+        //创建InfoWindow
+        function createInfoWindow(i) {
+            var json = markerArr[i];
+            var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + json.title + "'>" + json.title +
+                "</b><div class='iw_poi_content'>" + json.content + "</div>");
+            return iw;
+        }
+        //创建一个Icon
+        function createIcon(json) {
+            var icon = new BMap.Icon("http://api.map.baidu.com/lbsapi/creatmap/images/us_mk_icon.png", new BMap.Size(
+                json.w, json.h), {
+                imageOffset: new BMap.Size(-json.l, -json.t),
+                infoWindowOffset: new BMap.Size(json.lb + 5, 1),
+                offset: new BMap.Size(json.x, json.h)
+            })
+            return icon;
+        }
+
+        initMap(); //创建和初始化地图
+    </script>
+
+</body>
+
+</html>

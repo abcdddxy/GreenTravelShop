@@ -135,12 +135,6 @@ function sendVer() {
 	}, 500);
 };
 
-function createModal() {
-	// alert("111111");
-	// $("#cMap").trigger("click");
-	$('#myModal').modal('show');
-};
-
 function selcetCY() {
 	$("#selectTypeText").val("餐饮");
 };

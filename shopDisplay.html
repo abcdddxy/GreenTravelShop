@@ -119,8 +119,8 @@
         <a href="#" class="visible-phone">
             <i class="icon icon-home"></i>查看店铺</a>
         <ul>
-            <li class="submenu">
-                <a href="#">
+            <li>
+                <a href="main.html">
                     <i class="icon icon-home"></i>
                     <span>总览</span>
                 </a>
@@ -139,7 +139,7 @@
                 </a>
                 <ul>
                     <li>
-                        <a href="shopVision.html">查看店铺</a>
+                        <a href="shopDisplay.html">查看店铺</a>
                     </li>
                     <li>
                         <a href="shopAdd.html">添加店铺</a>
@@ -153,17 +153,14 @@
                 <a href="#">
                     <i class="icon icon-file"></i>
                     <span>优惠券</span>
-                    <span class="label label-important">3</span>
+                    <span class="label label-important">2</span>
                 </a>
                 <ul>
                     <li>
-                        <a href="#">查看优惠券</a>
+                        <a href="couponDisplay.html">查看优惠券</a>
                     </li>
                     <li>
-                        <a href="#">上传优惠券</a>
-                    </li>
-                    <li>
-                        <a href="#">删除优惠券</a>
+                        <a href="couponAdd.html">上传优惠券</a>
                     </li>
                 </ul>
             </li>
@@ -176,7 +173,7 @@
         <!--breadcrumbs-->
         <div id="content-header">
             <div id="breadcrumb">
-                <a href="index.html" title="回到首页" class="tip-bottom">
+                <a href="main.html" title="回到首页" class="tip-bottom">
                     <i class="icon-home"></i> 首页</a>
                 <a href="#" class="current">查看店铺</a>
             </div>
@@ -355,10 +352,10 @@
         //创建一个Icon
         function createIcon(json) {
             var icon = new BMap.Icon("img/icon_gcoding.png", new BMap.Size(30, 33));
-                return icon;
-            }
+            return icon;
+        }
 
-            initMap(); //创建和初始化地图
+        initMap(); //创建和初始化地图
     </script>
 
 </body>

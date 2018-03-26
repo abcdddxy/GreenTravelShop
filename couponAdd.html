@@ -2,7 +2,7 @@
 <html lang="zh">
 
 <head>
-    <title>添加店铺</title>
+    <title>上传优惠券</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
@@ -15,27 +15,7 @@
     <link rel="stylesheet" href="css/jquery.gritter.css" />
     <link href='http://fonts.useso.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="css/shopAdd.css" />
-
-    <style type="text/css">
-        .iw_poi_title {
-            color: #CC5522;
-            font-size: 14px;
-            font-weight: bold;
-            overflow: hidden;
-            padding-right: 13px;
-            white-space: nowrap
-        }
-
-        .iw_poi_content {
-            font: 12px arial, sans-serif;
-            overflow: visible;
-            padding-top: 4px;
-            white-space: -moz-pre-wrap;
-            word-wrap: break-word
-        }
-    </style>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=HAhdObZKPAYgitoZzbEtORnlkhIQ261I"></script>
+    <link rel="stylesheet" href="css/couponAdd.css" />
 </head>
 
 <body>
@@ -119,7 +99,7 @@
     <!--sidebar-menu-->
     <div id="sidebar">
         <a href="#" class="visible-phone">
-            <i class="icon icon-home"></i>添加店铺</a>
+            <i class="icon icon-home"></i>查看优惠券</a>
         <ul>
             <li>
                 <a href="main.html">
@@ -133,7 +113,7 @@
                     <span>相关报表</span>
                 </a>
             </li>
-            <li class="submenu active">
+            <li class="submenu">
                 <a href="#">
                     <i class="icon icon-flag"></i>
                     <span>我的店铺</span>
@@ -177,7 +157,7 @@
             <div id="breadcrumb">
                 <a href="main.html" title="回到首页" class="tip-bottom">
                     <i class="icon-home"></i> 首页</a>
-                <a href="#" class="current">添加店铺</a>
+                <a href="#" class="current">上传优惠券</a>
             </div>
         </div>
         <!--End-breadcrumbs-->
@@ -186,68 +166,37 @@
             <fieldset>
                 <div class="lable">
                     <div class="input-group">
-                        <input type="text" id="selectTypeText" placeholder="店铺类型">
+                        <input type="text" id="selectTypeText" placeholder="优惠券类型">
                         <div class="input-group-btn" id="selectType">
-                            <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
+                            <button type="button" id="selectTypeBtn" data-loading-text="完成" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu pull-right">
-                                <li onclick="selcetCY()">
-                                    <a href="#">餐饮</a>
+                                <li onclick="selcetMJ()">
+                                    <a href="#">满减券</a>
                                 </li>
-                                <li onclick="selcetYL()">
-                                    <a href="#">娱乐</a>
+                                <li onclick="selcetDJQ()">
+                                    <a href="#">全场打折券</a>
                                 </li>
-                                <li onclick="selcetGW()">
-                                    <a href="#">购物</a>
-                                </li>
-                                <li onclick="selcetLY()">
-                                    <a href="#">旅游</a>
+                                <li onclick="selcetDJB()">
+                                    <a href="#">部分打折券</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div class="input-group">
-                    <input type="text" value="" id="map" name="lnglat" placeholder="经纬度">
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="createMap">地图选点</button>
-                    </span>
+
+                <div class="input-group" id="couponContent" style="width:100%">
                 </div>
-                <div class="input-group">
-                    <input type="number" id="shopNum" name="shopNum" min="1" placeholder="店铺数量">
-                    <input type="text" id="shopName" name="shopName" placeholder="商店名称" />
-                    <input type="text" id="shopPhone" name="shopPhone" placeholder="联系电话" />
-                    <div class="col-lg-6" style="padding-left:0px">
-                        <input type="text" id="datetimeStart" readonly class="form_datetime" placeholder="营业开始时间" />
-                    </div>
-                    <div class="col-lg-6" style="padding-right:0px">
-                        <input type="text" id="datetimeEnd" readonly class="form_datetime" placeholder="营业结束时间" />
-                    </div>
+
+                <div class="input-group" style="width:100%">
+                    <input type='number' id='amount' min='1' step='10' placeholder='数量（填入999则无限量）' />
+                    <input type='text' id='datetimeEnd' readonly class='form_datetime' placeholder='到期时间' />
                 </div>
 
                 <input type="button" name="confirm" class="action-button" style="width:15%;height:40px;margin-left:10%" value="确认" />
             </fieldset>
         </form>
-
-        <!--模态框（Modal） -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">百度地图选点(鼠标滚动缩放地图,鼠标拖动移动地图)</h4>
-                    </div>
-                    <div class="modal-body" id="map_main" style="height:400px;">在这里添加一些文本</div>
-                    <div class="modal-footer">
-                        <input style="width:300px;float:left;" type="text" value="" id="map_txt" class="form-control" readonly="" />
-                        <button type="button" class="btn btn-primary" onclick="setMapValue()">设置为此地址</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
     <!--end-main-container-part-->
 
@@ -276,78 +225,39 @@
     <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
 
     <script type="text/javascript">
-        $("#createMap").click(function () {
-            setTimeout(function () { //添加延时加载。解决问题
-                var map = new BMap.Map("map_main");
-                var myCity = new BMap.LocalCity();
-                myCity.get(function (res) {
-                    map.centerAndZoom(res.center, res.level);
-                    var old_map = $('#map').val(); //如果已设置过
-                    if (old_map.length > '5') { //打开的时候显示已设置的
-                        $("#map_txt").val(old_map);
-                        var oldMap = old_map.split(",");
-                        var point = new BMap.Point(oldMap[0], oldMap[1]);
-                        var marker = new BMap.Marker(point); // 创建标注    
-                        map.clearOverlays();
-                        map.addOverlay(marker);
-                    }
-                    map.addEventListener("click", function (e) {
-                        var lng_lat = e.point.lng + ',' + e.point.lat;
-                        $("#map_txt").val(lng_lat); //加入到设置框
-                        var point = new BMap.Point(e.point.lng, e.point.lat);
-                        var marker = new BMap.Marker(point); // 创建标注    
-                        map.clearOverlays();
-                        map.addOverlay(marker);
-                    });
-                    map.enableScrollWheelZoom(true);
-                });
-            }, 300);
-        });
-
-        //设置经纬度
-        function setMapValue() {
-            if ($("#map_txt").val() == "") {
-                alert('你还没选择相应的坐标点^_^哦');
-                return false;
-            }
-            $("#map").val($("#map_txt").val());
-            $('#myModal').modal('hide');
+        function selcetMJ() {
+            $("#selectTypeText").val("满减券");
+            $("#selectTypeBtn").button('loading');
+            $("#couponContent").append(
+                "<input type='number' style='width:50%;margin-left:0px' id='upMoney' min='1' step='10' placeholder='满' />"
+            );
+            $("#couponContent").append(
+                "<input type='number' style='width:50%;margin-left:0px' id='minusMoney' min='1' step='10' placeholder='减' />"
+            );
         };
 
-        function selcetCY() {
-            $("#selectTypeText").val("餐饮");
+        function selcetDJQ() {
+            $("#selectTypeText").val("全场打折券");
+            $("#selectTypeBtn").button('loading');
+            $("#couponContent").append(
+                "<input type='number' style='width:100%' id='saleQ' min='1' step='10' max='9' placeholder='打折数' />"
+            );
         };
 
-        function selcetYL() {
-            $("#selectTypeText").val("娱乐");
+        function selcetDJB() {
+            $("#selectTypeText").val("部分打折券");
+            $("#selectTypeBtn").button('loading');
+            $("#couponContent").append(
+                "<input type='number' style='width:100%' id='saleB' min='1' max='9' step='10' placeholder='打折数' />"
+            );
         };
-
-        function selcetGW() {
-            $("#selectTypeText").val("购物");
-        };
-
-        function selcetLY() {
-            $("#selectTypeText").val("旅游");
-        };
-
-        $("#datetimeStart").datetimepicker({
-            format: 'hh:ii',
-            autoclose: true,
-            startView: 1,
-            maxView: 0,
-            minView: 0,
-            forceParse: false,
-            minuteStep: 10
-        });
 
         $("#datetimeEnd").datetimepicker({
-            format: 'hh:ii',
+            format: 'yyyy-mm-dd',
             autoclose: true,
-            startView: 1,
-            maxView: 0,
-            minView: 0,
-            forceParse: false,
-            minuteStep: 10
+            startView: 4,
+            minView: 2,
+            forceParse: false
         });
     </script>
 </body>

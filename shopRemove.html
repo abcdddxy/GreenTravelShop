@@ -143,8 +143,8 @@
         <a href="#" class="visible-phone">
             <i class="icon icon-home"></i>移除店铺</a>
         <ul>
-            <li class="submenu">
-                <a href="#">
+            <li>
+                <a href="main.html">
                     <i class="icon icon-home"></i>
                     <span>总览</span>
                 </a>
@@ -163,7 +163,7 @@
                 </a>
                 <ul>
                     <li>
-                        <a href="shopVision.html">查看店铺</a>
+                        <a href="shopDisplay.html">查看店铺</a>
                     </li>
                     <li>
                         <a href="shopAdd.html">添加店铺</a>
@@ -177,17 +177,14 @@
                 <a href="#">
                     <i class="icon icon-file"></i>
                     <span>优惠券</span>
-                    <span class="label label-important">3</span>
+                    <span class="label label-important">2</span>
                 </a>
                 <ul>
                     <li>
-                        <a href="#">查看优惠券</a>
+                        <a href="couponDisplay.html">查看优惠券</a>
                     </li>
                     <li>
-                        <a href="#">上传优惠券</a>
-                    </li>
-                    <li>
-                        <a href="#">删除优惠券</a>
+                        <a href="couponAdd.html">上传优惠券</a>
                     </li>
                 </ul>
             </li>
@@ -200,7 +197,7 @@
         <!--breadcrumbs-->
         <div id="content-header">
             <div id="breadcrumb">
-                <a href="index.html" title="回到首页" class="tip-bottom">
+                <a href="main.html" title="回到首页" class="tip-bottom">
                     <i class="icon-home"></i> 首页</a>
                 <a href="#" class="current">移除店铺</a>
             </div>
@@ -220,7 +217,8 @@
             </select>
         </div>
 
-        <input type="button" name="confirm" class="action-button" style="width:10%;height:50px;margin-left:45%;margin-top:50px" value="确认" />
+        <input type="button" name="confirm" class="action-button" style="width:10%;height:50px;margin-left:45%;margin-top:50px" value="确认"
+        />
 
     </div>
     <!--end-main-container-part-->
@@ -389,12 +387,7 @@
         }
         //创建一个Icon
         function createIcon(json) {
-            var icon = new BMap.Icon("http://api.map.baidu.com/lbsapi/creatmap/images/us_mk_icon.png", new BMap.Size(
-                json.w, json.h), {
-                imageOffset: new BMap.Size(-json.l, -json.t),
-                infoWindowOffset: new BMap.Size(json.lb + 5, 1),
-                offset: new BMap.Size(json.x, json.h)
-            })
+            var icon = new BMap.Icon("img/icon_gcoding.png", new BMap.Size(30, 33));
             return icon;
         }
 

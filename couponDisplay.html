@@ -2,10 +2,11 @@
 <html lang="zh">
 
 <head>
-    <title>总览</title>
+    <title>查看优惠券</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
     <link rel="stylesheet" href="css/fullcalendar.css" />
     <link rel="stylesheet" href="css/matrix-style.css" />
@@ -13,10 +14,10 @@
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/jquery.gritter.css" />
     <link href='http://fonts.useso.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/couponDisplay.css" />
 </head>
 
 <body>
-
     <!--Header-part-->
     <div id="header">
         <h1>
@@ -97,9 +98,9 @@
     <!--sidebar-menu-->
     <div id="sidebar">
         <a href="#" class="visible-phone">
-            <i class="icon icon-home"></i> Dashboard</a>
+            <i class="icon icon-home"></i>查看优惠券</a>
         <ul>
-            <li class="active">
+            <li>
                 <a href="main.html">
                     <i class="icon icon-home"></i>
                     <span>总览</span>
@@ -155,105 +156,71 @@
             <div id="breadcrumb">
                 <a href="main.html" title="回到首页" class="tip-bottom">
                     <i class="icon-home"></i> 首页</a>
+                <a href="#" class="current">查看优惠券</a>
             </div>
         </div>
+
         <!--End-breadcrumbs-->
-
-        <!--Action boxes-->
-        <div class="container-fluid" style="padding-top:50px;">
-            <div class="quick-actions_homepage">
-                <ul class="quick-actions">
-                    <li class="bg_lb span4">
-                        <a href="index.html">
-                            <i class="icon-dashboard" style="padding-top:40px"></i>
-                            <span class="label label-important">20</span> 店铺总览 </a>
-                    </li>
-                    <li class="bg_lg span4">
-                        <a href="#">
-                            <i class="icon-signal" style="padding-top:40px"></i> 相关报表</a>
-                    </li>
-                    <li class="bg_ly">
-                        <a href="#">
-                            <i class="icon-flag"></i> 查看店铺 </a>
-                    </li>
-                    <li class="bg_lb">
-                        <a href="#">
-                            <i class="icon-plus"></i> 添加店铺</a>
-                    </li>
-                    <li class="bg_lo">
-                        <a href="#">
-                            <i class="icon-minus"></i>移除店铺</a>
-                    </li>
-                    <li class="bg_ly">
-                        <a href="#">
-                            <i class="icon-file"></i> 查看优惠券</a>
-                    </li>
-                    <li class="bg_lb">
-                        <a href="#">
-                            <i class="icon-upload-alt"></i> 上传优惠券</a>
-                    </li>
-                    <li class="bg_lo">
-                        <a href="#">
-                            <i class="icon-remove"></i>删除优惠券</a>
-                    </li>
-                </ul>
-            </div>
-            <!--End-Action boxes-->
-
-            <!--Chart-box-->
-            <div class="row-fluid" style="padding-top:300px;">
-                <div class="widget-box">
-                    <div class="widget-title bg_lg">
-                        <span class="icon">
-                            <i class="icon-signal"></i>
-                        </span>
-                        <h5>图表展示</h5>
-                    </div>
-                    <div class="widget-content">
-                        <div class="row-fluid">
-                            <div class="span9">
-                                <div class="chart"></div>
+        <div class="container">
+            <div class="row">
+                <div class="[ col-xs-12 col-sm-offset-2 col-sm-8 ]">
+                    <ul class="event-list">
+                        <li style="margin-top:50px">
+                            <img src="img/haidilao.jpg" />
+                            <div class="info">
+                                <h2 class="title">海底捞（西单店）</h2>
+                                <p class="desc" style="color:green;margin-top:10px">全场商品8折优惠</p>
+                                <p class="desc" style="color:red">剩余45张</p>
+                                <p class="desc">2018-9-01到期</p>
                             </div>
-                            <div class="span3">
-                                <ul class="site-stats">
-                                    <li class="bg_lh">
-                                        <i class="icon-user"></i>
-                                        <strong>2484</strong>
-                                        <small>总用户</small>
-                                    </li>
-                                    <li class="bg_lh">
-                                        <i class="icon-plus"></i>
-                                        <strong>120</strong>
-                                        <small>新用户</small>
-                                    </li>
-                                    <li class="bg_lh">
-                                        <i class="icon-shopping-cart"></i>
-                                        <strong>656</strong>
-                                        <small>总商铺</small>
-                                    </li>
-                                    <li class="bg_lh">
-                                        <i class="icon-tag"></i>
-                                        <strong>3255</strong>
-                                        <small>总优惠券</small>
-                                    </li>
-                                    <li class="bg_lh">
-                                        <i class="icon-repeat"></i>
-                                        <strong>425</strong>
-                                        <small>当前订单</small>
-                                    </li>
-                                    <li class="bg_lh">
-                                        <i class="icon-globe"></i>
-                                        <strong>8540</strong>
-                                        <small>已完成订单</small>
+                            <div class="social">
+                                <ul>
+                                    <li style="width:0%;">
+                                        <button type="button" id="change" class="btn btn-primary btn-lg">修改</button>
+                                        <button type="button" id="remove" class="btn btn-primary btn-lg">删除</button>
                                     </li>
                                 </ul>
                             </div>
-                        </div>
-                    </div>
+                        </li>
+
+                        <li style="margin-top:50px">
+                            <img alt="My 24th Birthday!" src="img/haidilao.jpg" />
+                            <div class="info">
+                                <h2 class="title">海底捞（西单店）</h2>
+                                <p class="desc" style="color:green;margin-top:10px">全场商品满100减10</p>
+                                <p class="desc" style="color:red">剩余999张</p>
+                                <p class="desc">2018-5-31到期</p>
+                            </div>
+                            <div class="social">
+                                <ul>
+                                    <li style="width:0%;">
+                                        <button type="button" id="change" class="btn btn-primary btn-lg">修改</button>
+                                        <button type="button" id="remove" class="btn btn-primary btn-lg">删除</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li style="margin-top:50px">
+                            <img alt="Disney Junior Live On Tour!" src="img/haidilao.jpg" />
+                            <div class="info">
+                                <h2 class="title">海底捞（西单店）</h2>
+                                <p class="desc" style="color:green;margin-top:10px">部分商品7折优惠</p>
+                                <p class="desc" style="color:red">剩余260张</p>
+                                <p class="desc">2018-3-31到期</p>
+                            </div>
+                            <div class="social">
+                                <ul>
+                                    <li style="width:0%;">
+                                        <button type="button" id="change" class="btn btn-primary btn-lg">修改</button>
+                                        <button type="button" id="remove" class="btn btn-primary btn-lg">删除</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <!--End-Chart-box-->
-
         </div>
     </div>
     <!--end-main-container-part-->
@@ -280,28 +247,6 @@
     <script src="js/jquery.dataTables.min.js"></script>
     <script src="js/matrix.tables.js"></script>
 
-    <script type="text/javascript">
-        // This function is called from the pop-up menus to transfer to
-        // a different page. Ignore if the value returned is a null string:
-        function goPage(newURL) {
-            // if url is empty, skip the menu dividers and reset the menu selection to default
-            if (newURL != "") {
-                // if url is "-", it is this page -- reset the menu:
-                if (newURL == "-") {
-                    resetMenu();
-                }
-                // else, send page to designated URL            
-                else {
-                    document.location.href = newURL;
-                }
-            }
-        }
-
-        // resets the menu selection upon entry to this page:
-        function resetMenu() {
-            document.gomenu.selector.selectedIndex = 2;
-        }
-    </script>
 </body>
 
 </html>

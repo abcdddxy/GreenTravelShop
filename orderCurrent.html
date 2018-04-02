@@ -2,11 +2,11 @@
 <html lang="zh">
 
 <head>
-    <title>查看优惠券</title>
+    <title>当前订单</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <!-- <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
     <link rel="stylesheet" href="css/fullcalendar.css" />
     <link rel="stylesheet" href="css/matrix-style.css" />
@@ -14,7 +14,8 @@
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/jquery.gritter.css" />
     <link href='http://fonts.useso.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="css/couponDisplay.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="css/order.css" />
 </head>
 
 <body>
@@ -98,7 +99,7 @@
     <!--sidebar-menu-->
     <div id="sidebar">
         <a href="#" class="visible-phone">
-            <i class="icon icon-home"></i>查看优惠券</a>
+            <i class="icon icon-home"></i>当前订单</a>
         <ul>
             <li>
                 <a href="main.html">
@@ -106,7 +107,7 @@
                     <span>总览</span>
                 </a>
             </li>
-            <li class="submenu">
+            <li class="submenu active">
                 <a href="#">
                     <i class="icon icon-signal"></i>
                     <span>订单</span>
@@ -139,7 +140,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="submenu active">
+            <li class="submenu">
                 <a href="#">
                     <i class="icon icon-file"></i>
                     <span>优惠券</span>
@@ -165,10 +166,9 @@
             <div id="breadcrumb">
                 <a href="main.html" title="回到首页" class="tip-bottom">
                     <i class="icon-home"></i> 首页</a>
-                <a href="#" class="current">查看优惠券</a>
+                <a href="#" class="current">当前订单</a>
             </div>
         </div>
-
         <!--End-breadcrumbs-->
         <div class="container">
             <div class="row">
@@ -177,54 +177,42 @@
                         <li style="margin-top:50px">
                             <img src="img/haidilao.jpg" />
                             <div class="info">
-                                <h2 class="title">海底捞（西单店）</h2>
-                                <p class="desc" style="color:green;margin-top:10px">全场商品8折优惠</p>
-                                <p class="desc" style="color:red">剩余45张</p>
-                                <p class="desc">2018-9-01到期</p>
-                            </div>
-                            <div class="social">
-                                <ul>
-                                    <li style="width:0%;">
-                                        <button type="button" id="change" class="btn btn-primary btn-lg">修改</button>
-                                        <button type="button" id="remove" class="btn btn-primary btn-lg">删除</button>
-                                    </li>
-                                </ul>
+                                <h2 class="title">海底捞（西单店）
+                                    <a href="#text" onclick="detail()">
+                                        <span class="glyphicon glyphicon-new-window">详情</span>
+                                    </a>
+                                </h2>
+                                <p class="desc" style="color:blue;margin-top:10px">B区 A8</p>
+                                <p class="desc" style="color:rgb(128, 0, 111)">订单价格：500元</p>
+                                <p class="desc">订单时间：2018-2-14 12:50:01</p>
                             </div>
                         </li>
 
                         <li style="margin-top:50px">
                             <img alt="My 24th Birthday!" src="img/haidilao.jpg" />
                             <div class="info">
-                                <h2 class="title">海底捞（西单店）</h2>
-                                <p class="desc" style="color:green;margin-top:10px">全场商品满100减10</p>
-                                <p class="desc" style="color:red">剩余999张</p>
-                                <p class="desc">2018-5-31到期</p>
-                            </div>
-                            <div class="social">
-                                <ul>
-                                    <li style="width:0%;">
-                                        <button type="button" id="change" class="btn btn-primary btn-lg">修改</button>
-                                        <button type="button" id="remove" class="btn btn-primary btn-lg">删除</button>
-                                    </li>
-                                </ul>
+                                <h2 class="title">海底捞（西单店）
+                                    <a href="#text" onclick="detail()">
+                                        <span class="glyphicon glyphicon-new-window">详情</span>
+                                    </a>
+                                </h2>
+                                <p class="desc" style="color:blue;margin-top:10px">A区 A14</p>
+                                <p class="desc" style="color:rgb(128, 0, 111)">订单价格：342元</p>
+                                <p class="desc">订单时间：2018-2-14 16:22:35</p>
                             </div>
                         </li>
 
                         <li style="margin-top:50px">
                             <img alt="Disney Junior Live On Tour!" src="img/haidilao.jpg" />
                             <div class="info">
-                                <h2 class="title">海底捞（西单店）</h2>
-                                <p class="desc" style="color:green;margin-top:10px">部分商品7折优惠</p>
-                                <p class="desc" style="color:red">剩余260张</p>
-                                <p class="desc">2018-3-31到期</p>
-                            </div>
-                            <div class="social">
-                                <ul>
-                                    <li style="width:0%;">
-                                        <button type="button" id="change" class="btn btn-primary btn-lg">修改</button>
-                                        <button type="button" id="remove" class="btn btn-primary btn-lg">删除</button>
-                                    </li>
-                                </ul>
+                                <h2 class="title">海底捞（西单店）
+                                    <a href="#text" onclick="detail()">
+                                        <span class="glyphicon glyphicon-new-window">详情</span>
+                                    </a>
+                                </h2>
+                                <p class="desc" style="color:blue;margin-top:10px">C区 C2</p>
+                                <p class="desc" style="color:rgb(128, 0, 111)">订单价格：1324元</p>
+                                <p class="desc">订单时间：2018-2-14 18:34:52</p>
                             </div>
                         </li>
                     </ul>
@@ -234,8 +222,8 @@
     </div>
     <!--end-main-container-part-->
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/excanvas.min.js"></script>
     <script src="js/jquery.ui.custom.js"></script>
     <script src="js/jquery.flot.min.js"></script>
@@ -255,7 +243,26 @@
     <script src="js/matrix.popover.js"></script>
     <script src="js/jquery.dataTables.min.js"></script>
     <script src="js/matrix.tables.js"></script>
+    <script src="js/layer.js"></script>
 
+    <script type="text/javascript">
+        function detail() {
+            layer.open({
+                type: 1,
+                top: '10px',
+                offset: ['300px', '800px'],
+                title: false,
+                closeBtn: false,
+                area: '300px;',
+                shade: 0.8,
+                id: 'LAY_layuipro',
+                resize: false,
+                btnAlign: 'c',
+                moveType: 1,
+                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">番茄锅底 * 1<br>酸梅汤 * 1<br>牛肉 * 1<br>虾滑 * 1<br>蔬菜拼盘 * 1</div>',
+            });
+        }
+    </script>
 </body>
 
 </html>

@@ -2,7 +2,7 @@
 <html lang="zh">
 
 <head>
-    <title>历史订单</title>
+    <title>菜单相关</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="css/jquery.gritter.css" />
     <link href='http://fonts.useso.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="css/order.css" />
 </head>
 
 <body>
@@ -99,7 +98,7 @@
     <!--sidebar-menu-->
     <div id="sidebar">
         <a href="#" class="visible-phone">
-            <i class="icon icon-home"></i>历史订单</a>
+            <i class="icon icon-home"></i>菜单相关</a>
         <ul>
             <li>
                 <a href="main.html">
@@ -107,13 +106,13 @@
                     <span>总览</span>
                 </a>
             </li>
-            <li>
+            <li class="active">
                 <a href="menu.html">
                     <i class="icon icon-paste"></i>
                     <span>菜单相关</span>
                 </a>
             </li>
-            <li class="submenu active">
+            <li class="submenu">
                 <a href="#">
                     <i class="icon icon-signal"></i>
                     <span>订单</span>
@@ -172,66 +171,166 @@
             <div id="breadcrumb">
                 <a href="main.html" title="回到首页" class="tip-bottom">
                     <i class="icon-home"></i> 首页</a>
-                <a href="#" class="current">历史订单</a>
+                <a href="#" class="current">菜单相关</a>
             </div>
         </div>
         <!--End-breadcrumbs-->
 
-        <div class="container">
-            <div class="row">
-                <div class="[ col-xs-12 col-sm-offset-2 col-sm-8 ]">
-                    <ul class="event-list">
-                        <li style="margin-top:50px">
-                            <img src="img/haidilao.jpg" />
-                            <div class="info">
-                                <h2 class="title">海底捞（西单店）</h2>
-                                <p class="desc" style="color:blue;margin-top:10px">B区 A8</p>
-                                <p class="desc" style="color:rgb(128, 0, 111)">订单价格：500元</p>
-                                <p class="desc">订单时间：2018-2-14 12:50:01</p>
-                            </div>
-                            <div class="social">
-                                <ul>
-                                    <li style="width:0%;margin-top:20px">
-                                        <button type="button" id="change" class="btn btn-primary btn-lg">查看评价</button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li style="margin-top:50px">
-                            <img src="img/haidilao.jpg" />
-                            <div class="info">
-                                <h2 class="title">海底捞（西单店）</h2>
-                                <p class="desc" style="color:blue;margin-top:10px">A区 A14</p>
-                                <p class="desc" style="color:rgb(128, 0, 111)">订单价格：342元</p>
-                                <p class="desc">订单时间：2018-2-14 16:22:35</p>
-                            </div>
-                            <div class="social">
-                                <ul>
-                                    <li style="width:0%;margin-top:20px">
-                                        <button type="button" id="change" class="btn btn-primary btn-lg">查看评价</button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li style="margin-top:50px">
-                            <img src="img/haidilao.jpg" />
-                            <div class="info">
-                                <h2 class="title">海底捞（西单店）</h2>
-                                <p class="desc" style="color:blue;margin-top:10px">C区 C2</p>
-                                <p class="desc" style="color:rgb(128, 0, 111)">订单价格：1324元</p>
-                                <p class="desc">订单时间：2018-2-14 18:34:52</p>
-                            </div>
-                            <div class="social">
-                                <ul>
-                                    <li style="width:0%;margin-top:20px">
-                                        <button type="button" id="change" class="btn btn-primary btn-lg">查看评价</button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            特色菜
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul class="list-group list-group-flush">
+                            <table class="table">
+                                <tr>
+                                    <td>干炒牛河</td>
+                                    <td>26元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>特色烤羊腿</td>
+                                    <td>86元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>双椒鱼头</td>
+                                    <td>52元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>风味茄子</td>
+                                    <td>24元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>好吃土豆</td>
+                                    <td>18元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                            时尚小炒
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul class="list-group list-group-flush">
+                            <table class="table">
+                                <tr>
+                                    <td>地三鲜</td>
+                                    <td>32元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>鱼香肉丝</td>
+                                    <td>36元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>炒合菜</td>
+                                    <td>33元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>宫保鸡丁</td>
+                                    <td>42元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>干锅手撕包菜</td>
+                                    <td>35元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                            汤羹
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul class="list-group list-group-flush">
+                            <table class="table">
+                                <tr>
+                                    <td>皮蛋瘦肉粥</td>
+                                    <td>25元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>西湖牛肉羹</td>
+                                    <td>25元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>紫菜蛋花汤</td>
+                                    <td>20元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>西北胡辣汤</td>
+                                    <td>20元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>海鲜疙瘩汤</td>
+                                    <td>30元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#">删除</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

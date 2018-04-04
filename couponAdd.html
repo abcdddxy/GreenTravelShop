@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="css/matrix-media.css" />
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/jquery.gritter.css" />
-    <link href='http://fonts.useso.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="css/couponAdd.css" />
 </head>
@@ -273,6 +272,16 @@
             startView: 4,
             minView: 2,
             forceParse: false
+        });
+
+        $(".confirm").click(function () {
+            if (amount.value == "") {
+                alert("优惠券数量不能为空！");
+            } else if (datetimeEnd == "") {
+                alert("优惠券到期时间不能为空！");
+            } else {
+                //ajax注册操作
+            }
         });
     </script>
 </body>

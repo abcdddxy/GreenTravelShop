@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="css/matrix-media.css" />
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/jquery.gritter.css" />
-    <link href='http://fonts.useso.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/couponDisplay.css" />
 </head>
 
@@ -179,8 +178,8 @@
         <div class="container">
             <div class="row">
                 <div class="[ col-xs-12 col-sm-offset-2 col-sm-8 ]">
-                    <ul class="event-list">
-                        <li style="margin-top:50px">
+                    <ul class="event-list" id="couponList">
+                        <li style="margin-top:50px" id="coupon">
                             <img src="img/haidilao.jpg" />
                             <div class="info">
                                 <h2 class="title">海底捞（西单店）</h2>
@@ -198,7 +197,7 @@
                             </div>
                         </li>
 
-                        <li style="margin-top:50px">
+                        <li style="margin-top:50px" id="coupon">
                             <img alt="My 24th Birthday!" src="img/haidilao.jpg" />
                             <div class="info">
                                 <h2 class="title">海底捞（西单店）</h2>
@@ -216,7 +215,7 @@
                             </div>
                         </li>
 
-                        <li style="margin-top:50px">
+                        <li style="margin-top:50px" id="coupon">
                             <img alt="Disney Junior Live On Tour!" src="img/haidilao.jpg" />
                             <div class="info">
                                 <h2 class="title">海底捞（西单店）</h2>
@@ -262,6 +261,18 @@
     <script src="js/jquery.dataTables.min.js"></script>
     <script src="js/matrix.tables.js"></script>
 
+    <script type="text/javascript">
+        window.onload = function () {
+            var li = document.getElementById("coupon");
+            for (var index = 0; index < li.length; index++) {
+                alert('123');
+                li[index].theIndex = index;
+                li[index].onclick = function () {
+                    li[0].parentNode.removeChild(li[this.theIndex]);
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

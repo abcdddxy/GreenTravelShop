@@ -115,6 +115,30 @@ $("#createMap").click(function () {
 	}, 300);
 });
 
+$(".submit").click(function () {
+	if (pass.value != cpass.value) {
+		alert("两次输入的密码不一致！");
+	} else if (phone.value == "") {
+		alert("手机号不能为空！");
+	} else if (ver == "") {
+		alert("验证码校验失败！");
+	} else if (selectTypeText.value == "") {
+		alert("店铺类型不能为空");
+	} else if (lnglat.value == "") {
+		alert("店铺经纬度不能为空");
+	} else if (shopNum.value == "") {
+		alert("店铺数量不能为空");
+	} else if (shopName.value == "") {
+		alert("店铺名称不能为空");
+	} else if (shopPhone.value == "") {
+		alert("联系电话不能为空");
+	} else if ((datetimeStart.value == "") && (datetiemEnd.value == "")) {
+		alert("营业时间不能为空");
+	} else {
+		//ajax注册操作
+	}
+});
+
 //设置经纬度
 function setMapValue() {
 	if ($("#map_txt").val() == "") {
@@ -184,7 +208,7 @@ $('#uploadImg').fileinput({
 	browseClass: "btn btn-primary", //按钮样式             
 	previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
 	msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
-	
+
 	slugCallback: function (filename) {
 		return filename.replace('(', '_').replace(']', '_');
 	}

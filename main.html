@@ -300,7 +300,7 @@
                 if (newURL == "-") {
                     resetMenu();
                 }
-                // else, send page to designated URL            
+                // else, send page to designated URL
                 else {
                     document.location.href = newURL;
                 }
@@ -311,6 +311,12 @@
         function resetMenu() {
             document.gomenu.selector.selectedIndex = 2;
         }
+
+        window.onload(function(){
+            var token = $.cookie();
+            var shop_id = $.cookie("al_shop_id");
+            var avatar_url = $.cookie("al_avatar_url");
+        });
     </script>
 </body>
 

@@ -1,39 +1,39 @@
-$(function () {
-    //首先判断是否有Cookie，记录登录if ($.cookie("chkRemember") == "true") {
-    $("#chkRemember").attr("checked", true);
-    var name = $.cookie("al_phone");
-    var pwd = $.cookie("al_pwd");
-    $("#phone").val($.cookie("al_phone"));
-    $("#pwd").val($.cookie("al_pwd"));
-    $.ajax({
-        type: "POST",
-        url: url,
-        dataType: "json",
-        data: {
-            "phone": $("#phone").val(),
-            "userpsw": $("#pwd").val()
-        },
-        cache: false,
-        async: false, //设置同步
-        success: function (data) {
-            window.location.href = "/main.html";
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert(XMLHttpRequest.status);
-            alert("登陆失败，请重新登录！");
-        }
-    });
+// $(function () {
+//     //首先判断是否有Cookie，记录登录if ($.cookie("chkRemember") == "true") {
+//     $("#chkRemember").attr("checked", true);
+//     var name = $.cookie("al_phone");
+//     var pwd = $.cookie("al_pwd");
+//     $("#phone").val($.cookie("al_phone"));
+//     $("#pwd").val($.cookie("al_pwd"));
+//     $.ajax({
+//         type: "POST",
+//         url: url,
+//         dataType: "json",
+//         data: {
+//             "phone": $("#phone").val(),
+//             "userpsw": $("#pwd").val()
+//         },
+//         cache: false,
+//         async: false, //设置同步
+//         success: function (data) {
+//             window.location.href = "/main.html";
+//         },
+//         error: function (XMLHttpRequest, textStatus, errorThrown) {
+//             alert(XMLHttpRequest.status);
+//             alert("登陆失败，请重新登录！");
+//         }
+//     });
 
-    $("#phone").focus();
+//     $("#phone").focus();
 
-    //按enter提交输入
-    document.onkeydown = function (e) {
-        var ev = document.all ? window.event : e;
-        if (ev.keyCode == 13) {
-            loginSubmit();
-        }
-    }
-});
+//     //按enter提交输入
+//     document.onkeydown = function (e) {
+//         var ev = document.all ? window.event : e;
+//         if (ev.keyCode == 13) {
+//             loginSubmit();
+//         }
+//     }
+// });
 
 // function ReloadCheckCode() {
 //     var checkCode = document.getElementById("img_code");

@@ -13,7 +13,22 @@
     <link rel="stylesheet" href="css/matrix-media.css" />
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/jquery.gritter.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="css/couponDisplay.css" />
+    <style type="text/css">
+        #msform input:not(.file-caption-name):not(.action-button),
+        #msform textarea {
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            font-family: montserrat;
+            color: #2C3E50;
+            font-size: 13px;
+        }
+    </style>
 </head>
 
 <body>
@@ -135,7 +150,7 @@
                             <div class="social">
                                 <ul>
                                     <li style="width:0%;">
-                                        <button type="button" id="change" class="btn btn-primary btn-lg">修改</button>
+                                        <button type="button" id="change" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalChange" id="change">修改</button>
                                         <button type="button" id="remove" class="btn btn-primary btn-lg">删除</button>
                                     </li>
                                 </ul>
@@ -153,7 +168,7 @@
                             <div class="social">
                                 <ul>
                                     <li style="width:0%;">
-                                        <button type="button" id="change" class="btn btn-primary btn-lg">修改</button>
+                                        <button type="button" id="change" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalChange" id="change">修改</button>
                                         <button type="button" id="remove" class="btn btn-primary btn-lg">删除</button>
                                     </li>
                                 </ul>
@@ -171,7 +186,7 @@
                             <div class="social">
                                 <ul>
                                     <li style="width:0%;">
-                                        <button type="button" id="change" class="btn btn-primary btn-lg">修改</button>
+                                        <button type="button" id="change" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalChange" id="change">修改</button>
                                         <button type="button" id="remove" class="btn btn-primary btn-lg">删除</button>
                                     </li>
                                 </ul>
@@ -183,6 +198,27 @@
         </div>
     </div>
     <!--end-main-container-part-->
+
+    <div class="modal fade" id="myModalChange" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="msform" style="margin-top:60px">
+                    <fieldset>
+                        <div class="input-group" id="couponContent" style="width:100%">
+                        </div>
+                        <div class="input-group" style="width:100%">
+                            <input type='number' id='amount' style="height: 200%;" min='1' step='10' placeholder='数量（填入999则无限量）' />
+                            <input type='text' id='datetimeEnd' style="height: 200%;" readonly class='form_datetime' placeholder='到期时间' />
+                        </div>
+                    </fieldset>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="change()">确定修改</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -205,9 +241,18 @@
     <script src="js/matrix.popover.js"></script>
     <script src="js/jquery.dataTables.min.js"></script>
     <script src="js/matrix.tables.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
     <script type="text/javascript">
+        $("#datetimeEnd").datetimepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            startView: 4,
+            minView: 2,
+            forceParse: false
+        });
+
         $(function () {
             if ($.cookie("al_shop_id") != null) {
                 var shop_id = $.cookie("al_shop_id");
@@ -220,18 +265,17 @@
                     "<a href='login.html' style='font-size: 200%;'>登录</a><a href='#' style='font-size: 200%;'>  |  </a><a href='register.html' style='font-size: 200%;'>注册</a>"
                 );
             }
+
+            DisplayCounpon();
         });
 
-        window.onload = function () {
-            var li = document.getElementById("coupon");
-            for (var index = 0; index < li.length; index++) {
-                alert('123');
-                li[index].theIndex = index;
-                li[index].onclick = function () {
-                    li[0].parentNode.removeChild(li[this.theIndex]);
-                }
-            }
-        }
+        function DisplayCounpon() {
+            //ajax获取优惠券展示
+        };
+
+        $("#change").click(function () {
+            //ajax修改
+        });
     </script>
 </body>
 

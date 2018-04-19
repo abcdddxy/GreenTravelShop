@@ -153,7 +153,7 @@
                     <input type='text' id='datetimeEnd' readonly class='form_datetime' placeholder='到期时间' />
                 </div>
 
-                <input type="button" name="confirm" class="action-button" style="width:15%;height:40px;margin-left:10%" value="确认" />
+                <input type="button" id="confirm" class="action-button" style="width:15%;height:40px;margin-left:10%" value="确认" />
             </fieldset>
         </form>
     </div>
@@ -234,13 +234,13 @@
             forceParse: false
         });
 
-        $(".confirm").click(function () {
+        $("#confirm").click(function () {
             if (amount.value == "") {
                 alert("优惠券数量不能为空！");
             } else if (datetimeEnd == "") {
                 alert("优惠券到期时间不能为空！");
             } else {
-                //ajax注册操作
+                //ajax添加优惠券
             }
         });
     </script>

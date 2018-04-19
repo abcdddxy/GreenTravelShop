@@ -136,7 +136,7 @@
         <!--End-breadcrumbs-->
 
         <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
+            <!-- <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
@@ -291,7 +291,33 @@
                         </ul>
                     </div>
                 </div>
+            </div> -->
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            商店菜品
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul class="list-group list-group-flush">
+                            <table class="table" id="menuBody">
+                                <tr>
+                                    <td>干炒牛河</td>
+                                    <td>26元</td>
+                                    <td>
+                                        <a class="btn btn-link" href="#" onclick="deleteRow1(this)">删除</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </ul>
+                    </div>
+                </div>
             </div>
+
             <div style="margin-left: 70%;margin-top: 20px">
                 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalImport" id="import">导入菜单</button>
                 <button type="button" class="btn btn-primary btn-lg" style="margin-left: 20px" data-toggle="modal" data-target="#myModalAdd"
@@ -306,60 +332,10 @@
                     <div class="modal-header">导入菜单</div>
                     <div class="modal-body" style="height:400px;">
                         <table class="table table-bordered table-hover" id="importMenu">
-                            <thead>
-                                <tr class="success">
-                                    <th>类别编号</th>
-                                    <th>类别名称</th>
-                                    <th>类别组</th>
-                                    <th>状态</th>
-                                    <th>说明</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>C00001</td>
-                                    <td>机车</td>
-                                    <td>机车</td>
-                                    <td>有效</td>
-                                    <td>机车头</td>
-                                </tr>
-                                <tr>
-                                    <td>C00002</td>
-                                    <td>车厢</td>
-                                    <td>机车</td>
-                                    <td>有效</td>
-                                    <td>载客车厢</td>
-                                </tr>
-                            </tbody>
                         </table>
-                        <div class="panel-footer">
-                            <nav>
-                                <ul class="pagination pagination-sm">
-                                    <li class="disabled">
-                                        <a href="#" aria-label="Previous">
-                                            <span aria-hidden="true">«</span>
-                                        </a>
-                                    </li>
-                                    <li class="active">
-                                        <a href="#">1</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">2</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">3</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" aria-label="Next">
-                                            <span aria-hidden="true">»</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="import()">确定导入</button>
+                        <button type="button" class="btn btn-primary" onclick="submitImport()">确定导入</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </div>
@@ -377,7 +353,7 @@
                         <input id="uploadImg" type="file" multiple class="file" data-overwrite-initial="false" data-max-file-count="1" placeholder="菜品图片">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="add()">确定添加</button>
+                        <button type="button" class="btn btn-primary" onclick="submitAdd()">确定添加</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </div>
@@ -432,6 +408,22 @@
             }
         });
 
+        $('#myModalImport').on('show.bs.modal', function (e) {
+            //ajax获取候选菜单
+
+            initTableCheckbox();
+        });
+
+        function submitImport() {
+            //ajax导入菜单
+
+        };
+
+        function submitAdd() {
+            //ajax添加菜品
+
+        };
+
         $(function () {
             if ($.cookie("al_shop_id") != null) {
                 var shop_id = $.cookie("al_shop_id");
@@ -439,12 +431,14 @@
                 $("#user-nav").append(
                     "<ul class='nav'><li class='dropdown'id='profile-messages'><a title=''href='#'data-toggle='dropdown'data-target='#profile-messages'class='dropdown-toggle'><i class='icon icon-user'></i><span class='text'>选项</span><b class='caret'></b></a><ul class='dropdown-menu'><li><a href='#'><i class='icon-user'></i>个人设置</a></li><li class='divider'></li><li><a href='#'><i class='icon-check'></i>我的任务</a></li><li class='divider'></li><li><a href='#'><i class='icon-key'></i>登出</a></li></ul></li><li class='dropdown'id='menu-messages'><a href='#'data-toggle='dropdown'data-target='#menu-messages'class='dropdown-toggle'><i class='icon icon-envelope'></i><span class='text'>消息</span><span class='label label-important'>5</span><b class='caret'></b></a><ul class='dropdown-menu'><li><a class='sAdd'title=''href='#'><i class='icon-plus'></i>发送消息</a></li><li class='divider'></li><li><a class='sInbox'title=''href='#'><i class='icon-envelope'></i>收件箱</a></li><li class='divider'></li><li><a class='sTrash'title=''href='#'><i class='icon-trash'></i>清空通知</a></li></ul></li><li class=''><a title=''href='login.html'><i class='icon icon-share-alt'></i><span class='text'>登出</span></a></li></ul>"
                 );
+
+                //ajax获取菜品
+                
             } else {
                 $("#user-nav").append(
                     "<a href='login.html' style='font-size: 200%;'>登录</a><a href='#' style='font-size: 200%;'>  |  </a><a href='register.html' style='font-size: 200%;'>注册</a>"
                 );
             }
-            initTableCheckbox();
         });
 
         function deleteRow1(r) {

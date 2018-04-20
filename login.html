@@ -24,35 +24,66 @@
         <fieldset>
             <h3>商家登录</h3>
             <h4>登录你的绿出行账户</h4>
-            <input type="text" name="phone" placeholder="手机号码" />
-            <input type="password" name="pwd" placeholder="密码" />
+            <input type="text" id="phone" placeholder="手机号码" />
+            <input type="password" id="userpsw" placeholder="密码" />
             <div class="checkbox">
                 <label>
                     <input id="chkRemember" type="checkbox">记住密码
                 </label>
             </div>
-            <input type="button" id="submit" name="submit" class="next action-button" value="确认登陆" />
+            <input type="button" id="submit" name="submit" class="next action-button" onclick="login()" value="确认登陆" />
         </fieldset>
     </form>
 
     <script type="text/javascript">
-        $.ajax({
-            type: "POST",
-            url: url,
-            dataType: "json",
-            data: {
+        function login() {
+            //15521265974
+            //123123
+            var data = {
                 "phone": $('#phone').val(),
-                "userpsw": $('#pass').val()
-            },
-            success: function () {
-                alert("登陆成功！");
-                $.cookie('al_shop_id', id, { expires: 7, path: '/' });
-                $.cookie('al_avatar_url', id, { expires: 7, path: '/' });
-            },
-            error: function () {
-                alert("登陆失败，请重新尝试。");
+                "username": "string",
+                "userpsw": $('#userpsw').val()
             }
-        });
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.121.54:8084/sellers/token/mobile",
+                dataType: "json",
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify(data),
+                success: function (data) {
+                    alert("登陆成功！");
+
+                    var obj = JSON.parse(data);
+
+                    var id = obj.id;
+                    var seller_name = obj.seller_name;
+                    var phone = obj.phone;
+                    var station_name = obj.station_name;
+
+                    $.cookie('id', id, {
+                        expires: 7,
+                        path: '/'
+                    });
+                    $.cookie('seller_name', seller_name, {
+                        expires: 7,
+                        path: '/'
+                    });
+                    $.cookie('phone', phone, {
+                        expires: 7,
+                        path: '/'
+                    });
+                    $.cookie('station_name', station_name, {
+                        expires: 7,
+                        path: '/'
+                    });
+
+                    window.location.href = 'main.html';
+                },
+                error: function () {
+                    alert("登陆失败，请重新尝试。");
+                }
+            });
+        }
     </script>
 </body>
 

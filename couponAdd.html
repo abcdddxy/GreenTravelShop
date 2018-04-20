@@ -241,6 +241,24 @@
                 alert("优惠券到期时间不能为空！");
             } else {
                 //ajax添加优惠券
+                var data = {
+                    "coupon_name": $('#selectTypeText').val(),
+                    "coupon_num": $("#amount").val(),
+                    "expire_at": $('#datetimeEnd').val()
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "http://10.108.121.54:8084/sellers/me/coupons",
+                    dataType: "json",
+                    contentType: 'application/json; charset=UTF-8',
+                    data: JSON.stringify(data),
+                    success: function (data) {
+                        alert("添加优惠券成功！");
+                    },
+                    error: function () {
+                        alert("添加优惠券，请重新尝试。");
+                    }
+                });
             }
         });
     </script>

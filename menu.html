@@ -294,7 +294,7 @@
             </div> -->
 
             <div class="panel panel-default">
-                <div class="panel-heading">
+                <div class="panel-heading" id="menu-head">
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                             商店菜品
@@ -304,7 +304,7 @@
                 <div id="collapseOne" class="panel-collapse collapse">
                     <div class="panel-body">
                         <ul class="list-group list-group-flush">
-                            <table class="table" id="menuBody">
+                            <table class="table" id="menu-body">
                                 <tr>
                                     <td>干炒牛河</td>
                                     <td>26元</td>
@@ -408,6 +408,16 @@
             }
         });
 
+        function Good(id, goods_name, picture_url, description, goods_number, goods_type) {
+            this.id = id;
+            this.goods_name = goods_name;
+            this.price = price;
+            this.picture_url = picture_url;
+            this.description = description;
+            this.goods_number = goods_number;
+            this.goods_type = goods_type;
+        }
+
         $('#myModalImport').on('show.bs.modal', function (e) {
             //ajax获取候选菜单
 
@@ -433,7 +443,45 @@
                 );
 
                 //ajax获取菜品
-                
+                $.ajax({
+                    type: "GET",
+                    url: "http://10.108.121.54:8084/sellers/me/goods",
+                    dataType: "json",
+                    success: function (data) {
+                        var menu = new Array();
+                        for (var i = 0; i < data.length; i++) {
+                            var obj = JSON.parse(data[i]);
+
+                            var id = obj.id;
+                            var goods_name = obj.goods_name;
+                            var price = obj.price;
+                            var picture_url = obj.picture_url;
+                            var description = obj.description;
+                            var goods_number = obj.goods_number;
+                            var goods_type = obj.goods_type;
+
+                            $("#menu-body").append();
+
+                            // if (menu[goods_type] == null) {
+                            //     menu[goods_type] = new Array();
+                            //     menu[goods_type].push(new Good(id, goods_name, picture_url,
+                            //         description, goods_number, goods_type));
+                            // } else {
+                            //     menu[goods_type].push(new Good(id, goods_name, picture_url,
+                            //         description, goods_number, goods_type));
+                            // }
+                        }
+
+                        // for (key in menu) {
+                        //     for (var i = 0; i < menu[key].length; i++) {
+
+                        //     }
+                        // }
+                    },
+                    error: function () {
+                        alert("获取菜品失败，请重新尝试。");
+                    }
+                });
             } else {
                 $("#user-nav").append(
                     "<a href='login.html' style='font-size: 200%;'>登录</a><a href='#' style='font-size: 200%;'>  |  </a><a href='register.html' style='font-size: 200%;'>注册</a>"

@@ -185,7 +185,8 @@
                     </div>
                 </div>
 
-                <input type="button" name="confirm" class="action-button" style="width:15%;height:40px;margin-left:10%" onclick="shopAdd()" value="确认" />
+                <input type="button" name="confirm" class="action-button" style="width:15%;height:40px;margin-left:10%" onclick="shopAdd()"
+                    value="确认" />
             </fieldset>
         </form>
 
@@ -324,8 +325,35 @@
             minuteStep: 10
         });
 
-        function shopAdd(){
+        function shopAdd() {
             //ajax添加店铺
+            var data = {
+                "businessHours": "string",
+                "chainStoreSign": 0,
+                "latitude": $("#map").val().split(",")[0],
+                "longitude": $("#map").val().split(",")[1],
+                "menu": "string",
+                "phoneNumber": $("shopPhone").val(),
+                "posterUrl": "string",
+                "shopAddress": "string",
+                "shopName": $("shopName").val(),
+                "shopType": $("#selectTypeText").val(),
+                "stationName": "string"
+            };
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.121.54:8084/sellers/me/shop",
+                dataType: "json",
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify(data),
+                success: function (data) {
+                    alert("添加店铺成功！");
+                    window.location.reload();
+                },
+                error: function () {
+                    alert("添加店铺失败，请重新尝试。");
+                }
+            });
         };
     </script>
 </body>

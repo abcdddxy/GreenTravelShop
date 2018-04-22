@@ -254,9 +254,10 @@
                     data: JSON.stringify(data),
                     success: function (data) {
                         alert("添加优惠券成功！");
+                        window.location.reload();
                     },
                     error: function () {
-                        alert("添加优惠券，请重新尝试。");
+                        alert("添加优惠券失败，请重新尝试。");
                     }
                 });
             }

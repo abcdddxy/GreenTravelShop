@@ -217,14 +217,47 @@
                 );
 
                 //ajax展示历史订单
+                $.ajax({
+                    type: "GET",
+                    url: "http://10.108.121.54:8084/sellers/me/orders",
+                    dataType: "json",
+                    success: function (data) {
+                        var menu = new Array();
+                        for (var i = 0; i < data.length; i++) {
+                            var obj = JSON.parse(data[i]);
+
+                            var shop_name = obj.shop_name;
+                            var shop_tag = obj.tag;
+                            var lat = obj.latitude;
+                            var lng = obj.longitude;
+
+                            var tmp_marker = {
+                                title: shop_name,
+                                content: shop_tag,
+                                point: lat + "|" + lng,
+                                isOpen: 0,
+                                icon: {
+                                    w: 23,
+                                    h: 25,
+                                    l: 46,
+                                    t: 21,
+                                    x: 9,
+                                    lb: 12
+                                }
+                            }
+                            markerArr.append(tmp_marker);
+                        }
+                    },
+                    error: function () {
+                        alert("获取店铺失败，请重新尝试。");
+                    }
+                });
             } else {
                 $("#user-nav").append(
                     "<a href='login.html' style='font-size: 200%;'>登录</a><a href='#' style='font-size: 200%;'>  |  </a><a href='register.html' style='font-size: 200%;'>注册</a>"
                 );
             }
         });
-
-
     </script>
 </body>
 

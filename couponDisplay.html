@@ -271,6 +271,31 @@
 
         function DisplayCounpon() {
             //ajax获取优惠券展示
+            $.ajax({
+                type: "GET",
+                url: "http://10.108.121.54:8084/sellers/me/coupons",
+                dataType: "json",
+                success: function (data) {
+                    var menu = new Array();
+                    for (var i = 0; i < data.length; i++) {
+                        var obj = JSON.parse(data[i]);
+
+                        var coupon_name = obj.coupon_name;
+                        var expire_at = obj.expire_at;
+                        var id = obj.id;
+                        var image_url = obj.image_url;
+                        var shop_id = obj.shop_id;
+                        var shop_name = obj.shop_name;
+                        var status = obj.status;
+                        var type = obj.type;
+
+                        $("#couponList").append();
+                    }
+                },
+                error: function () {
+                    alert("获取菜品失败，请重新尝试。");
+                }
+            });
         };
 
         $("#change").click(function () {

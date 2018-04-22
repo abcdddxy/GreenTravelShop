@@ -169,6 +169,47 @@
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
     <script type="text/javascript">
+        //标注点数组
+        var markerArr = [{
+            title: "店铺1",
+            content: "北京邮电大学店",
+            point: "116.361006|39.971138",
+            isOpen: 0,
+            icon: {
+                w: 23,
+                h: 25,
+                l: 46,
+                t: 21,
+                x: 9,
+                lb: 12
+            }
+        }, {
+            title: "店铺2",
+            content: "朝阳店",
+            point: "116.50876|39.958751",
+            isOpen: 0,
+            icon: {
+                w: 23,
+                h: 25,
+                l: 46,
+                t: 21,
+                x: 9,
+                lb: 12
+            }
+        }, {
+            title: "店铺3",
+            content: "北京南站店",
+            point: "116.358132|39.871534",
+            isOpen: 0,
+            icon: {
+                w: 23,
+                h: 25,
+                l: 46,
+                t: 21,
+                x: 9,
+                lb: 12
+            }
+        }];
         $(function () {
             if ($.cookie("al_shop_id") != null) {
                 var shop_id = $.cookie("al_shop_id");
@@ -178,6 +219,41 @@
                 );
 
                 //ajax展示店铺
+                $.ajax({
+                    type: "GET",
+                    url: "http://10.108.121.54:8084/sellers/me/shop",
+                    dataType: "json",
+                    success: function (data) {
+                        var menu = new Array();
+                        for (var i = 0; i < data.length; i++) {
+                            var obj = JSON.parse(data[i]);
+
+                            var shop_name = obj.shop_name;
+                            var shop_tag = obj.tag;
+                            var lat = obj.latitude;
+                            var lng = obj.longitude;
+
+                            var tmp_marker = {
+                                title: shop_name,
+                                content: shop_tag,
+                                point: lat + "|" + lng,
+                                isOpen: 0,
+                                icon: {
+                                    w: 23,
+                                    h: 25,
+                                    l: 46,
+                                    t: 21,
+                                    x: 9,
+                                    lb: 12
+                                }
+                            }
+                            markerArr.append(tmp_marker);
+                        }
+                    },
+                    error: function () {
+                        alert("获取店铺失败，请重新尝试。");
+                    }
+                });
             } else {
                 $("#user-nav").append(
                     "<a href='login.html' style='font-size: 200%;'>登录</a><a href='#' style='font-size: 200%;'>  |  </a><a href='register.html' style='font-size: 200%;'>注册</a>"
@@ -229,48 +305,6 @@
             });
             map.addControl(ctrl_sca);
         }
-
-        //标注点数组
-        var markerArr = [{
-            title: "店铺1",
-            content: "北京邮电大学店",
-            point: "116.361006|39.971138",
-            isOpen: 0,
-            icon: {
-                w: 23,
-                h: 25,
-                l: 46,
-                t: 21,
-                x: 9,
-                lb: 12
-            }
-        }, {
-            title: "店铺2",
-            content: "朝阳店",
-            point: "116.50876|39.958751",
-            isOpen: 0,
-            icon: {
-                w: 23,
-                h: 25,
-                l: 46,
-                t: 21,
-                x: 9,
-                lb: 12
-            }
-        }, {
-            title: "店铺3",
-            content: "北京南站店",
-            point: "116.358132|39.871534",
-            isOpen: 0,
-            icon: {
-                w: 23,
-                h: 25,
-                l: 46,
-                t: 21,
-                x: 9,
-                lb: 12
-            }
-        }];
 
         //创建marker
         function addMarker() {
@@ -330,8 +364,6 @@
             var icon = new BMap.Icon("img/icon_gcoding.png", new BMap.Size(30, 33));
             return icon;
         }
-
-        initMap(); //创建和初始化地图
     </script>
 
 </body>

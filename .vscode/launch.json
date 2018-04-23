@@ -22,7 +22,7 @@
             "type": "chrome",
             "request": "launch",
             "sourceMaps": false,
-            "file": "${workspaceRoot}/couponDisplay.html"
+            "file": "${workspaceRoot}/menu.html"
         }
     ]
 }

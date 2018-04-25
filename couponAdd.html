@@ -250,7 +250,11 @@
                     type: "POST",
                     url: "http://10.108.121.54:8084/sellers/me/coupons",
                     dataType: "json",
-                    contentType: 'application/json; charset=UTF-8',
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(data),
                     success: function (data) {
                         alert("添加优惠券成功！");

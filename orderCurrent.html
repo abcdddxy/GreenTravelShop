@@ -197,7 +197,8 @@
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
     <script type="text/javascript">
-        var str = '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">';
+        var str =
+            '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">';
         $(function () {
             if ($.cookie("id") != null) {
                 var shop_id = $.cookie("id");
@@ -211,6 +212,11 @@
                     type: "GET",
                     url: "http://10.108.121.54:8084/sellers/me/orders",
                     dataType: "json",
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         var menu = new Array();
                         for (var i = 0; i < data.length; i++) {
@@ -252,7 +258,7 @@
                 btnAlign: 'c',
                 moveType: 1,
                 // content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">番茄锅底 * 1<br>酸梅汤 * 1<br>牛肉 * 1<br>虾滑 * 1<br>蔬菜拼盘 * 1<br>总价：420元</div>',
-                content: str,                
+                content: str,
             });
         }
     </script>

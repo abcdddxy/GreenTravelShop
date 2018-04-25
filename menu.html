@@ -304,14 +304,16 @@
                 <div id="collapseOne" class="panel-collapse collapse">
                     <div class="panel-body">
                         <ul class="list-group list-group-flush">
-                            <table class="table" id="menu-body">
-                                <tr>
-                                    <td>干炒牛河</td>
-                                    <td>26元</td>
-                                    <td>
-                                        <a class="btn btn-link" href="#" onclick="deleteRow(this)">删除</a>
-                                    </td>
-                                </tr>
+                            <table class="table" id="menu-table">
+                                <thead>
+                                    <tr>
+                                        <td>菜品名称</td>
+                                        <td>菜品价格</td>
+                                        <td>操作</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
                             </table>
                         </ul>
                     </div>
@@ -332,6 +334,10 @@
                     <div class="modal-header">导入菜单</div>
                     <div class="modal-body" style="height:400px;">
                         <table class="table table-bordered table-hover" id="importMenu">
+                            <thead  id="menu-head">
+                            </thead>
+                            <tbody  id="menu-body">
+                            </tbody>
                         </table>
                     </div>
                     <div class="modal-footer">
@@ -365,48 +371,31 @@
 
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- <script src="js/excanvas.min.js"></script>
-    <script src="js/jquery.ui.custom.js"></script>
-    <script src="js/jquery.flot.min.js"></script>
-    <script src="js/jquery.flot.resize.min.js"></script>
-    <script src="js/jquery.peity.min.js"></script>
-    <script src="js/fullcalendar.min.js"></script>
-    <script src="js/matrix.js"></script>
-    <script src="js/matrix.dashboard.js"></script>
-    <script src="js/jquery.gritter.min.js"></script>
-    <script src="js/matrix.interface.js"></script>
-    <script src="js/matrix.chat.js"></script>
-    <script src="js/jquery.validate.js"></script>
-    <script src="js/matrix.form_validation.js"></script>
-    <script src="js/jquery.wizard.js"></script>
-    <script src="js/jquery.uniform.js"></script>
-    <script src="js/select2.min.js"></script>
-    <script src="js/matrix.popover.js"></script>
     <script src="js/jquery.dataTables.min.js"></script>
-    <script src="js/matrix.tables.js"></script>
     <script src="js/layer.js"></script>
+    <script src="js/typeahead.js"></script>
+    <script src="js/matrix.js"></script>
     <script src="js/fileinput.min.js" type="text/javascript"></script>
-    <script src="js/fileinput_zh.js" type="text/javascript"></script> -->
+    <script src="js/fileinput_zh.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
     <script type="text/javascript">
-        // $('#uploadImg').fileinput({
-        //     language: 'zh', //设置语言
-        //     uploadUrl: "/GreenTravelShop/img/upload", //上传的地址
-        //     previewFileType: 'image',
-        //     overwriteInitial: false,
-        //     maxFileSize: 1000,
-        //     maxFilesNum: 10,
-        //     showUpload: true, //是否显示上传按钮
-        //     showCaption: true, //是否显示标题
-        //     browseClass: "btn btn-primary", //按钮样式             
-        //     previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
-        //     msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
-
-        //     slugCallback: function (filename) {
-        //         return filename.replace('(', '_').replace(']', '_');
-        //     }
-        // });
+        $('#uploadImg').fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: "/GreenTravelShop/img/upload", //上传的地址
+            previewFileType: 'image',
+            overwriteInitial: false,
+            maxFileSize: 1000,
+            maxFilesNum: 10,
+            showUpload: true, //是否显示上传按钮
+            showCaption: true, //是否显示标题
+            browseClass: "btn btn-primary", //按钮样式             
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            slugCallback: function (filename) {
+                return filename.replace('(', '_').replace(']', '_');
+            }
+        });
 
         // function Good(id, goods_name, picture_url, description, goods_number, goods_type) {
         //     this.id = id;
@@ -432,6 +421,11 @@
                     type: "GET",
                     url: "http://10.108.121.54:8084/sellers/me/goods",
                     dataType: "json",
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         var menu = new Array();
                         for (var i = 0; i < data.length; i++) {
@@ -445,7 +439,9 @@
                             var goods_number = data[i].goods_number;
                             var goods_type = data[i].goods_type;
 
-                            $("#menu-body").append();
+                            var good = "<tr><td>" + goods_name + "</td><td>" + price +
+                                "元</td><td><a class='btn btn-link' href='#' onclick='deleteRow(this)'>删除</a></td></tr>";
+                            $("#menu-table").append(good);
 
                             // if (menu[goods_type] == null) {
                             //     menu[goods_type] = new Array();
@@ -512,7 +508,7 @@
         };
 
         function initTableCheckbox() {
-            var $thr = $('table thead tr');
+            var $thr = $('#menu-head tr');
             var $checkAllTh = $('<th><input type="checkbox" id="checkAll" name="checkAll" /></th>');
             /*将全选/反选复选框添加到表头最前，即增加一列*/
             $thr.prepend($checkAllTh);
@@ -534,7 +530,7 @@
             $checkAllTh.click(function () {
                 $(this).find('input').click();
             });
-            var $tbr = $('table tbody tr');
+            var $tbr = $('#menu-body.tr');
             var $checkItemTd = $('<td><input type="checkbox" name="checkItem" /></td>');
             /*每一行都在最前面插入一个选中复选框的单元格*/
             $tbr.prepend($checkItemTd);

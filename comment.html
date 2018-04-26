@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <title>评论相关</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css" />
+    <link rel="stylesheet" href="css/matrix-style.css" />
+    <link rel="stylesheet" href="css/matrix-media.css" />
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/jquery.gritter.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="css/order.css" />
+</head>
+
+<body>
+    <!--Header-part-->
+    <div id="header">
+        <h1>
+            <a href="#">ZERO</a>
+        </h1>
+    </div>
+    <!--close-Header-part-->
+
+    <!--top-Header-menu-->
+    <div id="user-nav" class="navbar navbar-inverse">
+    </div>
+    <!--close-top-Header-menu-->
+
+    <!--start-top-serch-->
+    <div id="search">
+        <input type="text" placeholder="查找" />
+        <button type="submit" class="tip-bottom" title="Search">
+            <i class="icon-search icon-white"></i>
+        </button>
+    </div>
+    <!--close-top-serch-->
+
+    <!--sidebar-menu-->
+    <div id="sidebar">
+        <a href="#" class="visible-phone">
+            <i class="icon icon-home"></i>当前订单</a>
+        <ul>
+            <li>
+                <a href="main.html">
+                    <i class="icon icon-home"></i>
+                    <span>总览</span>
+                </a>
+            </li>
+            <li>
+                <a href="menu.html">
+                    <i class="icon icon-paste"></i>
+                    <span>菜单相关</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="comment.html">
+                    <i class="icon icon-pencil"></i>
+                    <span>评论相关</span>
+                </a>
+            </li>
+            <li class="submenu">
+                <a href="#">
+                    <i class="icon icon-signal"></i>
+                    <span>订单</span>
+                    <span class="label label-important">2</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="orderHistory.html">历史订单</a>
+                    </li>
+                    <li>
+                        <a href="orderCurrent.html">当前订单</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="submenu">
+                <a href="#">
+                    <i class="icon icon-flag"></i>
+                    <span>我的店铺</span>
+                    <span class="label label-important">3</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="shopDisplay.html">查看店铺</a>
+                    </li>
+                    <li>
+                        <a href="shopAdd.html">添加店铺</a>
+                    </li>
+                    <li>
+                        <a href="shopRemove.html">移除店铺</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="submenu">
+                <a href="#">
+                    <i class="icon icon-file"></i>
+                    <span>优惠券</span>
+                    <span class="label label-important">2</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="couponDisplay.html">查看优惠券</a>
+                    </li>
+                    <li>
+                        <a href="couponAdd.html">上传优惠券</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!--sidebar-menu-->
+
+    <!--main-container-part-->
+    <div id="content">
+        <!--breadcrumbs-->
+        <div id="content-header">
+            <div id="breadcrumb">
+                <a href="main.html" title="回到首页" class="tip-bottom">
+                    <i class="icon-home"></i> 首页</a>
+                <a href="#" class="current">评论相关</a>
+            </div>
+        </div>
+        <!--End-breadcrumbs-->
+
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading" id="menu-head">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            评论列表
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul class="list-group list-group-flush">
+                            <table class="table" id="menu-table">
+                                <thead>
+                                    <tr>
+                                        <td>评论人</td>
+                                        <td>评论内容</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end-main-container-part-->
+
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/excanvas.min.js"></script>
+    <script src="js/jquery.ui.custom.js"></script>
+    <script src="js/jquery.flot.min.js"></script>
+    <script src="js/jquery.flot.resize.min.js"></script>
+    <script src="js/jquery.peity.min.js"></script>
+    <script src="js/fullcalendar.min.js"></script>
+    <script src="js/matrix.js"></script>
+    <script src="js/matrix.dashboard.js"></script>
+    <script src="js/jquery.gritter.min.js"></script>
+    <script src="js/matrix.interface.js"></script>
+    <script src="js/matrix.chat.js"></script>
+    <script src="js/jquery.validate.js"></script>
+    <script src="js/matrix.form_validation.js"></script>
+    <script src="js/jquery.wizard.js"></script>
+    <script src="js/jquery.uniform.js"></script>
+    <script src="js/select2.min.js"></script>
+    <script src="js/matrix.popover.js"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/matrix.tables.js"></script>
+    <script src="js/layer.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+</body>
+
+</html>

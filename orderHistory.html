@@ -57,6 +57,12 @@
                     <span>菜单相关</span>
                 </a>
             </li>
+            <li class>
+                <a href="comment.html">
+                    <i class="icon icon-pencil"></i>
+                    <span>评论相关</span>
+                </a>
+            </li>
             <li class="submenu active">
                 <a href="#">
                     <i class="icon icon-signal"></i>
@@ -221,6 +227,11 @@
                     type: "GET",
                     url: "http://10.108.121.54:8084/sellers/me/orders",
                     dataType: "json",
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         var menu = new Array();
                         for (var i = 0; i < data.length; i++) {

@@ -46,62 +46,97 @@ $(".next").click(function () {
 });
 
 $(".regist").click(function () {
-	if ($('#pass').val() == $('#cpass').val()) {
-		$.ajax({
-			type: "POST",
-			url: url,
-			dataType: "json",
-			data: {
-				"phone": $('#phone').val(),
-				"userpsw": $('#pass').val()
-			},
-			success: function () {
-				alert("注册成功，请添加店铺。");
-				if (animating) return false;
-				animating = true;
-				current_fs = $(this).parent();
-				next_fs = $(this).parent().next();
-				//activate next step on progressbar using the index of next_fs
-				$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-				//show the next fieldset
-				next_fs.show();
-				//hide the current fieldset with style
-				current_fs.animate({
-					opacity: 0
-				}, {
-					step: function (now, mx) {
-						//as the opacity of current_fs reduces to 0 - stored in "now"
-						//1. scale current_fs down to 80%
-						scale = 1 - (1 - now) * 0.2;
-						//2. bring next_fs from the right(50%)
-						left = (now * 50) + "%";
-						//3. increase opacity of next_fs to 1 as it moves in
-						opacity = 1 - now;
-						current_fs.css({
-							'transform': 'scale(' + scale + ')'
-						});
-						next_fs.css({
-							'left': left,
-							'opacity': opacity
-						});
-					},
-					duration: 800,
-					complete: function () {
-						current_fs.hide();
-						animating = false;
-					},
-					//this comes from the custom easing plugin
-					easing: 'easeInOutBack'
-				});
-			},
-			error: function () {
-				alert("注册失败，请重新尝试。");
-			}
-		});
-	} else {
-		alert("两次输入密码不一致，请重新输入！")
-	}
-
+	// if ($('#pass').val() == $('#cpass').val()) {
+	// 	$.ajax({
+	// 		type: "POST",
+	// 		url: url,
+	// 		dataType: "json",
+	// 		data: {
+	// 			"phone": $('#phone').val(),
+	// 			"userpsw": $('#pass').val()
+	// 		},
+	// 		success: function () {
+	// 			alert("注册成功，请添加店铺。");
+	// 			if (animating) return false;
+	// 			animating = true;
+	// 			current_fs = $(this).parent();
+	// 			next_fs = $(this).parent().next();
+	// 			//activate next step on progressbar using the index of next_fs
+	// 			$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+	// 			//show the next fieldset
+	// 			next_fs.show();
+	// 			//hide the current fieldset with style
+	// 			current_fs.animate({
+	// 				opacity: 0
+	// 			}, {
+	// 				step: function (now, mx) {
+	// 					//as the opacity of current_fs reduces to 0 - stored in "now"
+	// 					//1. scale current_fs down to 80%
+	// 					scale = 1 - (1 - now) * 0.2;
+	// 					//2. bring next_fs from the right(50%)
+	// 					left = (now * 50) + "%";
+	// 					//3. increase opacity of next_fs to 1 as it moves in
+	// 					opacity = 1 - now;
+	// 					current_fs.css({
+	// 						'transform': 'scale(' + scale + ')'
+	// 					});
+	// 					next_fs.css({
+	// 						'left': left,
+	// 						'opacity': opacity
+	// 					});
+	// 				},
+	// 				duration: 800,
+	// 				complete: function () {
+	// 					current_fs.hide();
+	// 					animating = false;
+	// 				},
+	// 				//this comes from the custom easing plugin
+	// 				easing: 'easeInOutBack'
+	// 			});
+	// 		},
+	// 		error: function () {
+	// 			alert("注册失败，请重新尝试。");
+	// 		}
+	// 	});
+	// } else {
+	// 	alert("两次输入密码不一致，请重新输入！")
+	// }
+	if (animating) return false;
+	animating = true;
+	current_fs = $(this).parent();
+	next_fs = $(this).parent().next();
+	//activate next step on progressbar using the index of next_fs
+	$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+	//show the next fieldset
+	next_fs.show();
+	//hide the current fieldset with style
+	current_fs.animate({
+		opacity: 0
+	}, {
+		step: function (now, mx) {
+			//as the opacity of current_fs reduces to 0 - stored in "now"
+			//1. scale current_fs down to 80%
+			scale = 1 - (1 - now) * 0.2;
+			//2. bring next_fs from the right(50%)
+			left = (now * 50) + "%";
+			//3. increase opacity of next_fs to 1 as it moves in
+			opacity = 1 - now;
+			current_fs.css({
+				'transform': 'scale(' + scale + ')'
+			});
+			next_fs.css({
+				'left': left,
+				'opacity': opacity
+			});
+		},
+		duration: 800,
+		complete: function () {
+			current_fs.hide();
+			animating = false;
+		},
+		//this comes from the custom easing plugin
+		easing: 'easeInOutBack'
+	});
 });
 
 $(".previous").click(function () {
@@ -208,6 +243,15 @@ function selcetGW() {
 
 function selcetLY() {
 	$("#selectTypeText").val("旅游");
+};
+
+function selcetYes() {
+	$("#selectIsCahin").val("是");
+	//ajax获取候选连锁店
+};
+
+function selcetNo() {
+	$("#selectIsCahin").val("否");
 };
 
 $("#datetimeStart").datetimepicker({

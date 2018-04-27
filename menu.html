@@ -365,14 +365,14 @@
 
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- <script src="js/excanvas.min.js"></script>
+    <script src="js/excanvas.min.js"></script>
     <script src="js/jquery.ui.custom.js"></script>
     <script src="js/jquery.flot.min.js"></script>
     <script src="js/jquery.flot.resize.min.js"></script>
     <script src="js/jquery.peity.min.js"></script>
     <script src="js/fullcalendar.min.js"></script>
     <script src="js/matrix.js"></script>
-    <script src="js/matrix.dashboard.js"></script>
+    <!-- <script src="js/matrix.dashboard.js"></script>
     <script src="js/jquery.gritter.min.js"></script>
     <script src="js/matrix.interface.js"></script>
     <script src="js/matrix.chat.js"></script>
@@ -383,30 +383,30 @@
     <script src="js/select2.min.js"></script>
     <script src="js/matrix.popover.js"></script>
     <script src="js/jquery.dataTables.min.js"></script>
-    <script src="js/matrix.tables.js"></script>
+    <script src="js/matrix.tables.js"></script> -->
     <script src="js/layer.js"></script>
     <script src="js/fileinput.min.js" type="text/javascript"></script>
-    <script src="js/fileinput_zh.js" type="text/javascript"></script> -->
+    <script src="js/fileinput_zh.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
     <script type="text/javascript">
-        // $('#uploadImg').fileinput({
-        //     language: 'zh', //设置语言
-        //     uploadUrl: "/GreenTravelShop/img/upload", //上传的地址
-        //     previewFileType: 'image',
-        //     overwriteInitial: false,
-        //     maxFileSize: 1000,
-        //     maxFilesNum: 10,
-        //     showUpload: true, //是否显示上传按钮
-        //     showCaption: true, //是否显示标题
-        //     browseClass: "btn btn-primary", //按钮样式             
-        //     previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
-        //     msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+        $('#uploadImg').fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: "/GreenTravelShop/img/upload", //上传的地址
+            previewFileType: 'image',
+            overwriteInitial: false,
+            maxFileSize: 1000,
+            maxFilesNum: 10,
+            showUpload: true, //是否显示上传按钮
+            showCaption: true, //是否显示标题
+            browseClass: "btn btn-primary", //按钮样式             
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
 
-        //     slugCallback: function (filename) {
-        //         return filename.replace('(', '_').replace(']', '_');
-        //     }
-        // });
+            slugCallback: function (filename) {
+                return filename.replace('(', '_').replace(']', '_');
+            }
+        });
 
         // function Good(id, goods_name, picture_url, description, goods_number, goods_type) {
         //     this.id = id;
@@ -419,7 +419,7 @@
         // }
 
         $(function () {
-            // alert($.cookie("id"));
+            // alert("123");
             if ($.cookie("id") != null) {
                 var shop_id = $.cookie("id");
                 // var avatar_url = $.cookie("al_avatar_url");
@@ -445,7 +445,8 @@
                             var goods_number = data[i].goods_number;
                             var goods_type = data[i].goods_type;
 
-                            $("#menu-body").append();
+                            var good = "<tr><td>" + goods_name + "</td><td>" + price + "元</td><td><a class='btn btn-link' href='#' onclick='deleteRow(this)'>删除</a></td></tr>"
+                            $("#menu-body").append(good);
 
                             // if (menu[goods_type] == null) {
                             //     menu[goods_type] = new Array();

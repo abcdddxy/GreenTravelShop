@@ -191,25 +191,10 @@
 
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="js/excanvas.min.js"></script>
-    <script src="js/jquery.ui.custom.js"></script>
-    <script src="js/jquery.flot.min.js"></script>
-    <script src="js/jquery.flot.resize.min.js"></script>
-    <script src="js/jquery.peity.min.js"></script>
-    <script src="js/fullcalendar.min.js"></script>
-    <script src="js/matrix.js"></script>
-    <script src="js/matrix.dashboard.js"></script>
-    <script src="js/jquery.gritter.min.js"></script>
-    <script src="js/matrix.interface.js"></script>
-    <script src="js/matrix.chat.js"></script>
-    <script src="js/jquery.validate.js"></script>
-    <script src="js/matrix.form_validation.js"></script>
-    <script src="js/jquery.wizard.js"></script>
-    <script src="js/jquery.uniform.js"></script>
-    <script src="js/select2.min.js"></script>
-    <script src="js/matrix.popover.js"></script>
     <script src="js/jquery.dataTables.min.js"></script>
-    <script src="js/matrix.tables.js"></script>
+    <script src="js/layer.js"></script>
+    <script src="js/typeahead.js"></script>
+    <script src="js/matrix.js"></script>
     <script src="js/layer.js"></script>
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
@@ -235,28 +220,16 @@
                     success: function (data) {
                         var menu = new Array();
                         for (var i = 0; i < data.length; i++) {
-                            var obj = JSON.parse(data[i]);
+                            // var obj = JSON.parse(data[i]);
+                            var price = data[i].order_amount_total;
+                            var detail = data[i].orderDetails;
 
-                            var shop_name = obj.shop_name;
-                            var shop_tag = obj.tag;
-                            var lat = obj.latitude;
-                            var lng = obj.longitude;
-
-                            var tmp_marker = {
-                                title: shop_name,
-                                content: shop_tag,
-                                point: lat + "|" + lng,
-                                isOpen: 0,
-                                icon: {
-                                    w: 23,
-                                    h: 25,
-                                    l: 46,
-                                    t: 21,
-                                    x: 9,
-                                    lb: 12
-                                }
+                            for (var j = 0; j < detail.length; j++) {
+                                var product_name = detail[j].product_name;
+                                var product_num = detail[j].product_num;
+                                str = str + product_name + "*" + product_num + "<br>";
                             }
-                            markerArr.append(tmp_marker);
+                            str = str + "总价：" + price + "元</div>'";
                         }
                     },
                     error: function () {

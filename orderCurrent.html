@@ -129,14 +129,15 @@
         <div class="container">
             <div class="row">
                 <div class="[ col-xs-12 col-sm-offset-2 col-sm-8 ]">
-                    <ul class="event-list">
+                    <ul class="event-list" id="orderList">
                         <li style="margin-top:50px">
                             <img src="img/haidilao.jpg" />
                             <div class="info">
                                 <h2 class="title">海底捞（西单店）
-                                    <a href="#text" onclick="detail()">
+                                    <button name="detailbtn">详情</button>
+                                    <!-- <a href="#text" name="detailbtn">
                                         <span class="glyphicon glyphicon-new-window">详情</span>
-                                    </a>
+                                    </a> -->
                                 </h2>
                                 <p class="desc" style="color:blue;margin-top:10px">B区 A8</p>
                                 <p class="desc" style="color:rgb(128, 0, 111)">订单价格：500元</p>
@@ -148,9 +149,10 @@
                             <img alt="My 24th Birthday!" src="img/haidilao.jpg" />
                             <div class="info">
                                 <h2 class="title">海底捞（西单店）
-                                    <a href="#text" onclick="detail()">
+                                    <button name="detailbtn">详情</button>
+                                    <!-- <a href="#text" name="detailbtn">
                                         <span class="glyphicon glyphicon-new-window">详情</span>
-                                    </a>
+                                    </a> -->
                                 </h2>
                                 <p class="desc" style="color:blue;margin-top:10px">A区 A14</p>
                                 <p class="desc" style="color:rgb(128, 0, 111)">订单价格：342元</p>
@@ -162,9 +164,10 @@
                             <img alt="Disney Junior Live On Tour!" src="img/haidilao.jpg" />
                             <div class="info">
                                 <h2 class="title">海底捞（西单店）
-                                    <a href="#text" onclick="detail()">
+                                    <button name="detailbtn">详情</button>
+                                    <!-- <a href="#text" name="detailbtn">
                                         <span class="glyphicon glyphicon-new-window">详情</span>
-                                    </a>
+                                    </a> -->
                                 </h2>
                                 <p class="desc" style="color:blue;margin-top:10px">C区 C2</p>
                                 <p class="desc" style="color:rgb(128, 0, 111)">订单价格：1324元</p>
@@ -180,32 +183,47 @@
 
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="js/excanvas.min.js"></script>
-    <script src="js/jquery.ui.custom.js"></script>
-    <script src="js/jquery.flot.min.js"></script>
-    <script src="js/jquery.flot.resize.min.js"></script>
-    <script src="js/jquery.peity.min.js"></script>
-    <script src="js/fullcalendar.min.js"></script>
-    <script src="js/matrix.js"></script>
-    <script src="js/matrix.dashboard.js"></script>
-    <script src="js/jquery.gritter.min.js"></script>
-    <script src="js/matrix.interface.js"></script>
-    <script src="js/matrix.chat.js"></script>
-    <script src="js/jquery.validate.js"></script>
-    <script src="js/matrix.form_validation.js"></script>
-    <script src="js/jquery.wizard.js"></script>
-    <script src="js/jquery.uniform.js"></script>
-    <script src="js/select2.min.js"></script>
-    <script src="js/matrix.popover.js"></script>
     <script src="js/jquery.dataTables.min.js"></script>
-    <script src="js/matrix.tables.js"></script>
+    <script src="js/layer.js"></script>
+    <script src="js/typeahead.js"></script>
+    <script src="js/matrix.js"></script>
     <script src="js/layer.js"></script>
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
     <script type="text/javascript">
         var str =
             '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">';
+        var orderDetail = new Array();
+        var btn = document.getElementsByName("detailbtn");
+
+        for (var i = 0; i < btn.length; i++) {
+            btn[i].setAttribute('i', i);
+            btn[i].onclick = function () {
+                b = this.getAttribute('i');
+                // alert('这是第' + b + '个按钮');
+
+                layer.open({
+                    type: 1,
+                    anim: 1,
+                    top: '10px',
+                    offset: ['300px', '800px'],
+                    title: false,
+                    closeBtn: 1,
+                    area: '300px;',
+                    shade: 0.8,
+                    id: 'LAY_layuipro',
+                    resize: false,
+                    btnAlign: 'c',
+                    moveType: 1,
+                    // content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">番茄锅底 * 1<br>酸梅汤 * 1<br>牛肉 * 1<br>虾滑 * 1<br>蔬菜拼盘 * 1<br>总价：420元</div>',
+                    content: orderDetail[b],
+                });
+            }
+        }
+
         $(function () {
+            // alert(btn.length);
+            // $("#orderList li")[0].append(str);
             if ($.cookie("id") != null) {
                 var shop_id = $.cookie("id");
                 // var avatar_url = $.cookie("al_avatar_url");
@@ -230,12 +248,24 @@
                             var price = obj.order_amount_total;
                             var detail = obj.orderDetails;
 
-                            for (var j = 0; j < data.length; j++) {
+                            for (var j = 0; j < detail.length; j++) {
                                 var product_name = detail[j].product_name;
                                 var product_num = detail[j].product_num;
                                 str = str + product_name + "*" + product_num + "<br>";
                             }
                             str = str + "总价：" + price + "元</div>'";
+                            orderDetail.append(str);
+
+                            var order = "<li style='margin-top:50px'><img src='" + url +
+                                "' /><div class='info'><h2 class='title'>" +
+                                shop_name +
+                                "<a href='#text' onclick='detail()'><span class='glyphicon glyphicon-new-window'>详情</span></a></h2>" +
+                                "<p class='desc' style='color:blue;margin-top:10px'>" + area +
+                                "</p>" +
+                                "<p class='desc' style='color:rgb(128, 0, 111)'>订单价格：" + price +
+                                "元</p>" +
+                                "<p class='desc'>订单时间：" + time + "</p></div></li>";
+                            $("#orderList").append(order);
                         }
                     },
                     error: function () {
@@ -248,25 +278,6 @@
                 );
             }
         });
-
-        function detail() {
-            layer.open({
-                type: 1,
-                anim: 1,
-                top: '10px',
-                offset: ['300px', '800px'],
-                title: false,
-                closeBtn: 1,
-                area: '300px;',
-                shade: 0.8,
-                id: 'LAY_layuipro',
-                resize: false,
-                btnAlign: 'c',
-                moveType: 1,
-                // content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">番茄锅底 * 1<br>酸梅汤 * 1<br>牛肉 * 1<br>虾滑 * 1<br>蔬菜拼盘 * 1<br>总价：420元</div>',
-                content: str,
-            });
-        }
     </script>
 </body>
 

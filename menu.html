@@ -326,7 +326,7 @@
                 </div>
             </div>
 
-            <div style="margin-left: 70%;margin-top: 20px">
+            <div style="margin-left: 50%;margin-top: 20px">
                 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalImport" id="import">导入菜单</button>
                 <button type="button" class="btn btn-primary btn-lg" style="margin-left: 20px" data-toggle="modal" data-target="#myModalAdd"
                     id="add">添加菜品</button>
@@ -338,13 +338,30 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">导入菜单</div>
-                    <div class="modal-body" style="height:400px;">
+                    <div class="modal-body" style="height:600px;">
                         <table class="table table-bordered table-hover" id="importMenu">
-                            <thead  id="menu-head">
+                            <thead id="import-head">
+                                <tr>
+                                    <td style="width:40px">
+                                        <input type="checkbox" id="checkAll" name="checkAll" />
+                                    </td>
+                                    <td style="width:80px">菜品名称</td>
+                                    <td style="width:80px">菜品价格</td>
+                                    <td>菜品描述</td>
+                                </tr>
                             </thead>
-                            <tbody  id="menu-body">
+
+                            <tbody id="import-body">
                             </tbody>
                         </table>
+                        <ul class="pager">
+                            <li>
+                                <a href="javascript:;" onclick="previous()">&larr; 上一页</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" onclick="next()">下一页 &rarr;</a>
+                            </li>
+                        </ul>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" onclick="submitImport()">确定导入</button>
@@ -386,6 +403,9 @@
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
     <script type="text/javascript">
+        var offset = 0;
+        var count = 10;
+
         $('#uploadImg').fileinput({
             language: 'zh', //设置语言
             uploadUrl: "/GreenTravelShop/img/upload", //上传的地址
@@ -412,6 +432,74 @@
         //     this.goods_number = goods_number;
         //     this.goods_type = goods_type;
         // }
+        function previous() {
+            if (offset != 0) {
+                offset = offset - 10;
+                $("#import-body").html("");
+                $.ajax({
+                    type: "POST",
+                    url: "http://10.108.122.109:8084/shops/get_waiting_dish",
+                    // dataType: "json",
+                    // contentType: 'application/json; charset=UTF-8',
+                    data: {
+                        "shop_id": "103840",
+                        "offset": offset,
+                        "count": count
+                    },
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            var goods_name = data[i].goods_name;
+                            var price = data[i].price;
+                            var description = data[i].description;
+
+                            // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                            //     "</td><td>" + addr + "</td>";
+                            var good = "<td>" + goods_name + "</td><td>" + price +
+                                "元</td><td><a class='btn btn-link' href='#' onclick='deleteRow(this)'>删除</a></td>";
+                            $("#menu-table").append(good);
+                        }
+                    },
+                    error: function () {
+                        alert("未找到相关店铺。");
+                    }
+                });
+            } else {
+                alert("已经是第一页啦！");
+            }
+        }
+
+        function next() {
+            offset = offset + 10;
+            $("#import-body").html("");
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.122.109:8084/shops/get_waiting_dish",
+                // dataType: "json",
+                // contentType: 'application/json; charset=UTF-8',
+                data: {
+                    "shop_id": "103840",
+                    "offset": offset,
+                    "count": count
+                },
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var goods_name = data[i].goods_name;
+                        var price = data[i].price;
+                        var description = data[i].description;
+
+                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                        //     "</td><td>" + addr + "</td>";
+                        var good = "<td>" + goods_name + "</td><td>" + price +
+                            "元</td><td><a class='btn btn-link' href='#' onclick='deleteRow(this)'>删除</a></td>";
+                        $("#menu-table").append(good);
+                        $("#import-body").append(good);
+                    }
+                },
+                error: function () {
+                    alert("未找到相关店铺。");
+                }
+            });
+        }
 
         $(function () {
             // alert("123");
@@ -445,8 +533,8 @@
                             var goods_number = data[i].goods_number;
                             var goods_type = data[i].goods_type;
 
-                            var good = "<tr><td>" + goods_name + "</td><td>" + price +
-                                "元</td><td><a class='btn btn-link' href='#' onclick='deleteRow(this)'>删除</a></td></tr>";
+                            var good = "<td>" + goods_name + "</td><td>" + price +
+                                "元</td><td><a class='btn btn-link' href='#' onclick='deleteRow(this)'>删除</a></td>";
                             $("#menu-table").append(good);
 
                             // if (menu[goods_type] == null) {
@@ -476,15 +564,57 @@
             }
         });
 
-        $('#myModalImport').on('show.bs.modal', function (e) {
-            //ajax获取候选菜单
+        $("#checkAll").click(function () {
+            if ($(this).is(':checked') == true) { // 全选
+                $(":checkbox").each(function () {
+                    $(this).prop("checked", true);
+                    $(this).parent("span").addClass("checked");
+                });
+            } else {
+                $(":checkbox").each(function () {
+                    $(this).prop("checked", false);
+                    $(this).parent("span").removeClass("checked");
+                });
+            }
+        });
 
-            initTableCheckbox();
+        $('#myModalImport').on('show.bs.modal', function (e) {
+            $("#import-body").html("");
+            //ajax获取候选菜单
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.122.109:8084/shops/get_waiting_dish",
+                data: {
+                    "shop_id": "103840",
+                    "offset": offset,
+                    "count": count
+                },
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var goods_id = data[i].goods_id;
+                        var goods_name = data[i].goods_name;
+                        var price = data[i].price;
+                        var description = data[i].description;
+
+                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                        //     "</td><td>" + addr + "</td>";
+                        var good =
+                            "<tr><td type='width:200%'><input type='checkbox' name='checkItem' value='" +
+                            goods_id + "' /></td><td>" +
+                            goods_name + "</td><td>" + price +
+                            "元</td><td>" + description + "</td></tr>";
+                        $("#import-body").append(good);
+                    }
+                },
+                error: function () {
+                    alert("未找到相关店铺。");
+                }
+            });
         });
 
         function submitImport() {
             //ajax导入菜单
-
+            $("input:[name='checkItem']:checked").val();
         };
 
         function submitAdd() {
@@ -511,48 +641,6 @@
         function deleteRow3(r) {
             var i = r.parentNode.parentNode.rowIndex;
             document.getElementById('menu3').deleteRow(i);
-        };
-
-        function initTableCheckbox() {
-            var $thr = $('#menu-head tr');
-            var $checkAllTh = $('<th><input type="checkbox" id="checkAll" name="checkAll" /></th>');
-            /*将全选/反选复选框添加到表头最前，即增加一列*/
-            $thr.prepend($checkAllTh);
-            /*“全选/反选”复选框*/
-            var $checkAll = $thr.find('input');
-            $checkAll.click(function (event) {
-                /*将所有行的选中状态设成全选框的选中状态*/
-                $tbr.find('input').prop('checked', $(this).prop('checked'));
-                /*并调整所有选中行的CSS样式*/
-                if ($(this).prop('checked')) {
-                    $tbr.find('input').parent().parent().addClass('warning');
-                } else {
-                    $tbr.find('input').parent().parent().removeClass('warning');
-                }
-                /*阻止向上冒泡，以防再次触发点击操作*/
-                event.stopPropagation();
-            });
-            /*点击全选框所在单元格时也触发全选框的点击操作*/
-            $checkAllTh.click(function () {
-                $(this).find('input').click();
-            });
-            var $tbr = $('#menu-body.tr');
-            var $checkItemTd = $('<td><input type="checkbox" name="checkItem" /></td>');
-            /*每一行都在最前面插入一个选中复选框的单元格*/
-            $tbr.prepend($checkItemTd);
-            /*点击每一行的选中复选框时*/
-            $tbr.find('input').click(function (event) {
-                /*调整选中行的CSS样式*/
-                $(this).parent().parent().toggleClass('warning');
-                /*如果已经被选中行的行数等于表格的数据行数，将全选框设为选中状态，否则设为未选中状态*/
-                $checkAll.prop('checked', $tbr.find('input:checked').length == $tbr.length ? true : false);
-                /*阻止向上冒泡，以防再次触发点击操作*/
-                event.stopPropagation();
-            });
-            /*点击每一行时也触发该行的选中操作*/
-            $tbr.click(function () {
-                $(this).find('input').click();
-            });
         };
     </script>
 </body>

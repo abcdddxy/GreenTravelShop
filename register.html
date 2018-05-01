@@ -145,7 +145,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">绑定美团点评商家</div>
-                <div class="modal-body" style="height:600px;" id="bindingList">
+                <div class="modal-body" style="height:400px;" id="bindingList">
                     <!-- <table class="table table-bordered table-hover" id="bindingList">
                         <thead>
                             <tr>
@@ -157,16 +157,15 @@
                         <tbody>
                         </tbody>
                     </table> -->
-
-                    <ul class="pager">
-                        <li>
-                            <a href="javascript:;" onclick="previous()">&larr; 上一页</a>
-                        </li>
-                        <li>
-                            <a href="javascript:;" onclick="next()">下一页 &rarr;</a>
-                        </li>
-                    </ul>
                 </div>
+                <ul class="pager">
+                    <li>
+                        <a href="javascript:;" onclick="previous()">&larr; 上一页</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" onclick="next()">下一页 &rarr;</a>
+                    </li>
+                </ul>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="submitBinding()">确定绑定</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -180,9 +179,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">绑定连锁店</div>
-                <div class="modal-body" style="height:400px;">
-                    <table class="table table-bordered table-hover" id="isChainList">
-                    </table>
+                <div class="modal-body" style="height:400px;" id="isChainList">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="submitIsChain()">确定绑定</button>
@@ -198,31 +195,111 @@
         var lat = -1;
         var phone = -1;
         var offset = 0;
+        var count = 12;
+        var chainId = -1;
 
-        function previous() {
-            offset = offset + 10;
-            
-            $("#comment-table tbody").html("");
+        $("#shopName").blur(function () {
             $.ajax({
                 type: "POST",
-                url: "http://10.108.122.109:8084/shops/get_dp_comment",
+                url: "http://10.108.122.109:8084/shops/get_waiting_bind_shops",
+                // dataType: "json",
+                // contentType: 'application/json; charset=UTF-8',
                 data: {
-                    "dp_shop_id": "32320945",
+                    "shop_name": "肯德基",
                     "offset": offset,
-                    "count": 10
+                    "count": count
+                },
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var phone = data[i].phone;
+                        var shop_name = data[i].shop_name;
+                        var tag = data[i].tag;
+                        var addr = data[i].addr;
+
+                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                        //     "</td><td>" + addr + "</td>";
+                        var shop =
+                            "<div class='radio' id='shopList'><label><input type='radio' name='bindShop' id='bindShop' value='" +
+                            phone + "'>" +
+                            shop_name + ":" + addr + "</label></div>";
+                        $("#bindingList").append(shop);
+                    }
+                },
+                error: function () {
+                    alert("未找到相关店铺。");
+                }
+            });
+            $("#myModalShopName").modal('show');
+        });
+
+        function submitBinding() {
+            $("#myModalShopName").modal('hide');
+            if ($("input[name='bindShop']:checked").val() != '') {
+                $("#shopPhone").val($("input[name='bindShop']:checked").val());
+            }
+        }
+
+        function submitIsChain() {
+            $("#myModalIsChain").modal('hide');
+            chainId = $("input[name='chainShop']:checked").val()
+        }
+
+        function previous() {
+            if (offset != 0) {
+                offset = offset - 10;
+                $("#bindingList").html("");
+                $.ajax({
+                    type: "POST",
+                    url: "http://10.108.122.109:8084/shops/get_waiting_bind_shops",
+                    data: {
+                        "shop_name": "肯德基",
+                        "offset": offset,
+                        "count": count
+                    },
+                    success: function (data) {
+                        var menu = new Array();
+                        for (var i = 0; i < data.length; i++) {
+                            var shop_name = data[i].shop_name;
+                            var tag = data[i].tag;
+                            var addr = data[i].addr;
+
+                            var shop =
+                                "<div class='radio'><label><input type='radio' name='optionsRadios' id='optionsRadios' value='option'>" +
+                                shop_name + ":" + addr + "</label></div>";
+                            $("#bindingList").append(shop);
+                        }
+                    },
+                    error: function () {
+                        alert("获取菜品失败，请重新尝试。");
+                    }
+                });
+            } else {
+                alert("已经是第一页啦！");
+            }
+        }
+
+        function next() {
+            offset = offset + 10;
+            $("#bindingList").html("");
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.122.109:8084/shops/get_waiting_bind_shops",
+                data: {
+                    "shop_name": "肯德基",
+                    "offset": offset,
+                    "count": count
                 },
                 success: function (data) {
                     var menu = new Array();
                     for (var i = 0; i < data.length; i++) {
-                        // var obj = JSON.parse(data[i]);
+                        var shop_name = data[i].shop_name;
+                        var tag = data[i].tag;
+                        var addr = data[i].addr;
 
-                        var user_id = data[i].user_id;
-                        var score = data[i].overall_score;
-                        var content = data[i].content;
-
-                        var comment = "<tr><td>用户：" + user_id + "</td><td>" + score +
-                            "</td><td>" + content + "</td><td>";
-                        $("#comment-table").append(comment);
+                        var shop =
+                            "<div class='radio'><label><input type='radio' name='optionsRadios' id='optionsRadios' value='option'>" +
+                            shop_name + ":" + addr + "</label></div>";
+                        $("#bindingList").append(shop);
                     }
                 },
                 error: function () {
@@ -231,14 +308,39 @@
             });
         }
 
-        function next() {
-
-        }
-
         function selectYes() {
             $("#selectIsChainText").val("是");
             $("#myModalIsChain").modal('show');
             //aiax选择连锁商家
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.122.109:8084/shops/get_waiting_chain_shops",
+                // dataType: "json",
+                // contentType: 'application/json; charset=UTF-8',
+                data: {
+                    "shop_name": "御可贡茶"
+                },
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var phone = data[i].phone;
+                        var shop_name = data[i].shop_name;
+                        var tag = data[i].tag;
+                        var addr = data[i].addr;
+                        var chain = data[i].chainId;
+
+                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                        //     "</td><td>" + addr + "</td>";
+                        var shop =
+                            "<div class='radio' id='shopList'><label><input type='radio' name='chainShop' id='chainShop' value='" +
+                            chain + "'>" +
+                            shop_name + ":" + addr + "</label></div>";
+                        $("#isChainList").append(shop);
+                    }
+                },
+                error: function () {
+                    alert("未找到相关店铺。");
+                }
+            });
         }
 
         function selectNo() {
@@ -317,39 +419,6 @@
                     }
                 });
             }
-        });
-
-        $("#shopName").blur(function () {
-            $.ajax({
-                type: "POST",
-                url: "http://10.108.122.109:8084/shops/get_waiting_bind_shops",
-                // dataType: "json",
-                // contentType: 'application/json; charset=UTF-8',
-                data: {
-                    "shop_name": "肯德基",
-                    offset: 0,
-                    count: 20
-
-                },
-                success: function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        var shop_name = data[i].shop_name;
-                        var tag = data[i].tag;
-                        var addr = data[i].addr;
-
-                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
-                        //     "</td><td>" + addr + "</td>";
-                        var shop =
-                            "<div class='radio'><label><input type='radio' name='optionsRadios' id='optionsRadios' value='option'>" +
-                            shop_name + ":" + addr + "</label></div>";
-                        $("#bindingList").append(shop);
-                    }
-                },
-                error: function () {
-                    alert("未找到相关店铺。");
-                }
-            });
-            $("#myModalShopName").modal('show');
         });
 
         $("#createMap").click(function () {
@@ -435,7 +504,7 @@
         //初始化fileinput控件（第一次初始化）
         $('#uploadImg').fileinput({
             language: 'zh', //设置语言
-            uploadUrl: "/GreenTravelShop/img/upload", //上传的地址
+            uploadUrl: "/img/upload", //上传的地址
             previewFileType: 'image',
             overwriteInitial: false,
             maxFileSize: 1000,

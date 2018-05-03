@@ -330,7 +330,7 @@
                 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalImport" id="import">导入菜单</button>
                 <button type="button" class="btn btn-primary btn-lg" style="margin-left: 20px" data-toggle="modal" data-target="#myModalAdd"
                     id="add">添加菜品</button>
-                <button type="button" class="btn btn-primary btn-lg" style="margin-left: 20px" id="change">确认修改</button>
+                <button type="button" class="btn btn-primary btn-lg" style="margin-left: 20px" id="change" onclick="confirm()">确认修改</button>
             </div>
         </div>
 
@@ -375,9 +375,12 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">添加菜品</div>
-                    <div class="modal-body" style="height:550px;">
+                    <div class="modal-body" style="height:770px;">
                         <input type="text" id="itemName" name="itemName" placeholder="菜品名称" />
+                        <input type="text" id="tag" name="tag" placeholder="菜品种类">
                         <input type="number" id="itemPrice" name="itemPrice" min="1" placeholder="菜品价格">
+                        <input type="number" id="itemNum" name="itemNum" min="1" placeholder="菜品数量（填入999则无限量）">
+                        <input type="text" id="description" name="description" placeholder="菜品描述">
                         <h4>菜品图片</h4>
                         <input id="uploadImg" type="file" multiple class="file" data-overwrite-initial="false" data-max-file-count="1" placeholder="菜品图片">
                     </div>
@@ -403,12 +406,22 @@
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
     <script type="text/javascript">
+        var shop_id;
         var offset = 0;
         var count = 10;
+        var idList = new Array();
+        var delMenu = new Array();
+        var importMenu = new Array();
+        var desList = new Array();
+        var nameList = new Array();
+        var numList = new Array();
+        var typeList = new Array();
+        var urlList = new Array();
+        var priceList = new Array();
 
         $('#uploadImg').fileinput({
             language: 'zh', //设置语言
-            uploadUrl: "/GreenTravelShop/img/upload", //上传的地址
+            uploadUrl: "http://10.108.121.54:8084/sellers/me/picture/shopQualifications", //上传的地址
             previewFileType: 'image',
             overwriteInitial: false,
             maxFileSize: 1000,
@@ -418,10 +431,129 @@
             browseClass: "btn btn-primary", //按钮样式             
             previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
             msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            dropZoneTitle: "请通过拖拽图片文件放到这里",
+            dropZoneClickTitle: "或者点击此区域添加图片",
             slugCallback: function (filename) {
+                // alert(filename);
                 return filename.replace('(', '_').replace(']', '_');
             }
         });
+
+        $('#uploadImg').on("fileuploaded", function (event, data, previewId, index) {
+            var result = data.response; //后台返回的json
+            //console.log(result.status);
+            //console.log(result.id);
+            $('#picid').val(result.id); //拿到后台传回来的id，给图片的id赋值序列化表单用
+            //如果是上传多张图
+            //计数标记，用于确保全部图片都上传成功了，再提交表单信息
+            var fileCount = $('#file-pic').fileinput('getFilesCount');
+            if (fileCount == 1) {
+                $.ajax({ //上传文件成功后再保存图片信息
+                    url: 'BannerPicAction!savaForm.action',
+                    data: $('#form1').serialize(), //form表单的值
+                    success: function (data, status) {},
+                    cache: false, //不缓存
+                });
+            }
+        });
+
+        function confirm() {
+            for (var i = 0; i < delMenu.length; i++) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "http://10.108.121.54:8084/sellers/me/goods/" +
+                        delMenu[i],
+                    dataType: "json",
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        alert("删除菜品成功！");
+                        window.location.reload();
+                    },
+                    error: function (data) {
+                        alert("删除菜品失败，请重新登陆或等待一段时间后再尝试。");
+                    }
+                });
+            }
+        }
+
+        function deleteRow(r) {
+            var i = r.parentNode.parentNode.rowIndex;
+            // idList.pop(i);
+            delMenu.push(idList[i - 1]);
+            idList.splice(i - 1, 1);
+            document.getElementById('menu-table').deleteRow(i);
+        };
+
+        function submitImport() {
+            //ajax导入菜单
+            var data = new Array();
+            $("input[name='checkItem']:checked").each(function () {
+                // alert(this.value);
+                val = parseInt(this.value);
+                importMenu.push(val);
+
+                good = new Array();
+                good['description'] = desList[val];
+                good['goods_name'] = nameList[val];
+                good['goods_type'] = typeList[val];
+                good['picture_url'] = urlList[val];
+                good['price'] = priceList[val];
+
+                data.push(good);
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.122.109:8084/sellers/me/goodsList",
+                dataType: "json",
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                success: function (data) {
+                    alert("导入菜品成功！");
+                },
+                error: function () {
+                    alert("导入菜品失败，请重新登陆或等待一段时间后再尝试。");
+                }
+            });
+        };
+
+        function submitAdd() {
+            //ajax添加菜品
+            var data = {
+                "description": $("#description").val(),
+                "goods_name": $("#itemName").val(),
+                "goods_number": $("#itemNum").val(),
+                "goods_type": $("#tag").val(),
+                "picture_url": "string",
+                "price": $("#itemPrice").val()
+            }
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.121.54:8084/sellers/me/goods",
+                dataType: "json",
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                success: function (data) {
+                    alert("添加菜品成功！");
+                    window.location.reload();
+                },
+                error: function () {
+                    alert("添加菜品失败，请重新登陆或等待一段时间后再尝试。");
+                }
+            });
+        };
 
         // function Good(id, goods_name, picture_url, description, goods_number, goods_type) {
         //     this.id = id;
@@ -432,9 +564,11 @@
         //     this.goods_number = goods_number;
         //     this.goods_type = goods_type;
         // }
+
         function previous() {
             if (offset != 0) {
                 offset = offset - 10;
+                // alert(offset);
                 $("#import-body").html("");
                 $.ajax({
                     type: "POST",
@@ -442,21 +576,38 @@
                     // dataType: "json",
                     // contentType: 'application/json; charset=UTF-8',
                     data: {
-                        "shop_id": "103840",
+                        "shop_id": shop_id,
                         "offset": offset,
                         "count": count
                     },
                     success: function (data) {
+                        desList = [];
+                        nameList = [];
+                        numList = [];
+                        typeList = [];
+                        urlList = [];
+                        priceList = [];
                         for (var i = 0; i < data.length; i++) {
+                            var goods_id = data[i].goods_id;
                             var goods_name = data[i].goods_name;
                             var price = data[i].price;
                             var description = data[i].description;
 
+                            desList.push(description);
+                            nameList.push(goods_name);
+                            numList.push(goods_number);
+                            typeList.push(goods_type);
+                            urlList.push(url);
+                            priceList.push(price);
+
                             // var shop = "<td>" + shop_name + "</td><td>" + tag +
                             //     "</td><td>" + addr + "</td>";
-                            var good = "<td>" + goods_name + "</td><td>" + price +
-                                "元</td><td><a class='btn btn-link' href='#' onclick='deleteRow(this)'>删除</a></td>";
-                            $("#menu-table").append(good);
+                            var good =
+                                "<tr><td type='width:200%'><input type='checkbox' name='checkItem' value='" +
+                                i + "' /></td><td>" +
+                                goods_name + "</td><td>" + price +
+                                "元</td><td>" + description + "</td></tr>";
+                            $("#import-body").append(good);
                         }
                     },
                     error: function () {
@@ -470,6 +621,7 @@
 
         function next() {
             offset = offset + 10;
+            // alert(offset);
             $("#import-body").html("");
             $.ajax({
                 type: "POST",
@@ -477,21 +629,37 @@
                 // dataType: "json",
                 // contentType: 'application/json; charset=UTF-8',
                 data: {
-                    "shop_id": "103840",
+                    "shop_id": shop_id,
                     "offset": offset,
                     "count": count
                 },
                 success: function (data) {
+                    desList = [];
+                    nameList = [];
+                    numList = [];
+                    typeList = [];
+                    urlList = [];
+                    priceList = [];
                     for (var i = 0; i < data.length; i++) {
+                        var goods_id = data[i].goods_id;
                         var goods_name = data[i].goods_name;
                         var price = data[i].price;
                         var description = data[i].description;
 
+                        desList.push(description);
+                        nameList.push(goods_name);
+                        numList.push(goods_number);
+                        typeList.push(goods_type);
+                        urlList.push(url);
+                        priceList.push(price);
+
                         // var shop = "<td>" + shop_name + "</td><td>" + tag +
                         //     "</td><td>" + addr + "</td>";
-                        var good = "<td>" + goods_name + "</td><td>" + price +
-                            "元</td><td><a class='btn btn-link' href='#' onclick='deleteRow(this)'>删除</a></td>";
-                        $("#menu-table").append(good);
+                        var good =
+                            "<tr><td type='width:200%'><input type='checkbox' name='checkItem' value='" +
+                            i + "' /></td><td>" +
+                            goods_name + "</td><td>" + price +
+                            "元</td><td>" + description + "</td></tr>";
                         $("#import-body").append(good);
                     }
                 },
@@ -501,10 +669,59 @@
             });
         }
 
+        $('#myModalImport').on('show.bs.modal', function (e) {
+            $("#import-body").html("");
+            //ajax获取候选菜单
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.121.54:8084/shops/get_waiting_dish",
+                data: {
+                    "shop_id": "103840",
+                    "offset": offset,
+                    "count": count
+                },
+                success: function (data) {
+                    desList = [];
+                    nameList = [];
+                    numList = [];
+                    typeList = [];
+                    urlList = [];
+                    priceList = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var goods_id = data[i].id;
+                        var goods_name = data[i].goods_name;
+                        var price = data[i].price;
+                        var url = data[i].picture_url;
+                        var goods_type = data[i].goods_type;
+                        var description = data[i].description;
+
+                        desList.push(description);
+                        nameList.push(goods_name);
+                        // numList.push(goods_number);
+                        typeList.push(goods_type);
+                        urlList.push(url);
+                        priceList.push(price);
+
+                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                        //     "</td><td>" + addr + "</td>";
+                        var good =
+                            "<tr><td type='width:200%'><input type='checkbox' name='checkItem' value='" +
+                            i + "' /></td><td>" +
+                            goods_name + "</td><td>" + price +
+                            "元</td><td>" + description + "</td></tr>";
+                        $("#import-body").append(good);
+                    }
+                },
+                error: function () {
+                    alert("未找到相关店铺。");
+                }
+            });
+        });
+
         $(function () {
             // alert("123");
             if ($.cookie("id") != null) {
-                var shop_id = $.cookie("id");
+                shop_id = $.cookie("id");
                 // var avatar_url = $.cookie("al_avatar_url");
                 $("#user-nav").append(
                     "<ul class='nav'><li class='dropdown'id='profile-messages'><a title=''href='#'data-toggle='dropdown'data-target='#profile-messages'class='dropdown-toggle'><i class='icon icon-user'></i><span class='text'>选项</span><b class='caret'></b></a><ul class='dropdown-menu'><li><a href='#'><i class='icon-user'></i>个人设置</a></li><li class='divider'></li><li><a href='#'><i class='icon-check'></i>我的任务</a></li><li class='divider'></li><li><a href='#'><i class='icon-key'></i>登出</a></li></ul></li><li class='dropdown'id='menu-messages'><a href='#'data-toggle='dropdown'data-target='#menu-messages'class='dropdown-toggle'><i class='icon icon-envelope'></i><span class='text'>消息</span><span class='label label-important'>5</span><b class='caret'></b></a><ul class='dropdown-menu'><li><a class='sAdd'title=''href='#'><i class='icon-plus'></i>发送消息</a></li><li class='divider'></li><li><a class='sInbox'title=''href='#'><i class='icon-envelope'></i>收件箱</a></li><li class='divider'></li><li><a class='sTrash'title=''href='#'><i class='icon-trash'></i>清空通知</a></li></ul></li><li class=''><a title=''href='login.html'><i class='icon icon-share-alt'></i><span class='text'>登出</span></a></li></ul>"
@@ -533,8 +750,11 @@
                             var goods_number = data[i].goods_number;
                             var goods_type = data[i].goods_type;
 
-                            var good = "<td>" + goods_name + "</td><td>" + price +
-                                "元</td><td><a class='btn btn-link' href='#' onclick='deleteRow(this)'>删除</a></td>";
+                            idList.push(id);
+
+                            var good = "<tr><td>" + goods_name + "</td><td>" + price +
+                                "元</td><td><a class='btn btn-link' href='#' onclick='deleteRow(this)' value= '" +
+                                id + "'>删除</a></td></tr>";
                             $("#menu-table").append(good);
 
                             // if (menu[goods_type] == null) {
@@ -554,7 +774,7 @@
                         // }
                     },
                     error: function () {
-                        alert("获取菜品失败，请重新尝试。");
+                        alert("获取菜品失败，请重新登陆或等待一段时间后再尝试。");
                     }
                 });
             } else {
@@ -577,71 +797,6 @@
                 });
             }
         });
-
-        $('#myModalImport').on('show.bs.modal', function (e) {
-            $("#import-body").html("");
-            //ajax获取候选菜单
-            $.ajax({
-                type: "POST",
-                url: "http://10.108.122.109:8084/shops/get_waiting_dish",
-                data: {
-                    "shop_id": "103840",
-                    "offset": offset,
-                    "count": count
-                },
-                success: function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        var goods_id = data[i].goods_id;
-                        var goods_name = data[i].goods_name;
-                        var price = data[i].price;
-                        var description = data[i].description;
-
-                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
-                        //     "</td><td>" + addr + "</td>";
-                        var good =
-                            "<tr><td type='width:200%'><input type='checkbox' name='checkItem' value='" +
-                            goods_id + "' /></td><td>" +
-                            goods_name + "</td><td>" + price +
-                            "元</td><td>" + description + "</td></tr>";
-                        $("#import-body").append(good);
-                    }
-                },
-                error: function () {
-                    alert("未找到相关店铺。");
-                }
-            });
-        });
-
-        function submitImport() {
-            //ajax导入菜单
-            $("input:[name='checkItem']:checked").val();
-        };
-
-        function submitAdd() {
-            //ajax添加菜品
-
-        };
-
-        function deleteRow(r) {
-            var i = r.parentNode.parentNode.rowIndex;
-            document.getElementById('menu-body').deleteRow(i);
-        };
-
-
-        function deleteRow1(r) {
-            var i = r.parentNode.parentNode.rowIndex;
-            document.getElementById('menu1').deleteRow(i);
-        };
-
-        function deleteRow2(r) {
-            var i = r.parentNode.parentNode.rowIndex;
-            document.getElementById('menu2').deleteRow(i);
-        };
-
-        function deleteRow3(r) {
-            var i = r.parentNode.parentNode.rowIndex;
-            document.getElementById('menu3').deleteRow(i);
-        };
     </script>
 </body>
 

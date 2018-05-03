@@ -142,7 +142,7 @@
                             <div class="social">
                                 <ul>
                                     <li style="width:0%;margin-top:20px">
-                                        <button type="button" id="change" class="btn btn-primary btn-lg">查看评价</button>
+                                        <button type="button" name="change" class="btn btn-primary btn-lg">查看评价</button>
                                     </li>
                                 </ul>
                             </div>
@@ -159,7 +159,7 @@
                             <div class="social">
                                 <ul>
                                     <li style="width:0%;margin-top:20px">
-                                        <button type="button" id="change" class="btn btn-primary btn-lg">查看评价</button>
+                                        <button type="button" name="change" class="btn btn-primary btn-lg">查看评价</button>
                                     </li>
                                 </ul>
                             </div>
@@ -176,7 +176,7 @@
                             <div class="social">
                                 <ul>
                                     <li style="width:0%;margin-top:20px">
-                                        <button type="button" id="change" class="btn btn-primary btn-lg">查看评价</button>
+                                        <button type="button" name="change" class="btn btn-primary btn-lg">查看评价</button>
                                     </li>
                                 </ul>
                             </div>
@@ -199,6 +199,15 @@
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
     <script type="text/javascript">
+        var btn = document.getElementsByName("change");
+
+        for (var i = 0; i < btn.length; i++) {
+            btn[i].setAttribute('i', i);
+            btn[i].onclick = function () {
+                b = this.getAttribute('i');
+                alert("暂不支持该功能！");
+            }
+        }
         $(function () {
             if ($.cookie("id") != null) {
                 var shop_id = $.cookie("id");
@@ -210,7 +219,7 @@
                 //ajax展示历史订单
                 $.ajax({
                     type: "GET",
-                    url: "http://10.108.121.54:8084/sellers/me/orders",
+                    url: "http://10.108.121.54:8084/sellers/me/orders/history",
                     dataType: "json",
                     crossDomain: true,
                     xhrFields: {
@@ -230,10 +239,21 @@
                                 str = str + product_name + "*" + product_num + "<br>";
                             }
                             str = str + "总价：" + price + "元</div>'";
+
+                            var order = "<li style='margin-top:50px'><img src='" + url +
+                                "' /><div class='info'><h2 class='title'>" +
+                                shop_name +
+                                "<a href='#text' onclick='detail()'><span class='glyphicon glyphicon-new-window'>详情</span></a></h2>" +
+                                "<p class='desc' style='color:blue;margin-top:10px'>" + area +
+                                "</p>" +
+                                "<p class='desc' style='color:rgb(128, 0, 111)'>订单价格：" + price +
+                                "元</p>" +
+                                "<p class='desc'>订单时间：" + time +
+                                "</p></div><div class='social'><ul><li style='width:0%;margin-top:20px'><button type='button' name='change' class='btn btn-primary btn-lg'>查看评价</button></li></ul></div></li>";
                         }
                     },
                     error: function () {
-                        alert("获取店铺失败，请重新尝试。");
+                        alert("获取店铺失败，请重新登陆或等待一段时间后再尝试。");
                     }
                 });
             } else {

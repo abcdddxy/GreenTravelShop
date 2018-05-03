@@ -145,59 +145,6 @@
             <div class="row">
                 <div class="[ col-xs-12 col-sm-offset-2 col-sm-8 ]">
                     <ul class="event-list" id="couponList">
-                        <li style="margin-top:50px">
-                            <img src="img/haidilao.jpg" />
-                            <div class="info">
-                                <h2 class="title">海底捞（西单店）</h2>
-                                <p class="desc" style="color:green;margin-top:10px">全场商品8折优惠</p>
-                                <p class="desc" style="color:red">剩余45张</p>
-                                <p class="desc">2018-9-01到期</p>
-                            </div>
-                            <div class="social">
-                                <ul>
-                                    <li style="width:0%;">
-                                        <button type="button" name="changebtn" id="change" class="btn btn-primary btn-lg" id="change">修改</button>
-                                        <button type="button" name="delbtn" id="remove" class="btn btn-primary btn-lg">删除</button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li style="margin-top:50px">
-                            <img alt="My 24th Birthday!" src="img/haidilao.jpg" />
-                            <div class="info">
-                                <h2 class="title">海底捞（西单店）</h2>
-                                <p class="desc" style="color:green;margin-top:10px">全场商品满100减10</p>
-                                <p class="desc" style="color:red">剩余999张</p>
-                                <p class="desc">2018-5-31到期</p>
-                            </div>
-                            <div class="social">
-                                <ul>
-                                    <li style="width:0%;">
-                                        <button type="button" name="changebtn" id="change" class="btn btn-primary btn-lg" id="change">修改</button>
-                                        <button type="button" name="delbtn" id="remove" class="btn btn-primary btn-lg">删除</button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li style="margin-top:50px">
-                            <img alt="Disney Junior Live On Tour!" src="img/haidilao.jpg" />
-                            <div class="info">
-                                <h2 class="title">海底捞（西单店）</h2>
-                                <p class="desc" style="color:green;margin-top:10px">部分商品7折优惠</p>
-                                <p class="desc" style="color:red">剩余260张</p>
-                                <p class="desc">2018-3-31到期</p>
-                            </div>
-                            <div class="social">
-                                <ul>
-                                    <li style="width:0%;">
-                                        <button type="button" name="changebtn" id="change" class="btn btn-primary btn-lg" id="change">修改</button>
-                                        <button type="button" name="delbtn" id="remove" class="btn btn-primary btn-lg">删除</button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -229,6 +176,10 @@
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/layer.js"></script>
+    <script src="js/typeahead.js"></script>
+    <script src="js/matrix.js"></script>
     <script type="text/javascript" src="js/moment.js"></script>
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
@@ -236,37 +187,40 @@
         var amountList = new Array();
         var dateList = new Array();
         var idList = new Array();
+        var nameList = new Array();
         var b = 0;
-        var btn = document.getElementsByName("changebtn");
-        var delbtn = document.getElementsByName("delbtn");
+        var sel = 0;
 
-        for (var i = 0; i < btn.length; i++) {
-            btn[i].setAttribute('i', i);
-            btn[i].onclick = function () {
-                b = this.getAttribute('i');
-
-                $("#myModalChange").modal('show');
-                // $("#changeAmount").val(amountList[b]);
-                $("#changeAmount").val();
-                $("#changeDatetimeEnd").datetimepicker('setDate', new Date(Date.UTC(2018, 10, 11)));
-                // $("#changeDatetimeEnd").data("DateTimePicker").date('2018-12-31');
-                alert($("#changeDatetimeEnd").datetimepicker('getDate'));
-            }
-        }
-
-        for (var i = 0; i < delbtn.length; i++) {
-            delbtn[i].setAttribute('i', i);
-            delbtn[i].onclick = function () {
-                b = this.getAttribute('i');
-
-                //ajax删除
-            }
-        }
+        // $('#couponList').on('click', '.btn', function () {
+        //     alert(btn.length);
+        // });
 
         function change() {
             //ajax修改
-            var amount = $("#changeAmount").val();
-            var timeEnd = $("#changeDatetimeEnd").val();
+            var data = {
+                "coupon_name": nameList[sel],
+                "coupon_num": $("#changeAmount").val(),
+                "expire_at": $("#changeDatetimeEnd").val()
+            };
+
+            $.ajax({
+                type: "PATCH",
+                url: "http://10.108.121.54:8084/sellers/me/coupons/" + idList[sel],
+                dataType: "json",
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                success: function (data) {
+                    alert("修改优惠券成功！");
+                    window.location.reload();
+                },
+                error: function () {
+                    alert("修改优惠券失败，请重新尝试。");
+                }
+            });
         }
 
         $("#changeDatetimeEnd").datetimepicker({
@@ -280,6 +234,8 @@
         $(function () {
             if ($.cookie("id") != null) {
                 var shop_id = $.cookie("id");
+                var shop_name = $.cookie("seller_name");
+                // alert(shop_id);
                 // var avatar_url = $.cookie("al_avatar_url");
                 $("#user-nav").append(
                     "<ul class='nav'><li class='dropdown'id='profile-messages'><a title=''href='#'data-toggle='dropdown'data-target='#profile-messages'class='dropdown-toggle'><i class='icon icon-user'></i><span class='text'>选项</span><b class='caret'></b></a><ul class='dropdown-menu'><li><a href='#'><i class='icon-user'></i>个人设置</a></li><li class='divider'></li><li><a href='#'><i class='icon-check'></i>我的任务</a></li><li class='divider'></li><li><a href='#'><i class='icon-key'></i>登出</a></li></ul></li><li class='dropdown'id='menu-messages'><a href='#'data-toggle='dropdown'data-target='#menu-messages'class='dropdown-toggle'><i class='icon icon-envelope'></i><span class='text'>消息</span><span class='label label-important'>5</span><b class='caret'></b></a><ul class='dropdown-menu'><li><a class='sAdd'title=''href='#'><i class='icon-plus'></i>发送消息</a></li><li class='divider'></li><li><a class='sInbox'title=''href='#'><i class='icon-envelope'></i>收件箱</a></li><li class='divider'></li><li><a class='sTrash'title=''href='#'><i class='icon-trash'></i>清空通知</a></li></ul></li><li class=''><a title=''href='login.html'><i class='icon icon-share-alt'></i><span class='text'>登出</span></a></li></ul>"
@@ -301,32 +257,82 @@
                             // var obj = JSON.parse(data[i]);
 
                             var coupon_name = data[i].coupon_name;
-                            var expire_at = data[i].expire_at;
+                            var expire_at = data[i].expire_at.substring(0, 10);
                             var id = data[i].id;
                             var image_url = data[i].image_url;
                             var shop_id = data[i].shop_id;
-                            var shop_name = data[i].shop_name;
-                            var status = data[i].status;
+                            var amount = data[i].coupon_number;
                             var type = data[i].type;
 
-                            idList.append(id);
-                            amountList.append(amount);
-                            dateList.append(date);
+                            nameList.push(coupon_name);
+                            idList.push(id);
+                            amountList.push(amount);
+                            dateList.push(expire_at);
 
                             var coupon =
-                                "<li style='margin-top:50px'><img src=" +
-                                image_url + "/><div class='info'><h2 class='title'>" + shop_name +
+                                "<li style='margin-top:50px;margin-left: 15%;width: 75%'><img src='" +
+                                image_url + "'/><div class='info'><h2 class='title'>" + shop_name +
                                 "</h2><p class='desc'style='color:green;margin-top:10px'>" +
                                 coupon_name +
-                                "</p><p class='desc'style='color:red'>剩余260张</p><p class='desc'>" +
+                                "</p><p class='desc'style='color:red'>剩余" + amount +
+                                "张</p><p class='desc'>" +
                                 expire_at +
-                                "到期</p></div><div class='social'><ul><li style='width:0%;'><button type='button'id='change'class='btn btn-primary btn-lg'data-toggle='modal'data-target='#myModalChange'id='change'>修改</button><button type='button'id='remove'class='btn btn-primary btn-lg'>删除</button></li></ul></div></li>";
+                                "到期</p></div><div class='social'><ul><li style='width:0%;'><button type='button' name='changebtn' id='change' class='btn btn-primary btn-lg'>修改</button><button type='button' name='delbtn' id='remove' class='btn btn-primary btn-lg'>删除</button></li></ul></div></li>";
 
                             $("#couponList").append(coupon);
+
+                            if (i == data.length - 1) {
+                                var btn = document.getElementsByName("changebtn");
+                                var delbtn = document.getElementsByName("delbtn");
+
+                                for (var i = 0; i < btn.length; i++) {
+                                    btn[i].setAttribute('i', i);
+                                    btn[i].onclick = function () {
+                                        b = this.getAttribute('i');
+
+                                        sel = b;
+                                        // alert(amountList.length);
+                                        // alert(dateList.length);
+                                        $("#myModalChange").modal('show');
+                                        // $("#changeAmount").val(amountList[b]);
+                                        $("#changeAmount").val(amountList[b]);
+                                        $("#changeDatetimeEnd").datetimepicker('setDate', new Date(
+                                            dateList[b]));
+                                    }
+                                }
+
+                                for (var i = 0; i < delbtn.length; i++) {
+                                    delbtn[i].setAttribute('i', i);
+                                    delbtn[i].onclick = function () {
+                                        b = this.getAttribute('i');
+                                        sel = b;
+
+                                        //ajax删除
+                                        $.ajax({
+                                            type: "DELETE",
+                                            url: "http://10.108.121.54:8084/sellers/me/coupons/" +
+                                                idList[sel],
+                                            dataType: "json",
+                                            crossDomain: true,
+                                            xhrFields: {
+                                                withCredentials: true
+                                            },
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function (data) {
+                                                alert("删除优惠券成功！");
+                                                window.location.reload();
+                                            },
+                                            error: function (data) {
+                                                alert("删除优惠券失败，请重新登陆或等待一段时间后再尝试。");
+                                            }
+                                        });
+                                    }
+                                }
+                            }
                         }
                     },
                     error: function () {
-                        alert("获取菜品失败，请重新尝试。");
+                        alert("获取优惠券失败，请重新尝试。");
                     }
                 });
             } else {

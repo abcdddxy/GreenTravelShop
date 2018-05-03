@@ -234,7 +234,7 @@
                 //ajax展示当前订单
                 $.ajax({
                     type: "GET",
-                    url: "http://10.108.121.54:8084/sellers/me/orders",
+                    url: "http://10.108.121.54:8084/sellers/me/orders/current",
                     dataType: "json",
                     crossDomain: true,
                     xhrFields: {
@@ -244,9 +244,12 @@
                     success: function (data) {
                         var menu = new Array();
                         for (var i = 0; i < data.length; i++) {
-                            var obj = JSON.parse(data[i]);
-                            var price = obj.order_amount_total;
-                            var detail = obj.orderDetails;
+                            var price = data[i].order_amount_total;
+                            var detail = data[i].orderDetails;
+                            var shop_name = "";
+                            var url = "";
+                            var area = "";
+                            var time = data[i].pay_time.substring(0, 10);
 
                             for (var j = 0; j < detail.length; j++) {
                                 var product_name = detail[j].product_name;
@@ -254,7 +257,7 @@
                                 str = str + product_name + "*" + product_num + "<br>";
                             }
                             str = str + "总价：" + price + "元</div>'";
-                            orderDetail.append(str);
+                            orderDetail.push(str);
 
                             var order = "<li style='margin-top:50px'><img src='" + url +
                                 "' /><div class='info'><h2 class='title'>" +
@@ -269,7 +272,7 @@
                         }
                     },
                     error: function () {
-                        alert("获取店铺失败，请重新尝试。");
+                        alert("获取店铺失败，请重新登陆或等待一段时间后再尝试。");
                     }
                 });
             } else {

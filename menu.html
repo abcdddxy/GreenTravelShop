@@ -370,24 +370,24 @@
     <script src="js/jquery.flot.min.js"></script>
     <script src="js/jquery.flot.resize.min.js"></script>
     <script src="js/jquery.peity.min.js"></script>
-    <script src="js/fullcalendar.min.js"></script>
+    <script src="js/fullcalendar.min.js"></script> -->
     <script src="js/matrix.js"></script>
     <script src="js/matrix.dashboard.js"></script>
     <script src="js/jquery.gritter.min.js"></script>
     <script src="js/matrix.interface.js"></script>
     <script src="js/matrix.chat.js"></script>
-    <script src="js/jquery.validate.js"></script>
+    <!-- <script src="js/jquery.validate.js"></script>
     <script src="js/matrix.form_validation.js"></script>
     <script src="js/jquery.wizard.js"></script>
     <script src="js/jquery.uniform.js"></script>
-    <script src="js/select2.min.js"></script>
+    <script src="js/select2.min.js"></script> -->
     <script src="js/matrix.popover.js"></script>
-    <script src="js/jquery.dataTables.min.js"></script>
+    <!-- <script src="js/jquery.dataTables.min.js"></script>
     <script src="js/matrix.tables.js"></script>
     <script src="js/layer.js"></script>
     <script src="js/fileinput.min.js" type="text/javascript"></script>
-    <script src="js/fileinput_zh.js" type="text/javascript"></script> -->
-    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script src="js/fileinput_zh.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script> -->
 
     <script type="text/javascript">
         // $('#uploadImg').fileinput({
@@ -445,7 +445,8 @@
                             var goods_number = data[i].goods_number;
                             var goods_type = data[i].goods_type;
 
-                            $("#menu-body").append();
+                            var good = "<tr><td>" + goods_name + "</td><td>" + price + "元</td><td><a class='btn btn-link' href='#' onclick='deleteRow(this)'>删除</a></td></tr>"
+                            $("#menu-body").append(good);
 
                             // if (menu[goods_type] == null) {
                             //     menu[goods_type] = new Array();

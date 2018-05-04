@@ -71,6 +71,12 @@
                     <span>菜单相关</span>
                 </a>
             </li>
+            <li class>
+                <a href="comment.html">
+                    <i class="icon icon-pencil"></i>
+                    <span>评论相关</span>
+                </a>
+            </li>
             <li class="submenu">
                 <a href="#">
                     <i class="icon icon-signal"></i>
@@ -304,25 +310,27 @@
                 <div id="collapseOne" class="panel-collapse collapse">
                     <div class="panel-body">
                         <ul class="list-group list-group-flush">
-                            <table class="table" id="menu-body">
-                                <tr>
-                                    <td>干炒牛河</td>
-                                    <td>26元</td>
-                                    <td>
-                                        <a class="btn btn-link" href="#" onclick="deleteRow(this)">删除</a>
-                                    </td>
-                                </tr>
+                            <table class="table" id="menu-table">
+                                <thead>
+                                    <tr>
+                                        <td>菜品名称</td>
+                                        <td>菜品价格</td>
+                                        <td>操作</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
                             </table>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <div style="margin-left: 70%;margin-top: 20px">
+            <div style="margin-left: 50%;margin-top: 20px">
                 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalImport" id="import">导入菜单</button>
                 <button type="button" class="btn btn-primary btn-lg" style="margin-left: 20px" data-toggle="modal" data-target="#myModalAdd"
                     id="add">添加菜品</button>
-                <button type="button" class="btn btn-primary btn-lg" style="margin-left: 20px" id="change">确认修改</button>
+                <button type="button" class="btn btn-primary btn-lg" style="margin-left: 20px" id="change" onclick="confirm()">确认修改</button>
             </div>
         </div>
 
@@ -330,9 +338,30 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">导入菜单</div>
-                    <div class="modal-body" style="height:400px;">
+                    <div class="modal-body" style="height:600px;">
                         <table class="table table-bordered table-hover" id="importMenu">
+                            <thead id="import-head">
+                                <tr>
+                                    <td style="width:40px">
+                                        <input type="checkbox" id="checkAll" name="checkAll" />
+                                    </td>
+                                    <td style="width:80px">菜品名称</td>
+                                    <td style="width:80px">菜品价格</td>
+                                    <td>菜品描述</td>
+                                </tr>
+                            </thead>
+
+                            <tbody id="import-body">
+                            </tbody>
                         </table>
+                        <ul class="pager">
+                            <li>
+                                <a href="javascript:;" onclick="previous()">&larr; 上一页</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" onclick="next()">下一页 &rarr;</a>
+                            </li>
+                        </ul>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" onclick="submitImport()">确定导入</button>
@@ -346,11 +375,21 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">添加菜品</div>
-                    <div class="modal-body" style="height:550px;">
+                    <div class="modal-body" style="height:770px;">
                         <input type="text" id="itemName" name="itemName" placeholder="菜品名称" />
+                        <input type="text" id="tag" name="tag" placeholder="菜品种类">
                         <input type="number" id="itemPrice" name="itemPrice" min="1" placeholder="菜品价格">
+                        <input type="number" id="itemNum" name="itemNum" min="1" placeholder="菜品数量（填入999则无限量）">
+                        <input type="text" id="description" name="description" placeholder="菜品描述">
                         <h4>菜品图片</h4>
-                        <input id="uploadImg" type="file" multiple class="file" data-overwrite-initial="false" data-max-file-count="1" placeholder="菜品图片">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input id="uploadImg" type="file" class="file" name="file">
+                                <input type="hidden" id="JSh_ZhP_Path" />
+                                <p class="help-block">支持jpg、jpeg、png、gif格式，大小不超过2.0M</p>
+                            </div>
+                        </div>
+                        <!-- <input id="uploadImg" type="file" multiple class="file" data-overwrite-initial="false" data-max-file-count="1" placeholder="菜品图片"> -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" onclick="submitAdd()">确定添加</button>
@@ -365,48 +404,173 @@
 
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- <script src="js/excanvas.min.js"></script>
-    <script src="js/jquery.ui.custom.js"></script>
-    <script src="js/jquery.flot.min.js"></script>
-    <script src="js/jquery.flot.resize.min.js"></script>
-    <script src="js/jquery.peity.min.js"></script>
-    <script src="js/fullcalendar.min.js"></script> -->
-    <script src="js/matrix.js"></script>
-    <script src="js/matrix.dashboard.js"></script>
-    <script src="js/jquery.gritter.min.js"></script>
-    <script src="js/matrix.interface.js"></script>
-    <script src="js/matrix.chat.js"></script>
-    <!-- <script src="js/jquery.validate.js"></script>
-    <script src="js/matrix.form_validation.js"></script>
-    <script src="js/jquery.wizard.js"></script>
-    <script src="js/jquery.uniform.js"></script>
-    <script src="js/select2.min.js"></script> -->
-    <script src="js/matrix.popover.js"></script>
-    <!-- <script src="js/jquery.dataTables.min.js"></script>
-    <script src="js/matrix.tables.js"></script>
     <script src="js/layer.js"></script>
+    <script src="js/typeahead.js"></script>
+    <script src="js/matrix.js"></script>
     <script src="js/fileinput.min.js" type="text/javascript"></script>
     <script src="js/fileinput_zh.js" type="text/javascript"></script>
-    <script type="text/javascript" src="js/jquery.cookie.js"></script> -->
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
     <script type="text/javascript">
-        // $('#uploadImg').fileinput({
-        //     language: 'zh', //设置语言
-        //     uploadUrl: "/GreenTravelShop/img/upload", //上传的地址
-        //     previewFileType: 'image',
-        //     overwriteInitial: false,
-        //     maxFileSize: 1000,
-        //     maxFilesNum: 10,
-        //     showUpload: true, //是否显示上传按钮
-        //     showCaption: true, //是否显示标题
-        //     browseClass: "btn btn-primary", //按钮样式             
-        //     previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
-        //     msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+        var shop_id;
+        var offset = 0;
+        var count = 10;
+        var url = "";
+        var idList = new Array();
+        var delMenu = new Array();
+        var importMenu = new Array();
+        var desList = new Array();
+        var nameList = new Array();
+        var numList = new Array();
+        var typeList = new Array();
+        var urlList = new Array();
+        var priceList = new Array();
 
-        //     slugCallback: function (filename) {
-        //         return filename.replace('(', '_').replace(']', '_');
-        //     }
-        // });
+        $('#uploadImg').fileinput({
+            uploadAsync: true,
+            language: 'zh', //设置语言
+            uploadLabel: "上传", //设置上传按钮的汉字
+            showCaption: false, //是否显示标题 
+            enctype: 'multipart/form-data',
+            uploadUrl: "http://10.108.121.54:8084/sellers/me/picture/goods", //上传的地址
+            previewFileType: 'image',
+            overwriteInitial: false,
+            maxFileSize: 1000,
+            maxFilesNum: 10,
+            showUpload: true, //是否显示上传按钮
+            showCaption: true, //是否显示标题
+            browseClass: "btn btn-primary", //按钮样式     
+            browseOnZoneClick: true,
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            dropZoneTitle: "请通过拖拽图片文件放到这里",
+            dropZoneClickTitle: "或者点击此区域添加图片",
+            ajaxSettings: {
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+            },
+            slugCallback: function (filename) {
+                // alert(filename);
+                return filename.replace('(', '_').replace(']', '_');
+            }
+        });
+
+        $('#uploadImg').on("fileuploaded", function (event, data, previewId, index) {
+            var result = data.response; //后台返回的json
+            url = url + result.pictureUrl;
+            //sellers/picture/shopQualifications/180504135744-20612-eAt7XcyV.png
+        });
+
+        function confirm() {
+            var delstr = "?";
+            for (var i = 0; i < delMenu.length; i++) {
+                delstr = delstr + "goodsIds=" + delMenu[i];
+                if (i != delMenu - 1) {
+                    delstr = delstr + "&";
+                }
+            }
+            $.ajax({
+                type: "DELETE",
+                url: "http://10.108.121.54:8084/sellers/me/goods" + delstr,
+                dataType: "json",
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    alert("删除菜品成功！");
+                    delMenu = [];
+                    window.location.reload();
+                },
+                error: function (data) {
+                    alert("删除菜品失败，请重新登陆或等待一段时间后再尝试。");
+                    window.location.reload();
+                }
+            });
+
+            for (var i = 0; i < delMenu.length; i++) {
+
+            }
+        }
+
+        function deleteRow(r) {
+            var i = r.parentNode.parentNode.rowIndex;
+            // idList.pop(i);
+            delMenu.push(idList[i - 1]);
+            idList.splice(i - 1, 1);
+            document.getElementById('menu-table').deleteRow(i);
+        };
+
+        function submitImport() {
+            //ajax导入菜单
+            var data = new Array();
+            $("input[name='checkItem']:checked").each(function () {
+                // alert(this.value);
+                val = parseInt(this.value);
+                importMenu.push(val);
+
+                good = {};
+                good['description'] = desList[val];
+                good['goods_name'] = nameList[val];
+                good['goods_type'] = typeList[val];
+                good['picture_url'] = urlList[val];
+                good['price'] = priceList[val];
+
+                data.push(good);
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.121.54:8084/sellers/me/goodsList",
+                dataType: "json",
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                success: function (data) {
+                    alert("导入菜品成功！");
+                    window.location.reload();
+                },
+                error: function () {
+                    alert("导入菜品失败，请重新登陆或等待一段时间后再尝试。");
+                }
+            });
+        };
+
+        function submitAdd() {
+            //ajax添加菜品
+            var data = {
+                "description": $("#description").val(),
+                "goods_name": $("#itemName").val(),
+                "goods_number": $("#itemNum").val(),
+                "goods_type": $("#tag").val(),
+                "picture_url": url,
+                "price": $("#itemPrice").val()
+            }
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.121.54:8084/sellers/me/goods",
+                dataType: "json",
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                success: function (data) {
+                    alert("添加菜品成功！");
+                    window.location.reload();
+                },
+                error: function () {
+                    alert("添加菜品失败，请重新登陆或等待一段时间后再尝试。");
+                }
+            });
+        };
 
         // function Good(id, goods_name, picture_url, description, goods_number, goods_type) {
         //     this.id = id;
@@ -418,10 +582,163 @@
         //     this.goods_type = goods_type;
         // }
 
+        function previous() {
+            if (offset != 0) {
+                offset = offset - 10;
+                // alert(offset);
+                $("#import-body").html("");
+                $.ajax({
+                    type: "POST",
+                    url: "http://10.108.122.109:8084/shops/get_waiting_dish",
+                    // dataType: "json",
+                    // contentType: 'application/json; charset=UTF-8',
+                    data: {
+                        "shop_id": shop_id,
+                        "offset": offset,
+                        "count": count
+                    },
+                    success: function (data) {
+                        desList = [];
+                        nameList = [];
+                        numList = [];
+                        typeList = [];
+                        urlList = [];
+                        priceList = [];
+                        for (var i = 0; i < data.length; i++) {
+                            var goods_id = data[i].goods_id;
+                            var goods_name = data[i].goods_name;
+                            var price = data[i].price;
+                            var description = data[i].description;
+
+                            desList.push(description);
+                            nameList.push(goods_name);
+                            numList.push(goods_number);
+                            typeList.push(goods_type);
+                            urlList.push(url);
+                            priceList.push(price);
+
+                            // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                            //     "</td><td>" + addr + "</td>";
+                            var good =
+                                "<tr><td type='width:200%'><input type='checkbox' name='checkItem' value='" +
+                                i + "' /></td><td>" +
+                                goods_name + "</td><td>" + price +
+                                "元</td><td>" + description + "</td></tr>";
+                            $("#import-body").append(good);
+                        }
+                    },
+                    error: function () {
+                        alert("未找到相关店铺。");
+                    }
+                });
+            } else {
+                alert("已经是第一页啦！");
+            }
+        }
+
+        function next() {
+            offset = offset + 10;
+            // alert(offset);
+            $("#import-body").html("");
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.122.109:8084/shops/get_waiting_dish",
+                // dataType: "json",
+                // contentType: 'application/json; charset=UTF-8',
+                data: {
+                    "shop_id": shop_id,
+                    "offset": offset,
+                    "count": count
+                },
+                success: function (data) {
+                    desList = [];
+                    nameList = [];
+                    numList = [];
+                    typeList = [];
+                    urlList = [];
+                    priceList = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var goods_id = data[i].goods_id;
+                        var goods_name = data[i].goods_name;
+                        var price = data[i].price;
+                        var description = data[i].description;
+
+                        desList.push(description);
+                        nameList.push(goods_name);
+                        numList.push(goods_number);
+                        typeList.push(goods_type);
+                        urlList.push(url);
+                        priceList.push(price);
+
+                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                        //     "</td><td>" + addr + "</td>";
+                        var good =
+                            "<tr><td type='width:200%'><input type='checkbox' name='checkItem' value='" +
+                            i + "' /></td><td>" +
+                            goods_name + "</td><td>" + price +
+                            "元</td><td>" + description + "</td></tr>";
+                        $("#import-body").append(good);
+                    }
+                },
+                error: function () {
+                    alert("未找到相关店铺。");
+                }
+            });
+        }
+
+        $('#myModalImport').on('show.bs.modal', function (e) {
+            $("#import-body").html("");
+            //ajax获取候选菜单
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.121.54:8084/shops/get_waiting_dish",
+                data: {
+                    "shop_id": "103840",
+                    "offset": offset,
+                    "count": count
+                },
+                success: function (data) {
+                    desList = [];
+                    nameList = [];
+                    numList = [];
+                    typeList = [];
+                    urlList = [];
+                    priceList = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var goods_id = data[i].id;
+                        var goods_name = data[i].goods_name;
+                        var price = data[i].price;
+                        var url = data[i].picture_url;
+                        var goods_type = data[i].goods_type;
+                        var description = data[i].description;
+
+                        desList.push(description);
+                        nameList.push(goods_name);
+                        // numList.push(goods_number);
+                        typeList.push(goods_type);
+                        urlList.push(url);
+                        priceList.push(price);
+
+                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                        //     "</td><td>" + addr + "</td>";
+                        var good =
+                            "<tr><td type='width:200%'><input type='checkbox' name='checkItem' value='" +
+                            i + "' /></td><td>" +
+                            goods_name + "</td><td>" + price +
+                            "元</td><td>" + description + "</td></tr>";
+                        $("#import-body").append(good);
+                    }
+                },
+                error: function () {
+                    alert("未找到相关店铺。");
+                }
+            });
+        });
+
         $(function () {
-            // alert($.cookie("id"));
+            // alert("123");
             if ($.cookie("id") != null) {
-                var shop_id = $.cookie("id");
+                shop_id = $.cookie("id");
                 // var avatar_url = $.cookie("al_avatar_url");
                 $("#user-nav").append(
                     "<ul class='nav'><li class='dropdown'id='profile-messages'><a title=''href='#'data-toggle='dropdown'data-target='#profile-messages'class='dropdown-toggle'><i class='icon icon-user'></i><span class='text'>选项</span><b class='caret'></b></a><ul class='dropdown-menu'><li><a href='#'><i class='icon-user'></i>个人设置</a></li><li class='divider'></li><li><a href='#'><i class='icon-check'></i>我的任务</a></li><li class='divider'></li><li><a href='#'><i class='icon-key'></i>登出</a></li></ul></li><li class='dropdown'id='menu-messages'><a href='#'data-toggle='dropdown'data-target='#menu-messages'class='dropdown-toggle'><i class='icon icon-envelope'></i><span class='text'>消息</span><span class='label label-important'>5</span><b class='caret'></b></a><ul class='dropdown-menu'><li><a class='sAdd'title=''href='#'><i class='icon-plus'></i>发送消息</a></li><li class='divider'></li><li><a class='sInbox'title=''href='#'><i class='icon-envelope'></i>收件箱</a></li><li class='divider'></li><li><a class='sTrash'title=''href='#'><i class='icon-trash'></i>清空通知</a></li></ul></li><li class=''><a title=''href='login.html'><i class='icon icon-share-alt'></i><span class='text'>登出</span></a></li></ul>"
@@ -432,6 +749,11 @@
                     type: "GET",
                     url: "http://10.108.121.54:8084/sellers/me/goods",
                     dataType: "json",
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         var menu = new Array();
                         for (var i = 0; i < data.length; i++) {
@@ -443,10 +765,12 @@
                             var picture_url = data[i].picture_url;
                             var description = data[i].description;
                             var goods_number = data[i].goods_number;
-                            var goods_type = data[i].goods_type;
+                            idList.push(id);
 
-                            var good = "<tr><td>" + goods_name + "</td><td>" + price + "元</td><td><a class='btn btn-link' href='#' onclick='deleteRow(this)'>删除</a></td></tr>"
-                            $("#menu-body").append(good);
+                            var good = "<tr><td>" + goods_name + "</td><td>" + price +
+                                "元</td><td><a class='btn btn-link' href='#' onclick='deleteRow(this)' value= '" +
+                                id + "'>删除</a></td></tr>";
+                            $("#menu-table").append(good);
 
                             // if (menu[goods_type] == null) {
                             //     menu[goods_type] = new Array();
@@ -465,7 +789,7 @@
                         // }
                     },
                     error: function () {
-                        alert("获取菜品失败，请重新尝试。");
+                        alert("获取菜品失败，请重新登陆或等待一段时间后再尝试。");
                     }
                 });
             } else {
@@ -475,84 +799,19 @@
             }
         });
 
-        $('#myModalImport').on('show.bs.modal', function (e) {
-            //ajax获取候选菜单
-
-            initTableCheckbox();
+        $("#checkAll").click(function () {
+            if ($(this).is(':checked') == true) { // 全选
+                $(":checkbox").each(function () {
+                    $(this).prop("checked", true);
+                    $(this).parent("span").addClass("checked");
+                });
+            } else {
+                $(":checkbox").each(function () {
+                    $(this).prop("checked", false);
+                    $(this).parent("span").removeClass("checked");
+                });
+            }
         });
-
-        function submitImport() {
-            //ajax导入菜单
-
-        };
-
-        function submitAdd() {
-            //ajax添加菜品
-
-        };
-
-        function deleteRow(r) {
-            var i = r.parentNode.parentNode.rowIndex;
-            document.getElementById('menu-body').deleteRow(i);
-        };
-
-
-        function deleteRow1(r) {
-            var i = r.parentNode.parentNode.rowIndex;
-            document.getElementById('menu1').deleteRow(i);
-        };
-
-        function deleteRow2(r) {
-            var i = r.parentNode.parentNode.rowIndex;
-            document.getElementById('menu2').deleteRow(i);
-        };
-
-        function deleteRow3(r) {
-            var i = r.parentNode.parentNode.rowIndex;
-            document.getElementById('menu3').deleteRow(i);
-        };
-
-        function initTableCheckbox() {
-            var $thr = $('table thead tr');
-            var $checkAllTh = $('<th><input type="checkbox" id="checkAll" name="checkAll" /></th>');
-            /*将全选/反选复选框添加到表头最前，即增加一列*/
-            $thr.prepend($checkAllTh);
-            /*“全选/反选”复选框*/
-            var $checkAll = $thr.find('input');
-            $checkAll.click(function (event) {
-                /*将所有行的选中状态设成全选框的选中状态*/
-                $tbr.find('input').prop('checked', $(this).prop('checked'));
-                /*并调整所有选中行的CSS样式*/
-                if ($(this).prop('checked')) {
-                    $tbr.find('input').parent().parent().addClass('warning');
-                } else {
-                    $tbr.find('input').parent().parent().removeClass('warning');
-                }
-                /*阻止向上冒泡，以防再次触发点击操作*/
-                event.stopPropagation();
-            });
-            /*点击全选框所在单元格时也触发全选框的点击操作*/
-            $checkAllTh.click(function () {
-                $(this).find('input').click();
-            });
-            var $tbr = $('table tbody tr');
-            var $checkItemTd = $('<td><input type="checkbox" name="checkItem" /></td>');
-            /*每一行都在最前面插入一个选中复选框的单元格*/
-            $tbr.prepend($checkItemTd);
-            /*点击每一行的选中复选框时*/
-            $tbr.find('input').click(function (event) {
-                /*调整选中行的CSS样式*/
-                $(this).parent().parent().toggleClass('warning');
-                /*如果已经被选中行的行数等于表格的数据行数，将全选框设为选中状态，否则设为未选中状态*/
-                $checkAll.prop('checked', $tbr.find('input:checked').length == $tbr.length ? true : false);
-                /*阻止向上冒泡，以防再次触发点击操作*/
-                event.stopPropagation();
-            });
-            /*点击每一行时也触发该行的选中操作*/
-            $tbr.click(function () {
-                $(this).find('input').click();
-            });
-        };
     </script>
 </body>
 

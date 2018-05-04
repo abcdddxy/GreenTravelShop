@@ -40,12 +40,14 @@
             <div class="input-group">
                 <input type="text" id="ver" placeholder="验证码">
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-primary btn-lg" onclick="sendVer()">发送验证码</button>
+                    <button type="button" class="btn btn-primary btn-lg" id="snedVer" onclick="sendVer()">发送验证码</button>
                 </span>
             </div>
+            <input type="text" id="sellerName" placeholder="店主姓名" />
+            <input type="text" id="station" placeholder="站点名称" />
             <input type="password" id="pwd" placeholder="密码（至少8位）" />
             <input type="password" id="cpwd" placeholder="重复密码" />
-            <input type="button" id="regist" class="next action-button" value="注册" />
+            <input type="button" id="regist" class="next action-button" onclick="register()" value="注册" />
         </fieldset>
 
         <fieldset>
@@ -59,17 +61,44 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu pull-right">
-                            <li onclick="selcetCY()">
+                            <li onclick="selectCY()">
                                 <a href="#">餐饮</a>
                             </li>
-                            <li onclick="selcetYL()">
+                            <li onclick="selectYL()">
                                 <a href="#">娱乐</a>
                             </li>
-                            <li onclick="selcetGW()">
+                            <li onclick="selectGW()">
                                 <a href="#">购物</a>
                             </li>
-                            <li onclick="selcetLY()">
+                            <li onclick="selectLY()">
                                 <a href="#">旅游</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="shopName" name="shopName" placeholder="商店名称" />
+                    <input type="number" id="shopNum" name="shopNum" min="1" placeholder="店铺数量">
+                    <input type="text" id="shopPhone" name="shopPhone" placeholder="联系电话" />
+                    <div class="col-lg-6" style="padding-left:0px">
+                        <input type="text" id="datetimeStart" name="datetimeStart" readonly class="form_datetime" placeholder="营业开始时间" />
+                    </div>
+                    <div class="col-lg-6" style="padding-right:0px">
+                        <input type="text" id="datetimeEnd" name="datetimeEnd" readonly class="form_datetime" placeholder="营业结束时间" />
+                    </div>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="selectIsChainText" name="selectIsChainText" placeholder="是否为连锁店">
+                    <div class="input-group-btn" id="selectIsChain">
+                        <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li onclick="selectYes()">
+                                <a href="#">是</a>
+                            </li>
+                            <li onclick="selectNo()">
+                                <a href="#">否</a>
                             </li>
                         </ul>
                     </div>
@@ -80,17 +109,6 @@
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="createMap">地图选点</button>
                 </span>
-            </div>
-            <div class="input-group">
-                <input type="number" id="shopNum" name="shopNum" min="1" placeholder="店铺数量">
-                <input type="text" id="shopName" name="shopName" placeholder="商店名称" />
-                <input type="text" id="shopPhone" name="shopPhone" placeholder="联系电话" />
-                <div class="col-lg-6" style="padding-left:0px">
-                    <input type="text" id="datetimeStart" name="datetimeStart" readonly class="form_datetime" placeholder="营业开始时间" />
-                </div>
-                <div class="col-lg-6" style="padding-right:0px">
-                    <input type="text" id="datetimeEnd" name="datetimeEnd" readonly class="form_datetime" placeholder="营业结束时间" />
-                </div>
             </div>
             <!-- <input type="button" name="previous" class="previous action-button" value="上一步" /> -->
             <input type="button" name="next" class="next action-button" value="下一步" />
@@ -123,85 +141,554 @@
         </div>
     </div>
 
+    <!--模态框（Modal） -->
+    <div class="modal fade" id="myModalShopName" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">绑定美团点评商家</div>
+                <div class="modal-body" style="height:400px;" id="bindingList">
+                    <!-- <table class="table table-bordered table-hover" id="bindingList">
+                        <thead>
+                            <tr>
+                                <td>商家名称</td>
+                                <td>店铺类型</td>
+                                <td>操作</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table> -->
+                </div>
+                <ul class="pager">
+                    <li>
+                        <a href="javascript:;" onclick="previous()">&larr; 上一页</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" onclick="next()">下一页 &rarr;</a>
+                    </li>
+                </ul>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="submitBinding()">确定绑定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--模态框（Modal） -->
+    <div class="modal fade" id="myModalIsChain" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">绑定连锁店</div>
+                <div class="modal-body" style="height:400px;" id="isChainList">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="submitIsChain()">确定绑定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/register.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $("#regist").click(function () {
-            if (pass.value != cpass.value) {
-                alert("两次输入的密码不一致！");
-            } else if (phone.value == "") {
-                alert("手机号不能为空！");
-            } else if (ver == "") {
-                alert("验证码校验失败！");
+        var lng = -1;
+        var lat = -1;
+        var phone = -1;
+        var offset = 0;
+        var count = 12;
+        var chainId = -1;
+        var shopName;
+        var shopId;
+        var picUrl = "http://10.108.122.109:8084/";
+
+        var idList = new Array();
+        var phoneList = new Array();
+        var timeBeginList = new Array();
+        var timeEndList = new Array();
+
+
+        function sendVer() {
+            // setTimeout(function () {
+            //     alert("发送验证码成功！");
+            // }, 500);
+
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.122.109:8084/shops/get_waiting_bind_shops",
+                // dataType: "json",
+                // contentType: 'application/json; charset=UTF-8',
+                data: {
+                    "phone": $("#phone").val()
+                },
+                success: function (data) {
+                    idList = [];
+                    phoneList = [];
+                    timeBeginList = [];
+                    timeEndList = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var dp_shop_id = data[i].id;
+                        var phone = data[i].phone;
+                        var shop_name = data[i].shop_name;
+                        var tag = data[i].tag;
+                        var addr = data[i].addr;
+                        var timeS = data[i].weekday_business_begin;
+                        var timeE = data[i].weekday_business_finish;
+
+                        idList.push(dp_shop_id);
+                        phoneList.push(phone);
+                        timeBeginList.push(timeS);
+                        timeEndList.push(timeE);
+
+                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                        //     "</td><td>" + addr + "</td>";
+                        var shop =
+                            "<div class='radio' id='shopList'><label><input type='radio' name='bindShop' id='bindShop' value='" +
+                            dp_shop_id + "'>" +
+                            shop_name + ":" + addr + "</label></div>";
+                        $("#bindingList").append(shop);
+                    }
+                },
+                error: function () {
+                    alert("未找到相关店铺。");
+                }
+            });
+
+            var time = 60;
+            $(this).attr("disabled", true);
+            var timer = setInterval(function () {
+                if (time == 0) {
+                    $("#snedVer").removeAttr("disabled");
+                    $("#snedVer").html("重新发送");
+                    clearInterval(timer);
+                } else {
+                    $("#snedVer").html(time);
+                    time--;
+                }
+            }, 1000);
+
+        };
+
+        $("#shopName").blur(function () {
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.122.109:8084/shops/get_waiting_bind_shops",
+                // dataType: "json",
+                // contentType: 'application/json; charset=UTF-8',
+                data: {
+                    "shop_name": $("#shopName").val(),
+                    "offset": offset,
+                    "count": count
+                },
+                success: function (data) {
+                    idList = [];
+                    phoneList = [];
+                    timeBeginList = [];
+                    timeEndList = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var dp_shop_id = data[i].id;
+                        var phone = data[i].phone;
+                        var shop_name = data[i].shop_name;
+                        var tag = data[i].tag;
+                        var addr = data[i].addr;
+                        var timeS = data[i].weekday_business_begin;
+                        var timeE = data[i].weekday_business_finish;
+
+                        idList.push(dp_shop_id);
+                        phoneList.push(phone);
+                        timeBeginList.push(timeS);
+                        timeEndList.push(timeE);
+
+                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                        //     "</td><td>" + addr + "</td>";
+                        var shop =
+                            "<div class='radio' id='shopList'><label><input type='radio' name='bindShop' id='bindShop' value='" +
+                            dp_shop_id + "'>" +
+                            shop_name + ":" + addr + "</label></div>";
+                        $("#bindingList").append(shop);
+                    }
+                },
+                error: function () {
+                    alert("未找到相关店铺。");
+                }
+            });
+            $("#myModalShopName").modal('show');
+        });
+
+        function submitBinding() {
+            $("#myModalShopName").modal('hide');
+            if ($("input[name='bindShop']:checked").val() != '') {
+                shopId = $("input[name='bindShop']:checked").val();
+                idx = idList.indexOf(shopId);
+                $("#phone").val(phoneList[idx]);
+                $("#datetimeStart").datetimepicker('setDate', new Date(
+                    timeBeginList[idx]));
+                $("#datetimeEnd").datetimepicker('setDate', new Date(
+                    timeEndList[idx]));
+            }
+        }
+
+        function submitIsChain() {
+            $("#myModalIsChain").modal('hide');
+            if ($("input[name='bindShop']:checked").val() != '') {
+                chainId = $("input[name='chainShop']:checked").val()
+            }
+        }
+
+        function previous() {
+            if (offset != 0) {
+                offset = offset - 10;
+                $("#bindingList").html("");
+                $.ajax({
+                    type: "POST",
+                    url: "http://10.108.122.109:8084/shops/get_waiting_bind_shops",
+                    data: {
+                        "shop_name": $("#shopName").val(),
+                        "offset": offset,
+                        "count": count
+                    },
+                    success: function (data) {
+                        idList = [];
+                        phoneList = [];
+                        timeBeginList = [];
+                        timeEndList = [];
+                        var menu = new Array();
+                        for (var i = 0; i < data.length; i++) {
+                            var dp_shop_id = data[i].id;
+                            var phone = data[i].phone;
+                            var shop_name = data[i].shop_name;
+                            var tag = data[i].tag;
+                            var addr = data[i].addr;
+                            var timeS = data[i].weekday_business_begin;
+                            var timeE = data[i].weekday_business_finish;
+
+                            idList.push(dp_shop_id);
+                            phoneList.push(phone);
+                            timeBeginList.push(timeS);
+                            timeEndList.push(timeE);
+
+                            // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                            //     "</td><td>" + addr + "</td>";
+                            var shop =
+                                "<div class='radio' id='shopList'><label><input type='radio' name='bindShop' id='bindShop' value='" +
+                                dp_shop_id + "'>" +
+                                shop_name + ":" + addr + "</label></div>";
+                            $("#bindingList").append(shop);
+                        }
+                    },
+                    error: function () {
+                        alert("获取菜品失败，请重新尝试。");
+                    }
+                });
             } else {
-                //ajax注册操作
+                alert("已经是第一页啦！");
+            }
+        }
+
+        function next() {
+            offset = offset + 10;
+            $("#bindingList").html("");
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.122.109:8084/shops/get_waiting_bind_shops",
+                data: {
+                    "shop_name": $("#shopName").val(),
+                    "offset": offset,
+                    "count": count
+                },
+                success: function (data) {
+                    idList = [];
+                    phoneList = [];
+                    timeBeginList = [];
+                    timeEndList = [];
+                    var menu = new Array();
+                    for (var i = 0; i < data.length; i++) {
+                        var dp_shop_id = data[i].id;
+                        var phone = data[i].phone;
+                        var shop_name = data[i].shop_name;
+                        var tag = data[i].tag;
+                        var addr = data[i].addr;
+                        var timeS = data[i].weekday_business_begin;
+                        var timeE = data[i].weekday_business_finish;
+
+                        idList.push(dp_shop_id);
+                        phoneList.push(phone);
+                        timeBeginList.push(timeS);
+                        timeEndList.push(timeE);
+
+                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                        //     "</td><td>" + addr + "</td>";
+                        var shop =
+                            "<div class='radio' id='shopList'><label><input type='radio' name='bindShop' id='bindShop' value='" +
+                            dp_shop_id + "'>" +
+                            shop_name + ":" + addr + "</label></div>";
+                        $("#bindingList").append(shop);
+                    }
+                },
+                error: function () {
+                    alert("获取菜品失败，请重新尝试。");
+                }
+            });
+        }
+
+        function selectYes() {
+            $("#selectIsChainText").val("是");
+            $("#myModalIsChain").modal('show');
+            //aiax选择连锁商家
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.122.109:8084/shops/get_waiting_chain_shops",
+                // dataType: "json",
+                // contentType: 'application/json; charset=UTF-8',
+                data: {
+                    "shop_name": $("#shopName").val()
+                },
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var phone = data[i].phone;
+                        var shop_name = data[i].shop_name;
+                        var tag = data[i].tag;
+                        var addr = data[i].addr;
+                        var chain = data[i].chainId;
+
+                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                        //     "</td><td>" + addr + "</td>";
+                        var shop =
+                            "<div class='radio' id='shopList'><label><input type='radio' name='chainShop' id='chainShop' value='" +
+                            chain + "'>" +
+                            shop_name + ":" + addr + "</label></div>";
+                        $("#isChainList").append(shop);
+                    }
+                },
+                error: function () {
+                    alert("未找到相关店铺。");
+                }
+            });
+        }
+
+        function selectNo() {
+            $("#selectIsChainText").val("否");
+        }
+
+        function register() {
+            if ($("#pass").val() != $("#cpass").val()) {
+                window.location.reload();
+                alert("两次输入的密码不一致！");
+                window.location.reload();
+            } else if ($("#pass").val() == "") {
+                window.location.reload();
+                alert("密码不能为空！");
+                window.location.reload();
+            } else if ($("#sellerName").val() == "") {
+                window.location.reload();
+                alert("店主姓名不能为空！");
+                window.location.reload();
+            } else if ($("#phone").val() == "") {
+                window.location.reload();
+                alert("手机号不能为空！");
+                window.location.reload();
+            } else if ($("#ver").val() == "") {
+                window.location.reload();
+                alert("验证码不能为空！");
+                window.location.reload();
+            } else {
+                data = {
+                    "phone": $('#phone').val(),
+                    "seller_name": $('#sellerName').val(),
+                    "station_name": $('#station').val(),
+                    "seller_password": $('#pass').val()
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "http://10.108.121.54:8084/sellers/account?verifyCode=" + $("ver").val(),
+                    dataType: "json",
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(data),
+                    success: function () {
+                        alert("注册成功，请添加店铺。");
+                    },
+                    error: function () {
+                        window.location.reload();
+                        alert("注册失败，请重新尝试。");
+                    }
+                });
+            }
+        }
+
+        $("#submit").click(function () {
+            if ($("#selectTypeText").val() == "") {
+                alert("店铺类型不能为空");
+            } else if ($("#lnglat").val() == "") {
+                alert("店铺经纬度不能为空");
+            } else if ($("#shopNum").val() == "") {
+                alert("店铺数量不能为空");
+            } else if ($("#shopName").val() == "") {
+                alert("店铺名称不能为空");
+            } else if ($("#shopPhone").val() == "") {
+                alert("联系电话不能为空");
+            } else if (($("#datetimeStart").val() == "") && ($("#datetimeEnd").val() == "")) {
+                alert("营业时间不能为空");
+            } else {
+                //ajax添加店铺
                 var data = {
-                    "avatar_url": "string",
-                    "email": "string",
-                    "phone": $("#phone").val(),
-                    "seller_name": $("#shopName").val(),
-                    "seller_password": $("#pwd").val(),
-                    "station_name": "string",
-                    "weekday_business_begin": "string",
-                    "weekday_business_finish": "string",
-                    "weekend_business_begin": "string",
-                    "weekend_business_finish": "string"
+                    "phoneNumber": $("#phone").val(),
+                    "latitude": lat,
+                    "longitude": lng,
+                    "chainId": chainId,
+                    "dpShopId": shopId,
+                    "shopName": $("#shopName").val(),
+                    "shopType": $("#selectTypeText").val(),
+                    "stationName": $("#station").val(),
+                    "weekdayBusinessBegin": $("#datetimeStart").val(),
+                    "weekdayBusinessFinish": $("#datetimeEnd").val()
                 };
                 $.ajax({
                     type: "POST",
-                    url: "http://10.108.121.54:8084/sellers/account",
+                    url: "http://10.108.122.109:8084/shops/get_waiting_chain_shops",
                     dataType: "json",
-                    contentType: 'application/json; charset=UTF-8',
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(data),
                     success: function (data) {
-                        alert("注册成功！");
+                        alert("添加店铺成功！");
                     },
                     error: function () {
-                        alert("注册失败，请重新尝试。");
+                        alert("添加店铺失败，请稍后再试。");
                     }
                 });
             }
         });
 
-        $("#submit").click(function () {
-            if (selectTypeText.value == "") {
-                alert("店铺类型不能为空");
-            } else if (lnglat.value == "") {
-                alert("店铺经纬度不能为空");
-            } else if (shopNum.value == "") {
-                alert("店铺数量不能为空");
-            } else if (shopName.value == "") {
-                alert("店铺名称不能为空");
-            } else if (shopPhone.value == "") {
-                alert("联系电话不能为空");
-            } else if ((datetimeStart.value == "") && (datetiemEnd.value == "")) {
-                alert("营业时间不能为空");
-            } else {
-                //ajax添加店铺
-                var data = {
-                    "avatar_url": "string",
-                    "email": "string",
-                    "phone": $("#phone").val(),
-                    "seller_name": $("#shopName").val(),
-                    "seller_password": $("#pwd").val(),
-                    "station_name": "string",
-                    "weekday_business_begin": "string",
-                    "weekday_business_finish": "string",
-                    "weekend_business_begin": "string",
-                    "weekend_business_finish": "string"
-                };
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    dataType: "json",
-                    contentType: 'application/json; charset=UTF-8',
-                    data: JSON.stringify(data),
-                    success: function (data) {
-                        alert("添加店铺成功！");
-                        window.location.href = 'login.html';
-                    },
-                    error: function () {
-                        alert("添加店铺失败，请重新尝试。");
+        $("#createMap").click(function () {
+            setTimeout(function () { //添加延时加载。解决问题
+                var map = new BMap.Map("map_main");
+                var myCity = new BMap.LocalCity();
+                myCity.get(function (res) {
+                    map.centerAndZoom(res.center, res.level);
+                    var old_map = $('#map').val(); //如果已设置过
+                    if (old_map.length > '5') { //打开的时候显示已设置的
+                        $("#map_txt").val(old_map);
+                        var oldMap = old_map.split(",");
+                        var point = new BMap.Point(oldMap[0], oldMap[1]);
+                        var marker = new BMap.Marker(point); // 创建标注    
+                        map.clearOverlays();
+                        map.addOverlay(marker);
                     }
+                    map.addEventListener("click", function (e) {
+                        lng = e.point.lng;
+                        lat = e.point.lat;
+                        var lng_lat = e.point.lng + ',' + e.point.lat;
+                        $("#map_txt").val(lng_lat); //加入到设置框
+                        var point = new BMap.Point(e.point.lng, e.point.lat);
+                        var marker = new BMap.Marker(point); // 创建标注    
+                        map.clearOverlays();
+                        map.addOverlay(marker);
+                    });
+                    map.enableScrollWheelZoom(true);
+                });
+            }, 500);
+        });
+
+        //设置经纬度
+        function setMapValue() {
+            if ($("#map_txt").val() == "") {
+                alert('你还没选择相应的坐标点^_^哦');
+                return false;
+            }
+            $("#map").val($("#map_txt").val());
+            $('#myModal').modal('hide');
+        };
+
+        function selectCY() {
+            $("#selectTypeText").val("餐饮");
+        };
+
+        function selectYL() {
+            $("#selectTypeText").val("娱乐");
+        };
+
+        function selectGW() {
+            $("#selectTypeText").val("购物");
+        };
+
+        function selectLY() {
+            $("#selectTypeText").val("旅游");
+        };
+
+        $("#datetimeStart").datetimepicker({
+            format: 'hh:ii',
+            autoclose: true,
+            startView: 1,
+            maxView: 0,
+            minView: 0,
+            forceParse: false,
+            minuteStep: 10
+        });
+
+        $("#datetimeEnd").datetimepicker({
+            format: 'hh:ii',
+            autoclose: true,
+            startView: 1,
+            maxView: 0,
+            minView: 0,
+            forceParse: false,
+            minuteStep: 10
+        });
+
+        //初始化fileinput控件（第一次初始化）
+        $('#uploadImg').fileinput({
+            uploadAsync: true,
+            language: 'zh', //设置语言
+            uploadLabel: "上传", //设置上传按钮的汉字
+            showCaption: false, //是否显示标题 
+            enctype: 'multipart/form-data',
+            uploadUrl: "http://10.108.121.54:8084/sellers/me/picture/shopQualifications", //上传的地址
+            previewFileType: 'image',
+            overwriteInitial: false,
+            maxFileSize: 1000,
+            maxFilesNum: 10,
+            showUpload: true, //是否显示上传按钮
+            showCaption: true, //是否显示标题
+            browseClass: "btn btn-primary", //按钮样式     
+            browseOnZoneClick: true,
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            dropZoneTitle: "请通过拖拽图片文件放到这里",
+            dropZoneClickTitle: "或者点击此区域添加图片",
+            ajaxSettings: {
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+            },
+            slugCallback: function (filename) {
+                // alert(filename);
+                return filename.replace('(', '_').replace(']', '_');
+            }
+        });
+
+        $('#file-pic').on("fileuploaded", function (event, data, previewId, index) {
+            var result = data.response; //后台返回的json
+            //console.log(result.status);
+            //console.log(result.id);
+            // $('#picid').val(result.id); //拿到后台传回来的id，给图片的id赋值序列化表单用           
+            url = url + result.pictureUrl;
+            //如果是上传多张图
+            //计数标记，用于确保全部图片都上传成功了，再提交表单信息
+            var fileCount = $('#file-pic').fileinput('getFilesCount');
+            if (fileCount == 1) {
+                $.ajax({ //上传文件成功后再保存图片信息
+                    url: 'BannerPicAction!savaForm.action',
+                    data: $('#form1').serialize(), //form表单的值
+                    success: function (data, status) {},
+                    cache: false, //不缓存
                 });
             }
         });

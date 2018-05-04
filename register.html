@@ -40,7 +40,7 @@
             <div class="input-group">
                 <input type="text" id="ver" placeholder="验证码">
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-primary btn-lg" onclick="sendVer()">发送验证码</button>
+                    <button type="button" class="btn btn-primary btn-lg" id="snedVer" onclick="sendVer()">发送验证码</button>
                 </span>
             </div>
             <input type="text" id="sellerName" placeholder="店主姓名" />
@@ -200,11 +200,74 @@
         var chainId = -1;
         var shopName;
         var shopId;
+        var picUrl = "http://10.108.122.109:8084/";
 
         var idList = new Array();
         var phoneList = new Array();
         var timeBeginList = new Array();
         var timeEndList = new Array();
+
+
+        function sendVer() {
+            // setTimeout(function () {
+            //     alert("发送验证码成功！");
+            // }, 500);
+
+            $.ajax({
+                type: "POST",
+                url: "http://10.108.122.109:8084/shops/get_waiting_bind_shops",
+                // dataType: "json",
+                // contentType: 'application/json; charset=UTF-8',
+                data: {
+                    "phone": $("#phone").val()
+                },
+                success: function (data) {
+                    idList = [];
+                    phoneList = [];
+                    timeBeginList = [];
+                    timeEndList = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var dp_shop_id = data[i].id;
+                        var phone = data[i].phone;
+                        var shop_name = data[i].shop_name;
+                        var tag = data[i].tag;
+                        var addr = data[i].addr;
+                        var timeS = data[i].weekday_business_begin;
+                        var timeE = data[i].weekday_business_finish;
+
+                        idList.push(dp_shop_id);
+                        phoneList.push(phone);
+                        timeBeginList.push(timeS);
+                        timeEndList.push(timeE);
+
+                        // var shop = "<td>" + shop_name + "</td><td>" + tag +
+                        //     "</td><td>" + addr + "</td>";
+                        var shop =
+                            "<div class='radio' id='shopList'><label><input type='radio' name='bindShop' id='bindShop' value='" +
+                            dp_shop_id + "'>" +
+                            shop_name + ":" + addr + "</label></div>";
+                        $("#bindingList").append(shop);
+                    }
+                },
+                error: function () {
+                    alert("未找到相关店铺。");
+                }
+            });
+
+            var time = 60;
+            $(this).attr("disabled", true);
+            var timer = setInterval(function () {
+                if (time == 0) {
+                    $("#snedVer").removeAttr("disabled");
+                    $("#snedVer").html("重新发送");
+                    clearInterval(timer);
+                } else {
+                    $("#snedVer").html(time);
+                    time--;
+                }
+            }, 1000);
+
+        };
 
         $("#shopName").blur(function () {
             $.ajax({
@@ -543,12 +606,6 @@
             $('#myModal').modal('hide');
         };
 
-        function sendVer() {
-            setTimeout(function () {
-                alert("发送验证码成功！");
-            }, 500);
-        };
-
         function selectCY() {
             $("#selectTypeText").val("餐饮");
         };
@@ -587,7 +644,11 @@
 
         //初始化fileinput控件（第一次初始化）
         $('#uploadImg').fileinput({
+            uploadAsync: true,
             language: 'zh', //设置语言
+            uploadLabel: "上传", //设置上传按钮的汉字
+            showCaption: false, //是否显示标题 
+            enctype: 'multipart/form-data',
             uploadUrl: "http://10.108.121.54:8084/sellers/me/picture/shopQualifications", //上传的地址
             previewFileType: 'image',
             overwriteInitial: false,
@@ -595,11 +656,20 @@
             maxFilesNum: 10,
             showUpload: true, //是否显示上传按钮
             showCaption: true, //是否显示标题
-            browseClass: "btn btn-primary", //按钮样式             
+            browseClass: "btn btn-primary", //按钮样式     
+            browseOnZoneClick: true,
             previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
             msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
-
+            dropZoneTitle: "请通过拖拽图片文件放到这里",
+            dropZoneClickTitle: "或者点击此区域添加图片",
+            ajaxSettings: {
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+            },
             slugCallback: function (filename) {
+                // alert(filename);
                 return filename.replace('(', '_').replace(']', '_');
             }
         });
@@ -608,7 +678,8 @@
             var result = data.response; //后台返回的json
             //console.log(result.status);
             //console.log(result.id);
-            $('#picid').val(result.id); //拿到后台传回来的id，给图片的id赋值序列化表单用
+            // $('#picid').val(result.id); //拿到后台传回来的id，给图片的id赋值序列化表单用           
+            url = url + result.pictureUrl;
             //如果是上传多张图
             //计数标记，用于确保全部图片都上传成功了，再提交表单信息
             var fileCount = $('#file-pic').fileinput('getFilesCount');

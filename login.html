@@ -46,6 +46,7 @@
                 "userpsw": $('#userpsw').val()
             }
             $.ajax({
+                async: false,
                 type: "POST",
                 url: "http://10.108.121.54:8084/sellers/token/mobile",
                 // url: "http://httpbin.org/anything/:anything",
@@ -68,6 +69,7 @@
                     var seller_name = data.seller_name;
                     var phone = data.phone;
                     var station_name = data.station_name;
+                    var shop_id = data.shop_id;
 
                     $.cookie('id', id, {
                         expires: 7,
@@ -85,8 +87,41 @@
                         expires: 7,
                         path: '/'
                     });
+                    $.cookie('dp_shop_id', shop_id, {
+                        expires: 7,
+                        path: '/'
+                    });
 
-                    window.location.href = 'main.html';
+                    $.ajax({
+                        async: false,
+                        type: "GET",
+                        url: "http://10.108.121.54:8084/sellers/me/shop",
+                        dataType: "json",
+                        crossDomain: true,
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            alert("获取个人信息成功！");
+                            var shop_name = data.shop_name;
+                            var poster_url = data.poster_url;
+
+                            $.cookie('shop_name', shop_name, {
+                                expires: 7,
+                                path: '/'
+                            });
+                            $.cookie('poster_url', poster_url, {
+                                expires: 7,
+                                path: '/'
+                            });
+
+                            window.location.href = 'main.html';
+                        },
+                        error: function () {
+                            alert("获取个人信息失败，请重新尝试。");
+                        }
+                    });
                 },
                 error: function () {
                     alert("登陆失败，请重新尝试。");

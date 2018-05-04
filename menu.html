@@ -382,7 +382,14 @@
                         <input type="number" id="itemNum" name="itemNum" min="1" placeholder="菜品数量（填入999则无限量）">
                         <input type="text" id="description" name="description" placeholder="菜品描述">
                         <h4>菜品图片</h4>
-                        <input id="uploadImg" type="file" multiple class="file" data-overwrite-initial="false" data-max-file-count="1" placeholder="菜品图片">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input id="uploadImg" type="file" class="file" name="file">
+                                <input type="hidden" id="JSh_ZhP_Path" />
+                                <p class="help-block">支持jpg、jpeg、png、gif格式，大小不超过2.0M</p>
+                            </div>
+                        </div>
+                        <!-- <input id="uploadImg" type="file" multiple class="file" data-overwrite-initial="false" data-max-file-count="1" placeholder="菜品图片"> -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" onclick="submitAdd()">确定添加</button>
@@ -409,6 +416,7 @@
         var shop_id;
         var offset = 0;
         var count = 10;
+        var url = "";
         var idList = new Array();
         var delMenu = new Array();
         var importMenu = new Array();
@@ -420,19 +428,30 @@
         var priceList = new Array();
 
         $('#uploadImg').fileinput({
+            uploadAsync: true,
             language: 'zh', //设置语言
-            uploadUrl: "http://10.108.121.54:8084/sellers/me/picture/shopQualifications", //上传的地址
+            uploadLabel: "上传", //设置上传按钮的汉字
+            showCaption: false, //是否显示标题 
+            enctype: 'multipart/form-data',
+            uploadUrl: "http://10.108.121.54:8084/sellers/me/picture/goods", //上传的地址
             previewFileType: 'image',
             overwriteInitial: false,
             maxFileSize: 1000,
             maxFilesNum: 10,
             showUpload: true, //是否显示上传按钮
             showCaption: true, //是否显示标题
-            browseClass: "btn btn-primary", //按钮样式             
+            browseClass: "btn btn-primary", //按钮样式     
+            browseOnZoneClick: true,
             previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
             msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
             dropZoneTitle: "请通过拖拽图片文件放到这里",
             dropZoneClickTitle: "或者点击此区域添加图片",
+            ajaxSettings: {
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+            },
             slugCallback: function (filename) {
                 // alert(filename);
                 return filename.replace('(', '_').replace(']', '_');
@@ -441,42 +460,40 @@
 
         $('#uploadImg').on("fileuploaded", function (event, data, previewId, index) {
             var result = data.response; //后台返回的json
-            //console.log(result.status);
-            //console.log(result.id);
-            $('#picid').val(result.id); //拿到后台传回来的id，给图片的id赋值序列化表单用
-            //如果是上传多张图
-            //计数标记，用于确保全部图片都上传成功了，再提交表单信息
-            var fileCount = $('#file-pic').fileinput('getFilesCount');
-            if (fileCount == 1) {
-                $.ajax({ //上传文件成功后再保存图片信息
-                    url: 'BannerPicAction!savaForm.action',
-                    data: $('#form1').serialize(), //form表单的值
-                    success: function (data, status) {},
-                    cache: false, //不缓存
-                });
-            }
+            url = url + result.pictureUrl;
+            //sellers/picture/shopQualifications/180504135744-20612-eAt7XcyV.png
         });
 
         function confirm() {
+            var delstr = "?";
             for (var i = 0; i < delMenu.length; i++) {
-                $.ajax({
-                    type: "DELETE",
-                    url: "http://10.108.121.54:8084/sellers/me/goods/" +
-                        delMenu[i],
-                    dataType: "json",
-                    crossDomain: true,
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        alert("删除菜品成功！");
-                        window.location.reload();
-                    },
-                    error: function (data) {
-                        alert("删除菜品失败，请重新登陆或等待一段时间后再尝试。");
-                    }
-                });
+                delstr = delstr + "goodsIds=" + delMenu[i];
+                if (i != delMenu - 1) {
+                    delstr = delstr + "&";
+                }
+            }
+            $.ajax({
+                type: "DELETE",
+                url: "http://10.108.121.54:8084/sellers/me/goods" + delstr,
+                dataType: "json",
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    alert("删除菜品成功！");
+                    delMenu = [];
+                    window.location.reload();
+                },
+                error: function (data) {
+                    alert("删除菜品失败，请重新登陆或等待一段时间后再尝试。");
+                    window.location.reload();
+                }
+            });
+
+            for (var i = 0; i < delMenu.length; i++) {
+
             }
         }
 
@@ -496,7 +513,7 @@
                 val = parseInt(this.value);
                 importMenu.push(val);
 
-                good = new Array();
+                good = {};
                 good['description'] = desList[val];
                 good['goods_name'] = nameList[val];
                 good['goods_type'] = typeList[val];
@@ -508,7 +525,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "http://10.108.122.109:8084/sellers/me/goodsList",
+                url: "http://10.108.121.54:8084/sellers/me/goodsList",
                 dataType: "json",
                 crossDomain: true,
                 xhrFields: {
@@ -518,6 +535,7 @@
                 data: JSON.stringify(data),
                 success: function (data) {
                     alert("导入菜品成功！");
+                    window.location.reload();
                 },
                 error: function () {
                     alert("导入菜品失败，请重新登陆或等待一段时间后再尝试。");
@@ -532,7 +550,7 @@
                 "goods_name": $("#itemName").val(),
                 "goods_number": $("#itemNum").val(),
                 "goods_type": $("#tag").val(),
-                "picture_url": "string",
+                "picture_url": url,
                 "price": $("#itemPrice").val()
             }
             $.ajax({

@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "nginx",
-            "url": "http://10.108.123.248/register.html",
+            "url": "http://10.108.123.248/login.html",
             "webRoot": "${workspaceFolder}"
         },
         {

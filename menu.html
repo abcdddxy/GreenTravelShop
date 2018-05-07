@@ -432,7 +432,7 @@
             uploadLabel: "上传", //设置上传按钮的汉字
             showCaption: false, //是否显示标题 
             enctype: 'multipart/form-data',
-            uploadUrl: "http://10.108.121.54:8084/sellers/me/picture/goods", //上传的地址
+            uploadUrl: "http://10.108.121.54:8084/sellers/me/pictures/goods", //上传的地址
             previewFileType: 'image',
             overwriteInitial: false,
             maxFileSize: 1000,
@@ -589,7 +589,7 @@
                 $("#import-body").html("");
                 $.ajax({
                     type: "POST",
-                    url: "http://10.108.122.109:8084/shops/get_waiting_dish",
+                    url: "http://10.108.121.54:8084/shops/get_waiting_dish",
                     // dataType: "json",
                     // contentType: 'application/json; charset=UTF-8',
                     data: {
@@ -642,7 +642,7 @@
             $("#import-body").html("");
             $.ajax({
                 type: "POST",
-                url: "http://10.108.122.109:8084/shops/get_waiting_dish",
+                url: "http://10.108.121.54:8084/shops/get_waiting_dish",
                 // dataType: "json",
                 // contentType: 'application/json; charset=UTF-8',
                 data: {
